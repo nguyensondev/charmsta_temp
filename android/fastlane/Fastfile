@@ -1,0 +1,76 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    #crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+  
+  desc "Archive build Ad Hoc"
+  lane :buildReleaseAPK do
+    releaseFilePath = File.join(Dir.pwd, "uzmos_release.keystore")
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => releaseFilePath,
+        "android.injected.signing.store.password" => "123456",
+        "android.injected.signing.key.alias" => "my-key-alias",
+        "android.injected.signing.key.password" => "123456",
+      }
+    )
+  end
+
+  desc "Notifi SLack"
+  lane :slackNotify do
+    slack(
+      message: "App successfully released!",
+      success: true,
+      slack_url: "https://hooks.slack.com/services/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"
+  )
+  end
+
+  desc "abc"
+  lane :Release_all do
+    uploadFirebaseDev
+    slackNotify
+  end
+
+  desc "upload to Beta by FireBase"
+	lane :uploadFirebaseDev do
+    firebase_app_distribution(
+      app: "1:162451833197:android:3648c69a9ffe5653da5a64",      
+      groups: “TESTER-GROUP”,
+      release_notes: "Version Staging v1",
+      apk_path: './app/build/outputs/apk/release/app-release.apk',
+      firebase_cli_token: "1//0elstkEQFW3bgCgYIARAAGA4SNwF-L9IrIYiuYT_fFzvjmSefJMhq9YJkWM8P2G0mQh-jGq0zeBvlEtkLx2jD81Eh_Eoi20e777Q",
+    )
+end
+
+
+end

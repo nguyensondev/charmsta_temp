@@ -1,0 +1,284 @@
+{
+  "common": {
+    "ok": "OK!",
+    "cancel": "Cancel",
+    "back": "Back",
+    "empty": "Data is empty!",
+    "save": "Save",
+    "min": "min"
+  },
+  "picture": {
+    "options": {
+      "camera": "Take a picture",
+      "cameraRoll": "Choose from camera roll"
+    }
+  },
+  "errors": {
+    "invalidEmail": "Invalid email address."
+  },
+  "welcomeScreen": {
+    "poweredBy": "POWERED BY Uzmos",
+    "readyForLaunch": "Ready for launch.",
+    "continue": "CONTINUE"
+  },
+  "demoScreen": {
+    "howTo": "HOW TO",
+    "title": "What’s In This Stack?",
+    "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
+    "reactotron": "Demo Reactotron",
+    "demoList": "Demo List",
+    "androidReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
+    "iosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "macosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "webReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
+    "windowsReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app."
+  },
+  "demoListScreen": {
+    "title": "Demo List"
+  },
+  "errorScreen": {
+    "title": "Something went wrong!",
+    "friendlySubtitle": "This is the screen that your users will see in production when an error is thrown. You'll want to customize this message (located in `app/i18n/en.json`) and probably the layout as well (`app/screens/error`). If you want to remove this entirely, check `app/app.tsx` for the <ErrorBoundary> component.",
+    "traceTitle": "Error from %{name} stack",
+    "reset": "RESET APP"
+  },
+  "storybook": {
+    "placeholder": "Placeholder",
+    "field": "Field"
+  },
+  "auth": {
+    "storeForm": {
+      "headerTitle": "Business Info"
+    }
+  },
+  "product": {
+    "productList": {
+      "item": {
+        "quantity": "Quantity: {{quantity}}"
+      }
+    }
+  },
+  "screens": {
+    "headerTitle": {
+      "": "",
+      "editService": "Edit service",
+      "customerProfile": "Customer profile",
+      "customerList": "Customers",
+      "staffList": "Staffs",
+      "staffProfile": "Staff profile",
+      "productList": "Products",
+      "productDetail": "Product Detail",
+      "customerImport": "Customer import",
+      "companyDetail": "Company detail",
+      "bookingPolicies": "Booking policies",
+      "bookingSlotSize": "Booking slot size",
+      "customerNotes": "Customer notes",
+      "cancellationPolicy": "Cancellation policy",
+      "appointmentSlot": "Appointment slot",
+      "weekStartDay": "Week start day",
+      "serviceList": "Services",
+      "categoryList": "Categories",
+      "labelList": "Labels",
+      "selectStaff": "Select staff",
+      "selectServices": "Select services",
+      "addStaffs": "Add staffs",
+      "selectCustomer": "Select customer",
+      "selectService": "Select service",
+      "selectStaffs": "Select staffs",
+      "selectTax": "Select tax",
+      "selectTimeSlot": "Select time slot",
+      "filterAppointment": "Searching Appointment",
+      "checkout": "Checkout",
+      "packageList": "Packages",
+      "newPackage": "New package",
+      "packageDetail": "Package Detail",
+      "editPackage": "Edit package",
+      "account": "Account",
+      "privacy": "Privacy",
+      "editAccount": "Edit account",
+      "selectPayment": "Select payment",
+      "cashPayment": "Cash payment",
+      "cardPayment": "Card payment",
+      "otherPayment": "Other payment",
+      "taxList": "Taxes",
+      "newTax": "New tax",
+      "discountList": "Discounts",
+      "newDiscount": "New discount",
+      "editDiscount": "Edit discount",
+      "newService": "New service"
+    }
+  },
+  "errorReponse": {
+    "emailUsed": "Email is used"
+  },
+  "service": {
+    "service": "Service",
+    "services": "Services",
+    "addService": "Add a service"
+  },
+  "textInput": {
+    "placeholder": {
+      "search": "Search"
+    },
+    "label": {
+      "amount": "amount",
+      "type": "type",
+      "services": "Services",
+      "packages": "Packages",
+      "optional": "(optional)",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phoneNumber": "Phone number",
+      "name": "Name",
+      "fullName": "Full name",
+      "email": "Email",
+      "dob": "Date of birth",
+      "address": "Address",
+      "address2": "Address 2",
+      "city": "City",
+      "state": "State",
+      "zipcode": "Zipcode",
+      "productName": "Product name",
+      "cost": "Cost",
+      "price": "Price",
+      "stocks": "Stocks",
+      "SKU": "SKU",
+      "description": "Description",
+      "productOptions": "Product options",
+      "workingDays": "Woking Days",
+      "breaks": "Breaks",
+      "timeOff": "Time Off",
+      "bookingPage": "Booking page",
+      "storeName": "Store name",
+      "categories": "Categories",
+      "currency": "Currency",
+      "website": "Website",
+      "address1": "Address 1",
+      "category": "Category",
+      "staffName": "Staff name",
+      "retailPrice": "Retail price",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "coupon": "Coupon",
+      "tax": "Tax",
+      "total": "Total",
+      "taxName": "Tax name",
+      "taxRate": "Tax rate"
+    }
+  },
+  "button": {
+    "create": "Create",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "next": "Next",
+    "confirm": "Confirm",
+    "select": "Select",
+    "moreOptions": "More options",
+    "checkout": "Checkout",
+    "delete": "Delete",
+    "no": "No",
+    "yes": "Yes",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account",
+    "search": "Search"
+  },
+  "customer": {
+    "buttonAction": {
+      "addNew": "Add new",
+      "importFromContacts": "Import from contacts"
+    },
+    "placeholder": {
+      "importSearchBar": "Enter contact name for searching"
+    }
+  },
+  "appointment": {
+    "newAppointment": "New Appointment",
+    "editAppointment": "Edit Appointment",
+    "checkout": "Checkout",
+    "cancel": "Cancel Appointment",
+    "notes": "Notes",
+    "notePlaceholder": "Notes visible to staff only",
+    "startTime": "Start time",
+    "duration": "Duration",
+    "staff": "Staff",
+    "total": "Total: {{defaultValue}}",
+    "customer": "Customer",
+    "label": "Label",
+    "status": "Status",
+    "currentStatus": {
+      "booked": "Booked",
+      "confirmed": "Confirmed",
+      "arrived": "Arrived",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    },
+    "toPay": "To pay: {{defaultValue}}"
+  },
+  "payment": {
+    "types": {
+      "cashPayment": "Cash",
+      "otherPayment": "Other",
+      "cardPayment": "Card"
+    }
+  },
+  "settings": {
+    "main": {
+      "bookingPage": "Booking Page",
+      "companyDetail": "Company Detail",
+      "businessHours": "Business Hours",
+      "bookingPolicies": "Booking Policies",
+      "calendarSettings": "Calendar Settings",
+      "offHoursBooking": "Off Hour Booking",
+      "doubleBooking": "Double Booking",
+      "customServiceDuration": "Custom Service Duration",
+      "customServiceCost": "Custom Service Cost",
+      "appointmentSlot": "Appointment Slot",
+      "weekStartDay": "Week Start Day"
+    },
+    "bookingPolicies": {
+      "bookingSlotSize": {
+        "label": "Booking slot size",
+        "intruction": "The frequency of available times on your Booking Page. 15 mins slot will show open times of 08:15, 8:15, 8:30 etc.\nOnly affects customers who book online."
+      },
+      "customerNotes": {
+        "label": "Notes for the customers",
+        "intruction": "Add a pop-up message for visitors on your Booking Page."
+      },
+      "cancellationPolicy": {
+        "label": "Cancellation policy",
+        "intruction": "How soon before an appointment a customer may cancel."
+      }
+    },
+    "calendarSettings": {
+      "appointmentSlot": {
+        "instruction1": "The frequency of available times on your Appointment booking. 15 mins slot will show open time of 8:00, 8:15, 8:30, etc.",
+        "instruction2": "Note: This will not effect the Booking Slot size set for booking page."
+      }
+    }
+  },
+  "valueDisplay": {
+    "hm": "{{hour}}h {{min}}m",
+    "m": "{{min}}m",
+    "currency": "$ {{amount}}",
+    "hour": "{{time}} hour",
+    "hours": "{{time}} hours",
+    "week": "{{time}} week",
+    "never": "Never",
+    "anytime": "Anytime",
+    "mins": "{{time}} mins",
+    "min": "{{time}} min",
+    "weekdays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "jsx": "react-native",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "target": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@assets/": [
+        "assets/"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@navigators/*": [
+        "src/navigators/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@screens/*": [
+        "src/screens/*/index",
+        "src/screens/*"
+      ],
+      "@i18n/*": [
+        "src/i18n/*"
+      ],
+      "@theme/*": [
+        "src/theme/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@contexts/*": ["src/contexts/*"],
+      "@graphql/*": ["src/graphql/*"],
+      "@hoc/*": ["src/hoc/*"],
+      // "@hooks/*": ["src/hooks/*"],
+      // "@est/*": ["src/est/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js"
+  ],
+  "include": [
+    "index.js",
+    "src",
+    "test",
+    "storybook"
+  ]
+}

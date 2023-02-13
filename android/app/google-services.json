@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "162451833197",
+    "project_id": "uzmos-business",
+    "storage_bucket": "uzmos-business.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162451833197:android:3648c69a9ffe5653da5a64",
+        "android_client_info": {
+          "package_name": "com.uzmos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162451833197-hcnutcdi0umn5au6tbpdjpgfkfbotrua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uzmos",
+            "certificate_hash": "f19d56b3130b53615102cb24a88ac0f0724c4aac"
+          }
+        },
+        {
+          "client_id": "162451833197-rkuigsac1vpkc9k6leqr608i8lgsv9q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm6zUu-izPLzrvfH1OdHT7f1e4exEqjAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162451833197-rkuigsac1vpkc9k6leqr608i8lgsv9q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
