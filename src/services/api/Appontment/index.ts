@@ -2,12 +2,12 @@ import {
   CancelAppointment,
   Checkout,
   CreateAppointment,
-  CreateLabel
+  CreateLabel,
 } from "@models/backend/request/Appointment"
 import {
   AppointmentDTO,
   AppointmentLabelDTO,
-  CheckoutDTO
+  CheckoutDTO,
 } from "@models/backend/response/Appointment"
 import api from "../axios/api-config"
 

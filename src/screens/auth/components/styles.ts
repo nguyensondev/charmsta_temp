@@ -5,7 +5,7 @@ import { Dimensions, StyleSheet } from "react-native"
 const { width } = Dimensions.get("window")
 
 export const styles = StyleSheet.create({
-  appLogo: { height: width / 2, width: width / 2 },
+  appLogo: { height: width / 4, width: width / 4 },
   appLogoContainer: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: color.primary,

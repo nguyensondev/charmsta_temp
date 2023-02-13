@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "ios": "npm run lint && react-native run-ios",
+    "ios": "npm run lint && react-native run-ios --device=iPad",
     "android": "npm run lint && react-native run-android",
     "ios_release": "npm run lint && react-native run-ios --configuration Release",
     "android_release": "npm run lint && npx react-native run-android --variant=release",

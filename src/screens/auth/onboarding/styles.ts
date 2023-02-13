@@ -6,7 +6,13 @@ const black = "#000"
 const whiteAlpha = "#00000025"
 
 const styles = StyleSheet.create({
-  body: { alignItems: "center", padding: 20, width },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 0,
+    paddingVertical: 30,
+    width,
+  },
   btnArea: {
     bottom: 20,
     left: 20,
@@ -30,11 +36,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  flatlistContent: { paddingBottom: 100 },
+  flatlistContent: { paddingBottom: 0 },
   img: {
-    height: width / 2,
+    height: width / 3,
     resizeMode: "contain",
-    width: width / 2,
+    width: width / 3,
   },
   indicator: {
     backgroundColor: white,
@@ -43,9 +49,16 @@ const styles = StyleSheet.create({
     margin: 10,
     width: 10,
   },
-  indicatorView: { bottom: 100, flexDirection: "row", position: "absolute" },
-  lblDes: { color: black, fontWeight: "300" },
-  lblTitle: { color: black, fontSize: 24, fontWeight: "800", marginBottom: 10 },
+  indicatorView: { bottom: "5%", flexDirection: "row", position: "absolute" },
+  lblDes: { color: black, fontWeight: "300", textAlign: "center", textAlignVertical: "center" },
+  lblTitle: {
+    color: black,
+    fontSize: 24,
+    fontWeight: "800",
+    marginBottom: 10,
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
   square: {
     backgroundColor: white,
     borderRadius: 86,
@@ -55,7 +68,7 @@ const styles = StyleSheet.create({
     top: -height * 0.6,
     width: height,
   },
-  topView: { flex: 0.7, justifyContent: "center" },
+  topView: { justifyContent: "center", marginBottom: 20 },
 })
 
 export default styles
