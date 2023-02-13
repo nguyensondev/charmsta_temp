@@ -71,7 +71,7 @@ const SignInScreen = () => {
   }, [signInErr])
 
   useEffect(() => {
-    Settings.setAppID(facebook.appId)
+    if (facebook && facebook.appId) Settings.setAppID(facebook?.appId)
     LoginManager.setLoginBehavior(Platform.OS === "ios" ? "browser" : "web_only")
     GoogleSignin.configure({
       scopes: [], // what API you want to access on behalf of the user, default is email and profile

@@ -122,7 +122,7 @@ const renderItem = ({ item }) => (
     <View style={styles.topView}>
       <Image source={{ uri: item.image }} style={styles.img} />
     </View>
-    <View style={{ flex: 0.3 }}>
+    <View>
       <Text style={styles.lblTitle}>{item.title}</Text>
       <Text style={styles.lblDes}>{item.description}</Text>
     </View>

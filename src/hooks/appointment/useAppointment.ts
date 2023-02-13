@@ -5,7 +5,7 @@ import {
   AppointmentLabelDTO,
   CalendarAgenda,
   CalendarDTO,
-  CheckoutDTO
+  CheckoutDTO,
 } from "@models/backend/response/Appointment"
 import { AppointmentStatusEnum } from "@models/enum/appointment"
 import {
@@ -19,7 +19,7 @@ import {
   editLabelAppointmentApi,
   getAppointmentByIdApi,
   listAppointmentApi,
-  listLabelAppointmentApi
+  listLabelAppointmentApi,
 } from "@services/api/Appontment"
 import { convertAppointmentData, convertToAgendaItems } from "@utils/data"
 import { consoleLog } from "@utils/debug"
@@ -80,7 +80,7 @@ type Output = {
   cancelError: Error
   cancelAppointment: (id: number, reason: string) => void
 
-  //checkout appointment
+  // checkout appointment
   checkoutAppointment: (data: Checkout) => void
   checkoutInfo: Partial<CheckoutDTO>
 }
@@ -343,7 +343,7 @@ export const useAppointment = (): Output => {
     }
   }
 
-  //checkout appointment
+  // checkout appointment
   const [checkoutInfo, setCheckoutInfo] = useState<Partial<CheckoutDTO>>({})
 
   const checkoutAppointment = async (data: Checkout) => {
