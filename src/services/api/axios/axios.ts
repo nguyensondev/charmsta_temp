@@ -2,7 +2,7 @@ import axios from "axios"
 import axiosRetry from "axios-retry"
 
 const axiosInstance = axios.create({
-  baseURL: "https://uzmos-api.softyn.com",
+  baseURL: "http://192.168.1.43:3000",
   withCredentials: true,
   timeout: 30000,
 })

@@ -2,9 +2,9 @@
 import auth from "@react-native-firebase/auth"
 import { useFocusEffect } from "@react-navigation/native"
 import moment from "moment"
-import { Fab, Avatar } from "native-base"
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Alert, Animated, ScrollView, Text, TouchableOpacity, View } from "react-native"
+import { Avatar, Fab } from "native-base"
+import React, { useCallback, useContext, useLayoutEffect, useRef, useState } from "react"
+import { Alert, ScrollView, Text, View } from "react-native"
 import { CalendarContext, DateData } from "react-native-calendars"
 
 import { CustomCalendarList } from "@components/calendar/CustomCalendarList"
@@ -20,7 +20,9 @@ import CalendarZoom from "@components/modal/CalendarZoom"
 import OptionsPicker from "@components/modal/OptionsPicker"
 import { GET_APPOINTMENTS_QUERY } from "@graphql/appointment"
 import useGraphql from "@hooks/graphql"
+import { useStaff } from "@hooks/staff"
 import { CalendarDTO } from "@models/backend/response/Appointment"
+import { StaffDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -30,10 +32,7 @@ import { consoleLog } from "@utils/debug"
 import { UpdateSources } from "react-native-calendars/src/expandableCalendar/commons"
 import { SceneMapNameEnum } from "../selection"
 import RenderEvent from "./components/RenderEvent"
-import { useStaff } from "@hooks/staff"
-import { StaffDTO } from "@models/backend/response/Staff"
 import styleConstructor from "./styles"
-import loading from "@components/loading/Loading"
 
 const HomeScreen = () => {
   const styles = styleConstructor()
@@ -385,13 +384,13 @@ const HomeScreen = () => {
 
   const settingOptions = React.useMemo(
     () => [
-      {
-        label: "Calendar Zoom",
-        function: () => {
-          optionsPickerRef.current?.closeModal()
-          setTimeout(() => calendarZoomRef.current?.openModal(), 400)
-        },
-      },
+      // {
+      //   label: "Calendar Zoom",
+      //   function: () => {
+      //     optionsPickerRef.current?.closeModal()
+      //     setTimeout(() => calendarZoomRef.current?.openModal(), 400)
+      //   },
+      // },
       {
         label: "Calendar View",
         function: () => {

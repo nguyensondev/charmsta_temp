@@ -84,7 +84,6 @@ export function TextFieldCustom(props: TextFieldProps) {
     ...rest
   } = props
   const [hidePassword, setHidePassword] = useState(true)
-
   const containerStyles = [styles.CONTAINER, PRESETS[preset], styleOverride]
   const inputStyles = [styles.INPUT, inputStyleOverride, errorMsg && styles.ERROR]
   const errorMsgStyles = [styles.ERROR, styles.errorMsg]

@@ -1,6 +1,7 @@
 import { Avatar, ButtonCustom, Header, Screen } from "@components/index"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
 import ImagePicker from "@components/modal/ImagePicker"
+import OptionsPicker from "@components/modal/OptionsPicker"
 import { TextFieldCurrency, TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
@@ -17,10 +18,10 @@ import { spacing } from "@theme/spacing"
 import { convertYupErrorInner } from "@utils/yup/yup"
 import { get, isEmpty, isMatch } from "lodash"
 import { FlatList } from "native-base"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { Alert } from "react-native"
 import { Image } from "react-native-image-crop-picker"
 import * as yup from "yup"
-
 const schema = yup.object().shape({
   bookingPage: yup.string().nullable().required(),
   name: yup.string().required(),
@@ -38,7 +39,7 @@ const schema = yup.object().shape({
 const fields = [
   { id: "bookingPage", label: "bookingPage" },
   { id: "name", label: "storeName" },
-  { id: "categories", label: "categories" },
+  { id: "categories", label: "categories", isHasButton: true },
   { id: "email", label: "email" },
   { id: "phoneNumber", label: "phoneNumber" },
   { id: "currency", label: "currency" },
@@ -52,18 +53,30 @@ const fields = [
 const StoreDetailScreen = () => {
   const { storeDetail } =
     useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.storeDetail>>().params
+  const [changedDetail, setChangedDetail] = useState<Partial<StoreDTO>>({})
   const [isDiff, setDiff] = useState(false)
   const [errors, setErrors] = useState<Partial<{ [key: string]: string }>>({})
   const { loading: uploading, imageData, uploadingImage } = useUtility()
   const { updating, updateSuccess, updateStore } = useStoresInfo()
+  const { getCategorySuggestion, categorySuggestions } = useUtility()
   const modalRef = useRef<IRefCustomModal>(null)
+  const categoryModalRef = useRef<IRefCustomModal>(null)
   const detailRef = useRef<Partial<StoreDTO>>({}).current
 
   useEffect(() => {
+    getCategorySuggestion()
+  }, [])
+
+  useEffect(() => {
     if (updateSuccess) {
-      goBack()
+      Alert.alert("Success", "Your store detail has been updated successful")
+      // goBack()
     }
   }, [updateSuccess])
+
+  useLayoutEffect(() => {
+    setDiff(!isMatch(storeDetail, changedDetail))
+  }, [changedDetail])
 
   const onAvatarPress = () => {
     if (modalRef.current) {
@@ -82,7 +95,7 @@ const StoreDetailScreen = () => {
 
   const onSavePress = async () => {
     try {
-      const invokingData = { ...storeDetail, ...detailRef }
+      const invokingData = { ...storeDetail, ...detailRef, ...changedDetail }
       if (imageData?.url) {
         invokingData.image = imageData.url
       }
@@ -115,6 +128,16 @@ const StoreDetailScreen = () => {
       setDiff(!isMatch(storeDetail, detailRef))
     }
 
+    const handleFieldPress = (id: string) => {
+      switch (id) {
+        case "categories":
+          categoryModalRef.current.openModal()
+          break
+        default:
+          break
+      }
+    }
+
     switch (id) {
       case "currency":
         return (
@@ -133,14 +156,28 @@ const StoreDetailScreen = () => {
           <TextFieldCustom
             {...rest}
             errorMsg={errors[id]}
+            buttonClick={() => handleFieldPress(id)}
             alignSelf="center"
             labelTx={`textInput.label.${label}` as TxKeyPath}
             onChangeText={handleFieldChange}
             defaultValue={get(storeDetail, id, "")}
+            value={rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : null}
           />
         )
     }
   }
+
+  const categorySuggestionArr = useMemo(
+    () =>
+      categorySuggestions.map((item) => ({
+        label: item.value,
+        function: () => {
+          setChangedDetail((prev) => ({ ...prev, categories: item.value }))
+          categoryModalRef.current?.closeModal()
+        },
+      })),
+    [categorySuggestions],
+  )
 
   return (
     <Screen>
@@ -162,6 +199,16 @@ const StoreDetailScreen = () => {
         <Text tx="button.save" style={{ color: color.palette.white }} />
       </ButtonCustom>
       <CustomModal ref={modalRef} childView={<ImagePicker onImageSelect={onImageChange} />} />
+      <CustomModal
+        ref={categoryModalRef}
+        childView={
+          <OptionsPicker
+            options={categorySuggestionArr}
+            onClose={categoryModalRef.current?.closeModal}
+            scrollable
+          />
+        }
+      />
     </Screen>
   )
 }

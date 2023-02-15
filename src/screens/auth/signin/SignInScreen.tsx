@@ -3,7 +3,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { isEmpty, isNull } from "lodash"
 import { Box } from "native-base"
-import React, { useEffect, useLayoutEffect, useState } from "react"
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Alert, Linking, Platform, TouchableOpacity, View } from "react-native"
 import { AccessToken, LoginManager, Settings } from "react-native-fbsdk-next"
 import * as yup from "yup"
@@ -13,6 +13,7 @@ import Text from "@components/text"
 import { TextFieldCustom } from "@components/text-field"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { facebook, googleServices } from "@config/index"
+import { ILoadingContext, LoadingContext } from "@contexts/loadingContext"
 import { useAuth } from "@hooks/auth"
 import { AUTH_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/root-store"
@@ -49,6 +50,15 @@ const SignInScreen = () => {
   } = useAuth()
   const { userStore } = useStores()
   const { saveUser } = userStore
+  const loadingCtx = useContext<ILoadingContext>(LoadingContext)
+
+  useLayoutEffect(() => {
+    if (loading) {
+      loadingCtx.open()
+    } else {
+      loadingCtx.close()
+    }
+  }, [loading])
 
   useLayoutEffect(() => {
     if (!isEmpty(signInErr)) {
@@ -222,7 +232,7 @@ const SignInScreen = () => {
             <Text style={styles.textUnderline}>Sign Up</Text>
           </TouchableOpacity>
         </Box>
-        <ButtonCustom isLoading={loading} onPress={onSignIn} marginY={spacing[2]}>
+        <ButtonCustom onPress={onSignIn} marginY={spacing[2]}>
           Sign in
         </ButtonCustom>
       </>
