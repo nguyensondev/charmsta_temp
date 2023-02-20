@@ -217,8 +217,8 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
             {...restProps}
             key={id}
             buttonClick={() => handleOnPress(id)}
+            placeholderTextColor="black"
             placeholder={placeholder}
-            placeholderTextColor="yellow"
             inputStyle={{ color: color.palette.black }}
             onChangeText={(text) => handleFieldChange(id, text)}
             value={storeData[id]}

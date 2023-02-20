@@ -108,7 +108,7 @@ export function TextFieldCustom(props: TextFieldProps) {
               ref={forwardRef}
               // isDisabled={rightElement === undefined}
               placeholder={actualPlaceholder}
-              placeholderTextColor={color.palette.lighterGrey}
+              placeholderTextColor={color.palette.black}
               underlineColorAndroid={color.transparent}
               secureTextEntry={isPassword ? hidePassword : false}
               rightElement={rightElement || null}

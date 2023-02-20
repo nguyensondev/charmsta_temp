@@ -3,7 +3,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { isEmpty, isNull } from "lodash"
 import { Box } from "native-base"
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Alert, Linking, Platform, TouchableOpacity, View } from "react-native"
 import { AccessToken, LoginManager, Settings } from "react-native-fbsdk-next"
 import * as yup from "yup"
@@ -18,6 +18,7 @@ import { useAuth } from "@hooks/auth"
 import { AUTH_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/root-store"
 import { goBack, navigate } from "@navigators/navigation-utilities"
+import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { consoleLog } from "@utils/debug"
@@ -48,9 +49,20 @@ const SignInScreen = () => {
     registerData,
     errors: { signInErr },
   } = useAuth()
-  const { userStore } = useStores()
-  const { saveUser } = userStore
+  const {
+    userStore: { saveUser, eraseUser },
+    authStore: { resetAuth, Auth },
+  } = useStores()
   const loadingCtx = useContext<ILoadingContext>(LoadingContext)
+
+  useFocusEffect(
+    useCallback(() => {
+      if (Auth?.token) {
+        resetAuth()
+        eraseUser()
+      }
+    }, []),
+  )
 
   useLayoutEffect(() => {
     if (loading) {
@@ -215,11 +227,13 @@ const SignInScreen = () => {
       <>
         <TextFieldCustom
           onChangeText={(value) => handleTextChange("email", value)}
+          placeholderTextColor="black"
           placeholder="Email"
           errorMsg={errors?.email}
         />
         <TextFieldCustom
           onChangeText={(value) => handleTextChange("password", value)}
+          placeholderTextColor="black"
           placeholder="Password"
           isPassword
           errorMsg={errors?.password}

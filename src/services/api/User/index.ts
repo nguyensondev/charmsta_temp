@@ -4,7 +4,7 @@ import api from "../axios/api-config"
 
 const USER_PROFILE = "/users/me"
 const UPDATE_USER_PROFILE = "/users/me"
-const DELETE_USER_PROFILE = "/users/"
+const DELETE_USER_PROFILE = "/users"
 
 export const getUserProfileApi = () => api<User>(USER_PROFILE, "GET")
 export const updateUserProfileApi = (data: UpdateUser) =>
