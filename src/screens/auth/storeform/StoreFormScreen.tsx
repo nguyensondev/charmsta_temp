@@ -163,7 +163,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
       } else {
         const { company } = registerDataParam.userInfo
         const { token } = authStore.Auth
-        createStore(storeData)
+        // createStore(storeData)
         updateCompany(storeData, company.id, token)
       }
     } catch (err) {
