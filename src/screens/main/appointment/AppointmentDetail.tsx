@@ -187,7 +187,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
             }
           }}
           w="48%"
-          h={SELECT_HEIGHT}
+          // h={SELECT_HEIGHT}
           backgroundColor={color.palette.white}
           borderWidth={1}
         >
@@ -195,7 +195,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
         </ButtonCustom>
         <ButtonCustom
           w="48%"
-          h={SELECT_HEIGHT}
+          // h={SELECT_HEIGHT}
           onPress={() => {
             navigationRef.dispatch(
               StackActions.replace(MAIN_SCREENS.checkout, {

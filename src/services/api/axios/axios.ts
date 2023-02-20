@@ -1,8 +1,9 @@
+import { api } from "@config/index"
 import axios from "axios"
 import axiosRetry from "axios-retry"
 
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.1.43:3000",
+  baseURL: api.url,
   withCredentials: true,
   timeout: 30000,
 })

@@ -3,7 +3,6 @@ import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SELECT_HEIGHT } from "@config/constants"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
 import { UpdateStore } from "@models/backend/request/Store"
 import { RegisterDTO } from "@models/backend/response/Auth"
@@ -175,8 +174,9 @@ const CompanyHoursScreen = ({ route }) => {
         disabled={loadingCompanyHour}
         isLoading={loadingCompanyHour}
         w="90%"
-        h={SELECT_HEIGHT}
-        marginBottom={spacing[2]}
+        // h={SELECT_HEIGHT}
+        // paddingY={spacing[2]}
+        marginBottom={spacing[1]}
         onPress={save}
       >
         <Text tx="common.save" style={{ color: color.palette.white }} />
