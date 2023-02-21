@@ -12,7 +12,7 @@ import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator,
+  IRefSettingDetailNavigator
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -47,7 +47,7 @@ const SettingsScreen = () => {
   const { logout } = useAuth()
   const { isTablet } = useIsTablet()
   const {
-    currentStoreStore: { CurrentStore: storeData },
+    currentStoreStore: { CurrentStore: storeData, saveCurrentStore },
   } = useStores()
 
   const detailNavigatorRef = useRef<IRefSettingDetailNavigator>()
@@ -132,19 +132,20 @@ const SettingsScreen = () => {
 
     const debounceUpdate = useCallback(
       debounce((value) => {
-        updateStore(storeData.id, {
-          ...storeData,
-          appointmentSetting: {
-            ...storeData.appointmentSetting,
-            [id]: value,
-          },
-        })
+        updateStore(storeData.id, storeData)
       }, 1000),
       [],
     )
 
-    const toggleSwtich = (value: boolean) => {
+    const toggleSwitch = (value: boolean) => {
       setOn(value)
+      saveCurrentStore({
+        ...storeData,
+        appointmentSetting: {
+          ...storeData.appointmentSetting,
+          [id]: value,
+        },
+      })
       return debounceUpdate(value)
     }
 
@@ -161,7 +162,7 @@ const SettingsScreen = () => {
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={"#fff"}
             ios_backgroundColor="#fff"
-            onValueChange={(value) => toggleSwtich(value)}
+            onValueChange={(value) => toggleSwitch(value)}
             value={isOn}
           />
         </View>

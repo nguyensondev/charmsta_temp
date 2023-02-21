@@ -33,7 +33,6 @@ const WeekStartDayScreen = (props: IWeekStartDayScreenProps) => {
       ...storeDetail,
       appointmentSetting: { ...storeDetail.appointmentSetting, weekStartDay: selectedDate },
     })
-    goBack()
   }
 
   const renderItem = useCallback(

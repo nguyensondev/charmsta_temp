@@ -38,7 +38,6 @@ const AppointmentSlotScreen = (props: IAppointmentSlotScreenProps) => {
       ...storeDetail,
       appointmentSetting: { ...storeDetail.appointmentSetting, appointmentSlots: minutes },
     })
-    goBack()
   }
 
   return (

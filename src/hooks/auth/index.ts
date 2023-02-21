@@ -11,7 +11,7 @@ import {
   loginApi,
   registerApi,
   signUpEmailApi,
-  updateCompanyApi
+  updateCompanyApi,
 } from "@services/api/Auth"
 import { getDeviceInfo } from "@utils/deviceInfo"
 import { AxiosResponse } from "axios"
