@@ -34,7 +34,7 @@ const CancellationPolicyScreen = (props: ICancellationPolicyScreenProps) => {
 
   const { updateStore } = useStoresInfo()
   const { storeDetail } = route.params
-  const [selectedTime, setSelectedTime] = useState(storeDetail?.cancelTime || null)
+  const [selectedTime, setSelectedTime] = useState(storeDetail?.cancelTime)
 
   const renderItem = ({ item }) => {
     const itemPress = () => {

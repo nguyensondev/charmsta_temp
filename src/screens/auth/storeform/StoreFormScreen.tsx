@@ -1,4 +1,5 @@
 import { ButtonCustom } from "@components/button/buttonCustom"
+import { Screen } from "@components/index"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
 import OptionsPicker from "@components/modal/OptionsPicker"
 import { TextFieldCustom } from "@components/text-field"
@@ -205,41 +206,43 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
   )
 
   return (
-    <ScrollView
-      flex={1}
-      backgroundColor={color.palette.white}
-      paddingX={spacing[2]}
-      showsVerticalScrollIndicator={false}
-    >
-      {formFields.map(
-        ({ id, placeholder, ...restProps }: { id: keyof StoreByIdDTO; placeholder: string }) => (
-          <TextFieldCustom
-            {...restProps}
-            key={id}
-            buttonClick={() => handleOnPress(id)}
-            placeholderTextColor="black"
-            placeholder={placeholder}
-            inputStyle={{ color: color.palette.black }}
-            onChangeText={(text) => handleFieldChange(id, text)}
-            value={storeData[id]}
-            errorMsg={errors[id]}
-          />
-        ),
-      )}
-      <ButtonCustom isLoading={loading} onPress={onSignUp}>
-        Sign Up
-      </ButtonCustom>
-      <CustomModal
-        ref={modalRef}
-        childView={
-          <OptionsPicker
-            options={categorySuggestionArr}
-            onClose={modalRef.current?.closeModal}
-            scrollable
-          />
-        }
-      />
-    </ScrollView>
+    <Screen>
+      <ScrollView
+        flex={1}
+        backgroundColor={color.palette.white}
+        paddingX={spacing[2]}
+        showsVerticalScrollIndicator={false}
+      >
+        {formFields.map(
+          ({ id, placeholder, ...restProps }: { id: keyof StoreByIdDTO; placeholder: string }) => (
+            <TextFieldCustom
+              {...restProps}
+              key={id}
+              buttonClick={() => handleOnPress(id)}
+              placeholderTextColor="black"
+              placeholder={placeholder}
+              inputStyle={{ color: color.palette.black }}
+              onChangeText={(text) => handleFieldChange(id, text)}
+              value={storeData[id]}
+              errorMsg={errors[id]}
+            />
+          ),
+        )}
+        <ButtonCustom isLoading={loading} onPress={onSignUp}>
+          Sign Up
+        </ButtonCustom>
+        <CustomModal
+          ref={modalRef}
+          childView={
+            <OptionsPicker
+              options={categorySuggestionArr}
+              onClose={modalRef.current?.closeModal}
+              scrollable
+            />
+          }
+        />
+      </ScrollView>
+    </Screen>
   )
 }
 
