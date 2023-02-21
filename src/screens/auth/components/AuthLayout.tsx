@@ -1,4 +1,5 @@
 import { AppIcon } from "@assets/"
+import { Screen } from "@components/index"
 import { ScrollView, View } from "native-base"
 import React from "react"
 import { Keyboard, TouchableWithoutFeedback, useWindowDimensions } from "react-native"
@@ -13,7 +14,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <View style={styles.appLogoContainer}>
         <FastImage source={AppIcon.imageSource} style={styles.appLogo} />
       </View>
@@ -26,7 +27,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           {children}
         </ScrollView>
       </TouchableWithoutFeedback>
-    </View>
+    </Screen>
   )
 }
 
