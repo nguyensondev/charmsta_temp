@@ -2,7 +2,7 @@ import { ButtonCustom, Header, Screen } from "@components/index"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
 import OptionsPicker from "@components/modal/OptionsPicker"
 import Text from "@components/text/text"
-import { CALENDAR_FORMAT, SELECT_HEIGHT, TIME_24H_FORMAT } from "@config/constants"
+import { CALENDAR_FORMAT, TIME_24H_FORMAT } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { TxKeyPath } from "@i18n/i18n"
 import { translate } from "@i18n/translate"
@@ -23,7 +23,8 @@ import { nativeBaseStyle, styles } from "./styles"
 
 const defaultSelectProps = {
   dropdownCloseIcon: <View />,
-  height: SELECT_HEIGHT,
+  // height: SELECT_HEIGHT,
+  py: spacing[1],
   mt: 1,
   borderWidth: 0,
   borderBottomWidth: 1,
@@ -73,7 +74,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
           >
             <Select.Item
               key={customer?.id}
-              label={customer?.firstName + customer?.lastName}
+              label={`${customer?.firstName || ""} ${customer?.lastName || ""}`}
               value={customer?.id?.toString()}
             />
           </Select>

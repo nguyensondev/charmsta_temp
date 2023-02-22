@@ -19,7 +19,7 @@ const RenderEvent = ({ event }: RenderEventProps) => {
   ].flat(1)
   return (
     <View borderLeftWidth={5} borderColor={label?.color || "transparent"} flex={1} pl={"1"}>
-      <Text fontWeight={"bold"} text={`${customer.firstName} ${customer.lastName}`} />
+      <Text fontWeight={"bold"} text={`${customer?.firstName || ""} ${customer?.lastName || ""}`} />
       <Text>
         {moment(date).format(TIME_24H_FORMAT)} -{" "}
         {moment(date).add({ minutes: duration }).format(TIME_24H_FORMAT)}

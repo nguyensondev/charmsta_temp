@@ -4,20 +4,17 @@ import _ from "lodash"
 import moment, { Moment } from "moment"
 import React, { ReactNode } from "react"
 import {
-  Image,
-  TouchableOpacity,
-  View,
+  Image, View,
   ViewStyle,
   VirtualizedList,
-  VirtualizedListProps,
-  Text,
+  VirtualizedListProps
 } from "react-native"
 
 import styleConstructor from "./style"
 
 import { CalendarDTO } from "@models/backend/response/Appointment"
-import DayView from "./DayView"
 import CalendarHeader from "@screens/main/calendar/CalendarHeader"
+import DayView from "./DayView"
 
 interface Props {
   calendarView: string

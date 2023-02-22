@@ -45,7 +45,10 @@ const NewDiscountScreen = (props: NewDiscountScreenProps) => {
   const handleFieldChange = (key: keyof DiscountDTO, value?: string) => {
     switch (key) {
       case "percentage":
-        setAmountType((prev) => !prev)
+        setAmountType((prev) => {
+          newDiscountRef.percentage = !prev
+          return !prev
+        })
         break
       case "amount":
         newDiscountRef.amount = parseFloat(value)

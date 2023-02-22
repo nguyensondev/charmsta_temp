@@ -50,7 +50,7 @@ const AddCustomer = (props: AddCustomerProps) => {
           borderBottomWidth={1}
           borderColor={color.palette.lighterGrey}
         >
-          <Text text={item.firstName + item.lastName} />
+          <Text text={`${item?.firstName || ""} ${item?.lastName || ""}`} />
           {customer.id === item.id && <VectorIcon iconSet="ant" name="check" />}
         </Box>
       </TouchableOpacity>

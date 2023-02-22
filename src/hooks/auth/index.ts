@@ -11,7 +11,7 @@ import {
   loginApi,
   registerApi,
   signUpEmailApi,
-  updateCompanyApi,
+  updateCompanyApi
 } from "@services/api/Auth"
 import { getDeviceInfo } from "@utils/deviceInfo"
 import { AxiosResponse } from "axios"
@@ -155,10 +155,10 @@ export const useAuth = (): Output => {
       const { data, code } = response
       const { userInfo, accessToken } = data
       // saveUser(userInfo)
-      setLoading(false)
       setRegisterData({ userInfo })
-      saveAuth(accessToken.token, accessToken.refreshToken)
       setSocialContinueStatusCode(code)
+      setLoading(false)
+      saveAuth(accessToken.token, accessToken.refreshToken)
     } catch (err) {
       setSocialContinueStatusCode(err.statusCode)
       setLoading(false)
