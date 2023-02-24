@@ -341,6 +341,7 @@ const HomeScreen = () => {
             events={listAppointmnetTemp}
             width={SCREEN_WIDTH}
             initDate={currentDate.format(DATE_FORMAT).toString()}
+            setCurrentDate={setCurrentDate}
             scrollToFirst
             upperCaseHeader
             uppercase

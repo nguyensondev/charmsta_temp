@@ -39,6 +39,7 @@ interface Props {
   virtualizedListProps?: VirtualizedListProps<any>
   events?: any[]
   openCalendar: () => void
+  setCurrentDate: (date: Moment) => void
 }
 interface State {
   date: Moment
@@ -231,23 +232,19 @@ export default class EventCalendar extends React.Component<Props, State> {
           pagingEnabled
           renderItem={this._renderItem.bind(this)}
           style={{ width }}
-          onScroll={({ nativeEvent }) => {
-            // console.log("go to ===================")
+          onMomentumScrollBegin={({ nativeEvent }) => {
+            const offsetX = nativeEvent.contentOffset.x
+            const width = nativeEvent.layoutMeasurement.width
+            const date = this.state.date
+            const amount = this.props.calendarView === "DAY" ? 1 : this.props.calendarView === "3_DAYS" ? 3 : 7
+            let newDate = date.clone()
+            if (offsetX <= width) {
+              newDate =  moment(newDate).subtract(amount, 'day')
+            } else {
+              newDate =  moment(newDate).add(amount, 'day')
+            }
+            this.props.setCurrentDate(newDate)
           }}
-          // onScrollToTop={(event) => {
-          //   console.log("go to ===================")
-          //   console.log(this.props.initDate)
-          //   console.log(this.props.size)
-          //   const index = parseInt((event.nativeEvent.contentOffset.x / width).toString())
-          //   const date = moment(this.props.initDate).add(
-          //     this.props.size,
-          //     "days",
-          //   )
-          //   if (this.props.dateChanged) {
-          //     this.props.dateChanged(date.format("YYYY-MM-DD"))
-          //   }
-          //   this.setState({ index, date })
-          // }}
 
           {...virtualizedListProps}
         />
