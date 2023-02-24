@@ -1,12 +1,12 @@
+import MultipleSelectList from "@components/multiple-select-list/MultipleSelectList"
+import { useCustomer } from "@hooks/customer"
+import { useStaff } from "@hooks/staff"
+import { CustomerDTO } from "@models/backend/response/Customer"
+import { StaffDTO } from "@models/backend/response/Staff"
+import { useFocusEffect } from "@react-navigation/native"
+import styleConstructor from "@screens/main/calendar/styles"
 import React, { useCallback, useState } from "react"
 import { ScrollView, View } from "react-native"
-import styleConstructor from "@screens/main/calendar/styles"
-import MultipleSelectList from "@components/multiple-select-list/MultipleSelectList"
-import { useFocusEffect } from "@react-navigation/native"
-import { useStaff } from "@hooks/staff"
-import { StaffDTO } from "@models/backend/response/Staff"
-import { useCustomer } from "@hooks/customer"
-import { CustomerDTO } from "@models/backend/response/Customer"
 
 interface FilterAppointmentProps {}
 
@@ -34,6 +34,8 @@ const FilterAppointment = (props: FilterAppointmentProps) => {
       return { key: it.id, value: it.firstName + " " + it.lastName }
     })
   }
+
+  console.log("alo3", selected)
   useFocusEffect(
     useCallback(() => {
       getStaff(0, 100)

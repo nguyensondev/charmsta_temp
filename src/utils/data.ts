@@ -82,7 +82,7 @@ export const totalAppointmentPrice = (services: ServiceDTO[], packages: PackageD
 export const totalAppointmentTax = (services: ServiceDTO[] = [], packages: PackageDTO[] = []) =>
   isEmpty(services) && isEmpty(packages)
     ? 0
-    : [...services.map(({ tax, price }) => ((tax?.rate ?? 0) * price) / 100)].reduce(
+    : [...services.map(({ tax, price }) => ((tax?.rate ?? 0) * price) / 100), 0].reduce(
         (prev, curr) => prev + curr,
       )
 

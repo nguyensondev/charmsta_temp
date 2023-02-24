@@ -354,7 +354,7 @@ const EditAppointmentScreen = () => {
                   return (
                     <Select.Item
                       key={element.id}
-                      label={element.firstName + element.lastName}
+                      label={`${element?.firstName || ""} ${element?.lastName || ""}`}
                       value={element.id.toString()}
                     />
                   )

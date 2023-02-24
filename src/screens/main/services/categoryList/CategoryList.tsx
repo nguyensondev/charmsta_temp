@@ -11,6 +11,7 @@ import { MAIN_SCREENS } from "@models/enum/screensName"
 import { navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
+import { debounce } from "lodash"
 import { Fab } from "native-base"
 import * as React from "react"
 import { useCallback } from "react"
@@ -44,11 +45,12 @@ const CategoryListScreen = () => {
     getCatList("")
   }
 
-  const searchAction = () => {
-    if (ref && ref.current) {
-      getCatList(ref.current.searchPhrase.trim())
-    }
-  }
+  const searchAction = debounce((text: string) => {
+    // if (ref && ref.current) {
+
+    getCatList(text.trim())
+    // }
+  }, 1000)
 
   const goDetail = (detail: CategoryDTO) => {
     navigate(MAIN_SCREENS.categoryDetail, { detail, editable: false })
@@ -109,7 +111,7 @@ const CategoryListScreen = () => {
   return (
     <Screen style={styles.body}>
       <Header headerTx="screens.headerTitle.categoryList" leftIcon="back" />
-      <SearchBar searchAction={searchAction} cancelAction={cancelAction} ref={ref} />
+      <SearchBar onChangeText={searchAction} cancelAction={cancelAction} ref={ref} />
       {renderCatList()}
       {renderNewCat()}
     </Screen>

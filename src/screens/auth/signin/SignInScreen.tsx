@@ -2,7 +2,7 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { isEmpty, isNull } from "lodash"
-import { Box } from "native-base"
+import { Box, useToast } from "native-base"
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Alert, Linking, Platform, TouchableOpacity, View } from "react-native"
 import { AccessToken, LoginManager, Settings } from "react-native-fbsdk-next"
@@ -39,6 +39,7 @@ const SignInScreen = () => {
     email: "",
     password: "",
   })
+  const { show } = useToast()
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
   const {
     login,
@@ -116,7 +117,14 @@ const SignInScreen = () => {
           if (registerData.userInfo.company.name === "softyn72") {
             navigate(AUTH_SCREENS.storeForm, { providerName: "social", registerData })
           } else {
-            alert("Login successful")
+            // alert("Login successful")
+            show({
+              render: () => (
+                <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+                  <Text text="Login successful" />
+                </Box>
+              ),
+            })
             saveUser(registerData.userInfo)
           }
           return
