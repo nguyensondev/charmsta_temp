@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios"
 import { useState } from "react"
 
 interface Output {
-  payment: (data: Payment) => {}
+  payment: (data: Payment) => void
   loading: boolean
   error: any
   data: Partial<Payment>

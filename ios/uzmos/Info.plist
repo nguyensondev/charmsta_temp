@@ -47,10 +47,14 @@
 	<string>b0ff029cf9ee5a199ca621868410ff75</string>
 	<key>FacebookDisplayName</key>
 	<string>Uzmos</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>

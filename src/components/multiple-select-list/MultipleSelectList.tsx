@@ -11,7 +11,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native"
 
 interface MultipleSelectListProps {
