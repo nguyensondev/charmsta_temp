@@ -12,7 +12,7 @@ import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator
+  IRefSettingDetailNavigator,
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -126,27 +126,30 @@ const SettingsScreen = () => {
     )
   }
 
-  const SwitchField = (props: { value: boolean; id: string }) => {
+  const debounceUpdate = useCallback(
+    debounce(() => {
+      updateStore(storeData.id, storeData)
+    }, 1000),
+    [],
+  )
+
+  const SwitchField = (props: { value?: boolean; id: string }) => {
     const { value, id } = props
     const [isOn, setOn] = useState(value)
 
-    const debounceUpdate = useCallback(
-      debounce((value) => {
-        updateStore(storeData.id, storeData)
-      }, 1000),
-      [],
-    )
-
     const toggleSwitch = (value: boolean) => {
-      setOn(value)
-      saveCurrentStore({
-        ...storeData,
-        appointmentSetting: {
-          ...storeData.appointmentSetting,
-          [id]: value,
-        },
+      setOn(() => {
+        const updatedStoreData = {
+          ...storeData,
+          appointmentSetting: {
+            ...storeData.appointmentSetting,
+            [id]: value,
+          },
+        }
+        saveCurrentStore(updatedStoreData)
+        debounceUpdate()
+        return value
       })
-      return debounceUpdate(value)
     }
 
     return (
@@ -169,6 +172,15 @@ const SettingsScreen = () => {
       </View>
     )
   }
+
+  const {
+    appointmentSlots,
+    weekStartDay,
+    customServiceCost,
+    customServiceDuration,
+    offHoursBooking,
+    doubleBooking,
+  } = storeData.appointmentSetting
 
   const RenderContent2 = useCallback(() => {
     return (
@@ -233,7 +245,15 @@ const SettingsScreen = () => {
         </TouchableOpacity>
       </View>
     )
-  }, [storeData.appointmentSetting.appointmentSlots, storeData.appointmentSetting.weekStartDay])
+  }, [
+    appointmentSlots,
+    weekStartDay,
+    customServiceCost,
+    customServiceDuration,
+    offHoursBooking,
+    doubleBooking,
+  ])
+
   return (
     <Screen>
       <RenderHeader />

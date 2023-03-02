@@ -14,6 +14,7 @@ import { StaffByServiceDTO, StaffDTO } from "@models/backend/response/Staff"
 import { TaxDTO } from "@models/backend/response/Tax"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
+import FilterAppointment from "@screens/main/calendar/FilterAppointment"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { get, isEmpty, isNumber } from "lodash"
@@ -26,7 +27,6 @@ import AddStaffByService from "./AddStaffByService"
 import AddStaffs from "./AddStaffs"
 import AddTax from "./AddTax"
 import AddTimeSlot from "./AddTimeSlot"
-import FilterAppointment from "@screens/main/calendar/FilterAppointment"
 
 interface SelectionScreenProps {}
 
@@ -77,7 +77,7 @@ const sceneMapList: {
     {
       headerTitle: "filterAppointment",
       screen: <FilterAppointment />,
-      key: "filterAppointment",
+      key: "staffIds",
     },
   ],
 }
@@ -89,7 +89,7 @@ interface IAdditionSelect {
   startTime?: string
   services?: { services?: ServiceDTO[]; packages?: PackageDTO[] }
   tax?: TaxDTO
-  filterAppointment?: any
+  staffIds?: number[]
 }
 interface IAdditionSelectContext {
   additionSelect: IAdditionSelect
@@ -142,6 +142,8 @@ const SelectionScreen = (props: SelectionScreenProps) => {
       },
     ])
   }
+
+  console.log("alonavigationRoutes", navigationRoutes)
 
   const handleButtonPress = () => {
     const currentMapList: ISceneProperties[] = sceneMapList[actionName]
@@ -226,28 +228,21 @@ const SelectionScreen = (props: SelectionScreenProps) => {
           } as MainNavigatorParamList[MAIN_SCREENS.editService])
         }
         case SceneMapNameEnum.filterAppointment: {
-          const previousIndex = navigationRoutes.findIndex(
-            ({ name }) => name === MAIN_SCREENS.editAppointment,
+          const currentIndex = navigationRoutes.findIndex(
+            ({ name }) => name === MAIN_SCREENS.additionSelect,
           )
-
-          const newRoutes = navigationRoutes.map(({ name, params }, index) => ({
-            name,
-            params:
-              index === previousIndex
-                ? ({
-                    ...editParams,
-                    detail: {
-                      ...editParams.detail,
-                      ...additionSelect.services,
-                      duration: newDuration,
-                    },
-                  } as MainNavigatorParamList[MAIN_SCREENS.editAppointment])
-                : params,
-          }))
-          newRoutes.pop()
+          const newRoutes = navigationRoutes.map(({ name, params, key }, index) =>
+            index === currentIndex - 1
+              ? {
+                  key,
+                  name,
+                  params: { ...params, fitler: additionSelect },
+                }
+              : { key, name, params },
+          )
           navigationRef.reset({
-            index: previousIndex,
-            routes: newRoutes,
+            index: currentIndex - 1,
+            routes: newRoutes.slice(0, currentIndex),
           })
           break
         }

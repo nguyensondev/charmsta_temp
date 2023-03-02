@@ -17,7 +17,7 @@ import _, { get, isEmpty } from "lodash"
 
 import { convertMinsValue } from "@utils/time"
 import moment from "moment-timezone"
-import { View } from "native-base"
+import { ScrollView, View } from "native-base"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Switch, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import DatePicker from "react-native-date-picker"
@@ -220,11 +220,11 @@ const CompanyHoursScreen = ({ route }) => {
     <Screen>
       <RenderHeader />
       <RenderTimeZone />
-      <View style={styles.childViewTime}>
+      <ScrollView style={styles.childViewTime}>
         {data.map((element: OpenHoursDTO) => {
           return <RenderItem key={element.id} item={element} />
         })}
-      </View>
+      </ScrollView>
       <RenderFooter />
       <DatePicker
         date={new Date()}

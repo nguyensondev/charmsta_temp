@@ -305,7 +305,7 @@ const EditAppointmentScreen = () => {
       if (date && date.timestamp) {
         setAppointment((prev) => ({
           ...prev,
-          duration: 0,
+          // duration: 0,
           start: moment(date.timestamp).toISOString(),
         }))
         setStartTime("")

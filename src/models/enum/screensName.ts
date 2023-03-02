@@ -81,3 +81,9 @@ export enum AUTH_SCREENS {
 export enum COMMON_SCREENS {
   searchLocation = "searchLocation",
 }
+
+export enum TAB_NAME {
+  main = "main",
+  notification = "notification",
+  account = "account",
+}

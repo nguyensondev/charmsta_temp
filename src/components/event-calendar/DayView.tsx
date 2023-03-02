@@ -12,7 +12,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native"
 import populateEvents from "./Packer"
 

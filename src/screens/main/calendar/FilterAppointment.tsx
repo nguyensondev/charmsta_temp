@@ -5,8 +5,9 @@ import { CustomerDTO } from "@models/backend/response/Customer"
 import { StaffDTO } from "@models/backend/response/Staff"
 import { useFocusEffect } from "@react-navigation/native"
 import styleConstructor from "@screens/main/calendar/styles"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useContext, useLayoutEffect, useState } from "react"
 import { ScrollView, View } from "react-native"
+import { AdditionSelectContext } from "../selection"
 
 interface FilterAppointmentProps {}
 
@@ -20,7 +21,11 @@ const statusData = [
 ]
 const FilterAppointment = (props: FilterAppointmentProps) => {
   const [statuses, setStatuses] = useState([])
-  const [selected, setSelected] = useState("")
+  const [selected, setSelected] = useState([])
+
+  const additionSelectCtx = useContext(AdditionSelectContext)
+  const { saveAdditionSelect, additionSelect, prevSelected } = additionSelectCtx
+
   const styles = styleConstructor()
   const { getStaff, staffs } = useStaff()
   const { getCustomers, customers } = useCustomer()
@@ -35,7 +40,10 @@ const FilterAppointment = (props: FilterAppointmentProps) => {
     })
   }
 
-  console.log("alo3", selected)
+  useLayoutEffect(() => {
+    saveAdditionSelect({ staffIds: selected })
+  }, [selected])
+
   useFocusEffect(
     useCallback(() => {
       getStaff(0, 100)

@@ -23,12 +23,14 @@ import useGraphql from "@hooks/graphql"
 import { useStaff } from "@hooks/staff"
 import { CalendarDTO } from "@models/backend/response/Appointment"
 import { StaffDTO } from "@models/backend/response/Staff"
-import { MAIN_SCREENS } from "@models/enum/screensName"
+import { MAIN_SCREENS, TAB_NAME } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
 import { navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
+import { getTabParams } from "@utils/data"
 import { consoleLog } from "@utils/debug"
+import { isEmpty } from "lodash"
 import { UpdateSources } from "react-native-calendars/src/expandableCalendar/commons"
 import { SceneMapNameEnum } from "../selection"
 import RenderEvent from "./components/RenderEvent"
@@ -36,13 +38,15 @@ import styleConstructor from "./styles"
 
 const HomeScreen = () => {
   const styles = styleConstructor()
+  const params = getTabParams(TAB_NAME.main) as Partial<{ fitler: { staffIds: number[] } }>
+
+  const { fitler } = params
   const modalRef = useRef<IRefCustomModal>(null)
   const contentCalendarRef = useRef(null)
   const firstTimeStaffRef = React.useRef(true)
-  const calendarViewRef = useRef<IRefCustomModal>(null)
+  const calendarViewRef = useRef<IRefrCustomModal>(null)
   const calendarZoomRef = useRef<IRefCustomModal>(null)
   const optionsPickerRef = useRef<IRefCustomModal>(null)
-  const filterOptionsRef = useRef<IRefCustomModal>(null)
   const rnCalendarCtx = useContext(CalendarContext)
   const { setDate, date } = rnCalendarCtx
   const { authStore, currentStoreStore, userStore } = useStores()
@@ -233,6 +237,7 @@ const HomeScreen = () => {
           {/* </TouchableOpacity> */}
           <View style={styles.listStaff}>
             {staffs.map((value: StaffDTO, index: number) => {
+              if (!fitler?.staffIds.includes(value.id) && !isEmpty(fitler?.staffIds)) return null
               return (
                 <View style={[styles.staff, index === 1 ? styles.middleStaff : {}]} key={value.id}>
                   <Avatar source={{ uri: value.avatar }} size={12} style={{ marginRight: 6 }} />
@@ -332,7 +337,7 @@ const HomeScreen = () => {
           <EventCalendar
             calendarView={calendarView}
             ref={contentCalendarRef}
-            renderStaff={() => _renderStaffs()}
+            // renderStaff={() => _renderStaffs()}
             renderEvent={(event) => <RenderEvent event={event} />}
             eventTapped={_eventTapped}
             dateChanged={_dateChanged}
@@ -378,10 +383,6 @@ const HomeScreen = () => {
       />
     )
   }, [])
-
-  // const filterOptions = React.meuseMemomo(
-  //
-  // )
 
   const settingOptions = React.useMemo(
     () => [

@@ -1,5 +1,6 @@
 import { SignUpEmail } from "@models/backend/request/Auth"
-import { AppointmentLabelDTO, CalendarDTO } from "@models/backend/response/Appointment"
+import { Payment } from "@models/backend/request/Payment"
+import { AppointmentLabelDTO, CalendarDTO, CheckoutDTO } from "@models/backend/response/Appointment"
 import { RegisterDTO } from "@models/backend/response/Auth"
 import { CustomerDTO } from "@models/backend/response/Customer"
 import { DiscountDTO } from "@models/backend/response/Discount"
@@ -74,10 +75,10 @@ export type MainNavigatorParamList = {
   [MAIN_SCREENS.editAccount]: { newAddress?: string }
   [MAIN_SCREENS.accountProfile]: undefined
   [MAIN_SCREENS.changePassword]: undefined
-  [MAIN_SCREENS.paymentType]: { appointment: CalendarDTO }
-  [MAIN_SCREENS.cashPayment]: { appointment: CalendarDTO }
-  [MAIN_SCREENS.cardPayment]: { appointment: CalendarDTO }
-  [MAIN_SCREENS.otherPayment]: { appointment: CalendarDTO }
+  [MAIN_SCREENS.paymentType]: { checkoutInfo: CheckoutDTO }
+  [MAIN_SCREENS.cashPayment]: Payment
+  [MAIN_SCREENS.cardPayment]: Payment
+  [MAIN_SCREENS.otherPayment]: Payment
   [MAIN_SCREENS.editService]: { detail: ServiceDTO }
   [MAIN_SCREENS.taxList]: undefined
   [MAIN_SCREENS.newTax]: undefined
