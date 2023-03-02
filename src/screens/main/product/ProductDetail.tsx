@@ -98,15 +98,17 @@ const ProductDetailScreen = () => {
     }
   }, [createProductStatus])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (updateProductStatus) {
       alert("update product successful !")
       navigationRef.setParams({
         ...params,
         detail: newProduct,
       } as never)
+      setEditable(false)
+      productDetailRef.current = {}
     }
-  }, [updateProductStatus, newProduct])
+  }, [newProduct])
 
   const screenStatus = useMemo<"save" | "cancel" | "edit" | "create">(() => {
     return isEditable ? (isEmpty(detail) ? "create" : isDiff ? "save" : "cancel") : "edit"

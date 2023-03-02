@@ -1,8 +1,9 @@
+import { api } from "@config/index"
 import axios from "axios"
 import axiosRetry from "axios-retry"
 
 const axiosInstance = axios.create({
-  baseURL: "https://uzmos-api.softyn.com",
+  baseURL: api.url,
   withCredentials: true,
   timeout: 30000,
 })

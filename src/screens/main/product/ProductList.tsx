@@ -13,7 +13,7 @@ import { MAIN_SCREENS } from "@models/enum/screensName"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { isEmpty } from "lodash"
+import { debounce, isEmpty } from "lodash"
 
 const ProductListScreen = () => {
   const { loading, products, getProducts, pagination } = useProduct()
@@ -28,12 +28,11 @@ const ProductListScreen = () => {
     getProducts("", 0)
   }
 
-  const searchAction = () => {
-    if (searchBarRef && searchBarRef.current) {
-      getProducts(searchBarRef.current.searchPhrase.trim(), 0)
-    }
-  }
-
+  const searchAction = debounce((text: string) => {
+    // if (searchBarRef && searchBarRef.current) {
+    getProducts(text.trim(), 0)
+    // }
+  }, 1000)
   const handleLoadMore = () => {
     if (pagination.page < pagination.totalPages) {
       getProducts(searchBarRef.current.searchPhrase.trim(), pagination.page + 1)
@@ -90,7 +89,7 @@ const ProductListScreen = () => {
   return (
     <Screen>
       <Header headerTx="screens.headerTitle.productList" leftIcon="back" onLeftPress={goBack} />
-      <SearchBar ref={searchBarRef} searchAction={searchAction} cancelAction={cancelAction} />
+      <SearchBar ref={searchBarRef} onChangeText={searchAction} cancelAction={cancelAction} />
       {loading && isEmpty(products) ? (
         <Loading color={"black"} />
       ) : (

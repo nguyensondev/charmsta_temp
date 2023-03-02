@@ -4,7 +4,7 @@ import { Header } from "@components/header/header"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
 import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
-import { CALENDAR_FORMAT, DURATION, SELECT_HEIGHT, TIME_SLOTS_CONFIG } from "@config/constants"
+import { CALENDAR_FORMAT, DURATION, TIME_SLOTS_CONFIG } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { useCustomer } from "@hooks/customer"
 import { useStaff } from "@hooks/staff"
@@ -305,7 +305,7 @@ const EditAppointmentScreen = () => {
       if (date && date.timestamp) {
         setAppointment((prev) => ({
           ...prev,
-          duration: 0,
+          // duration: 0,
           start: moment(date.timestamp).toISOString(),
         }))
         setStartTime("")
@@ -341,7 +341,7 @@ const EditAppointmentScreen = () => {
           <Select
             {...nativeBaseStyle.selectWrapper}
             selectedValue={customerId.toString()}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             accessibilityLabel="Add a Customer"
             placeholder="Add a Customer"
             mt={1}
@@ -354,7 +354,7 @@ const EditAppointmentScreen = () => {
                   return (
                     <Select.Item
                       key={element.id}
-                      label={element.firstName + element.lastName}
+                      label={`${element?.firstName || ""} ${element?.lastName || ""}`}
                       value={element.id.toString()}
                     />
                   )
@@ -371,7 +371,7 @@ const EditAppointmentScreen = () => {
           <Select
             {...nativeBaseStyle.selectWrapper}
             selectedValue={startTime}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             accessibilityLabel=""
             placeholder=""
             mt={1}
@@ -394,7 +394,7 @@ const EditAppointmentScreen = () => {
           <Select
             {...nativeBaseStyle.selectWrapper}
             selectedValue={labelId?.toString()}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             accessibilityLabel=""
             placeholder=""
             mt={1}
@@ -434,7 +434,7 @@ const EditAppointmentScreen = () => {
           <Select
             {...nativeBaseStyle.selectWrapper}
             selectedValue={status}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             accessibilityLabel=""
             placeholder=""
             mt={1}
@@ -462,7 +462,7 @@ const EditAppointmentScreen = () => {
             {...nativeBaseStyle.selectWrapper}
             isDisabled={!customServiceDuration}
             selectedValue={duration.toString()}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             accessibilityLabel=""
             placeholder=""
             mt={1}
@@ -532,7 +532,6 @@ const EditAppointmentScreen = () => {
         disabled={loadingEditAppointment || duration === 0 || startTime.length === 0}
         isLoading={loadingEditAppointment}
         w="90%"
-        h={SELECT_HEIGHT}
         marginBottom={spacing[2]}
         onPress={submit}
       >

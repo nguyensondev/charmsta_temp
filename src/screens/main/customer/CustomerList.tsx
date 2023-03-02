@@ -103,7 +103,9 @@ const CustomerListScreen = () => {
     ({ item }: { item: CustomerDTO; index: number }) => {
       const { firstName, lastName, avatar, phoneNumber } = item
       const displayName =
-        isEmpty(firstName) && isEmpty(lastName) ? phoneNumber : `${firstName} ${lastName}`
+        isEmpty(firstName) && isEmpty(lastName)
+          ? phoneNumber
+          : `${firstName || ""} ${lastName || ""}`
       return (
         <ButtonCustom
           onPress={() => onContactPress(item)}

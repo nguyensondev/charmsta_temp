@@ -62,6 +62,7 @@ export function Header(props: HeaderProps) {
       {/* left side */}
       {leftIcon && canGoBack() ? (
         <Button
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={LEFT}
           preset="link"
           onPress={leftIcon === "back" ? goBackAction : onLeftPress}
@@ -79,7 +80,12 @@ export function Header(props: HeaderProps) {
       </View>
       {/* right side */}
       {rightIcon ? (
-        <Button style={RIGHT} preset="link" onPress={onRightPress}>
+        <Button
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          style={RIGHT}
+          preset="link"
+          onPress={onRightPress}
+        >
           <Icon icon={rightIcon} />
         </Button>
       ) : rightVectorIcon ? (

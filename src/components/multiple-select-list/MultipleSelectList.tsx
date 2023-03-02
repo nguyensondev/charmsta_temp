@@ -1,17 +1,17 @@
 /* eslint-disable react-native/no-inline-styles,react-native/no-color-literals */
 import * as React from "react"
 import {
-  ViewStyle,
-  TextStyle,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
   Animated,
-  TextInput,
+  Image,
   Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from "react-native"
 
 interface MultipleSelectListProps {
@@ -201,7 +201,6 @@ const MultipleSelectList: React.FC<MultipleSelectListProps> = ({
   const animatedvalue = React.useRef(new Animated.Value(0)).current
   const [filtereddata, setFilteredData] = React.useState(data)
   const [selectAll, setSelectAll] = React.useState(false)
-
   const selectData = (key: any[], value: any[]) => {
     setSelectedVal(value)
     setSelectedKey(key)
@@ -402,7 +401,7 @@ const MultipleSelectList: React.FC<MultipleSelectListProps> = ({
                         })
                       } else {
                         setSelected((val: any) => {
-                          return []
+                          return data.map((item) => item[save])
                         })
                       }
                       const sk = []

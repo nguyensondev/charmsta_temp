@@ -2,7 +2,6 @@ import { ButtonCustom, Header, Screen } from "@components/index"
 import { MultiServices } from "@components/multi-select"
 import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
-import { SELECT_HEIGHT } from "@config/constants"
 import { usePackage } from "@hooks/package"
 import { useService } from "@hooks/service/useService"
 import { TxKeyPath } from "@i18n/i18n"
@@ -140,7 +139,8 @@ const NewPackageScreen = (props: NewPackageScreenProps) => {
           <Select
             paddingLeft={"1.5"}
             dropdownIcon={<ChevronDownIcon />}
-            height={SELECT_HEIGHT}
+            // height={SELECT_HEIGHT}
+            marginY={spacing[1]}
             fontSize={18}
             _selectedItem={{
               bg: "teal.600",

@@ -225,7 +225,6 @@ const StaffProfileScreen = () => {
         : "cancel"
       : "edit"
   }, [staffRef, isDiff, isEditable, updated])
-  console.log("alo1", errors.avatar6)
   const renderHeaderComponent = () => (
     <Avatar
       source={{

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   childViewTime: {
-    flex: 1,
+    flexGrow: 1,
   },
   empty: {
     alignItems: "center",

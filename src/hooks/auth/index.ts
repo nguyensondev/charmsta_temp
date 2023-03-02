@@ -3,6 +3,7 @@ import { RegisterDTO, SignUpEmailDTO } from "@models/backend/response/Auth"
 import { FirebaseCode } from "@models/enum/firebase"
 import { useStores } from "@models/root-store"
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import {
   continueWithAppleApi,
   continueWithFacebookApi,
@@ -156,9 +157,9 @@ export const useAuth = (): Output => {
       const { userInfo, accessToken } = data
       // saveUser(userInfo)
       setRegisterData({ userInfo })
-      saveAuth(accessToken.token, accessToken.refreshToken)
       setSocialContinueStatusCode(code)
       setLoading(false)
+      saveAuth(accessToken.token, accessToken.refreshToken)
     } catch (err) {
       setSocialContinueStatusCode(err.statusCode)
       setLoading(false)
@@ -177,6 +178,7 @@ export const useAuth = (): Output => {
   }
 
   const logout = () => {
+    GoogleSignin.signOut()
     authStore.resetAuth()
     currentStoreStore.clearCurrentStore()
     userStore.eraseUser()

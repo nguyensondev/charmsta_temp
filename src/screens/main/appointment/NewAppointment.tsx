@@ -4,7 +4,7 @@ import { Header } from "@components/header/header"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
 import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
-import { CALENDAR_FORMAT, DURATION, SELECT_HEIGHT, TIME_SLOTS_CONFIG } from "@config/constants"
+import { CALENDAR_FORMAT, DURATION, TIME_SLOTS_CONFIG } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { useCustomer } from "@hooks/customer"
 import { useService } from "@hooks/service/useService"
@@ -332,7 +332,7 @@ const NewAppointmentScreen = () => {
             <Select
               {...nativeBaseStyle.selectWrapper}
               selectedValue={customer}
-              height={SELECT_HEIGHT}
+              py={spacing[1]}
               accessibilityLabel="Add a Customer"
               placeholder="Add a Customer"
               mt={1}
@@ -343,7 +343,7 @@ const NewAppointmentScreen = () => {
                     return (
                       <Select.Item
                         key={element.id}
-                        label={element.firstName + element.lastName}
+                        label={`${element?.firstName || ""} ${element?.lastName || ""}`}
                         value={element.id.toString()}
                       />
                     )
@@ -360,7 +360,7 @@ const NewAppointmentScreen = () => {
             <Select
               {...nativeBaseStyle.selectWrapper}
               selectedValue={startTime}
-              height={SELECT_HEIGHT}
+              py={spacing[1]}
               accessibilityLabel=""
               placeholder=""
               mt={1}
@@ -382,7 +382,7 @@ const NewAppointmentScreen = () => {
             <Select
               {...nativeBaseStyle.selectWrapper}
               selectedValue={label}
-              height={SELECT_HEIGHT}
+              py={spacing[1]}
               accessibilityLabel=""
               placeholder=""
               mt={1}
@@ -414,7 +414,7 @@ const NewAppointmentScreen = () => {
               selectedValue={duration}
               {...nativeBaseStyle.selectWrapper}
               isDisabled={!customServiceDuration}
-              height={SELECT_HEIGHT}
+              py={spacing[1]}
               accessibilityLabel=""
               placeholder=""
               mt={1}

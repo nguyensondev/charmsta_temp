@@ -2,12 +2,13 @@ import { DATE_FORMAT, EVENT_CALENDAR_FORMAT } from "@config/constants"
 import { AppointmentDTO, CalendarAgenda, CalendarDTO } from "@models/backend/response/Appointment"
 import { PackageDTO } from "@models/backend/response/Package"
 import { CategoryDTO, ServiceDTO } from "@models/backend/response/Service"
+import { TAB_NAME } from "@models/enum/screensName"
 import { useStores } from "@models/index"
+import { navigationRef } from "@navigators/navigation-utilities"
 import i18n from "i18n-js"
 import { has, isEmpty } from "lodash"
 import moment from "moment"
 import { Platform } from "react-native"
-
 export const convertToAgendaItems = (data: CalendarDTO[]): CalendarAgenda => {
   const agendaItems: { title: string; data: CalendarDTO[]; marked?: boolean }[] = []
   const agendaObj: { [date: string]: { data: CalendarDTO[]; marked?: boolean } } = {}
@@ -79,12 +80,13 @@ export const totalAppointmentPrice = (services: ServiceDTO[], packages: PackageD
         price: prev.price + curr.price,
       })).price
 
-export const totalAppointmentTax = (services: ServiceDTO[] = [], packages: PackageDTO[] = []) =>
-  isEmpty(services) && isEmpty(packages)
+export const totalAppointmentTax = (services: ServiceDTO[] = [], packages: PackageDTO[] = []) => {
+  return isEmpty(services) && isEmpty(packages)
     ? 0
-    : [...services.map(({ tax, price }) => ((tax?.rate ?? 0) * price) / 100)].reduce(
+    : [...services.map(({ tax, price }) => ((tax?.rate ?? 0) * price) / 100), 0].reduce(
         (prev, curr) => prev + curr,
       )
+}
 
 export const getFilteredCategoryList = (list: CategoryDTO[] = [], searchText = "") =>
   isEmpty(searchText)
@@ -106,3 +108,13 @@ export const getFilteredCategoryList = (list: CategoryDTO[] = [], searchText = "
             pack.name.toLowerCase().includes(searchText.toLowerCase()),
           ),
         }))
+
+export const getTabParams = (name: TAB_NAME): any => {
+  var params = {}
+  const state = navigationRef.getState()
+  if (state?.routes) {
+    const matchedRoute = state.routes.find((route) => route.name === name)
+    params = matchedRoute?.params || {}
+  }
+  return params
+}

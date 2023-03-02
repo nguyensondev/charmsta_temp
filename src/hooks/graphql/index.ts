@@ -5,6 +5,7 @@ import { convertAppointmentData, convertToAgendaItems } from "@utils/data"
 import { get } from "lodash"
 import moment from "moment"
 import { useMemo } from "react"
+
 interface Output {
   listAppointmnetTemp: CalendarDTO[]
   listAppointmentAgenda: CalendarAgenda
@@ -17,6 +18,7 @@ interface Output {
 
 const useGraphql = (query: DocumentNode): Output => {
   const { data, refetch, startPolling, stopPolling, loading, error } = useQuery(query)
+
   const appointments = get(data, "getAppointments", [])
 
   const listAppointmnetTemp = useMemo(() => {

@@ -2,11 +2,11 @@ import { ButtonCustom, Header, Screen } from "@components/index"
 import { MultiServices } from "@components/multi-select"
 import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
-import { SELECT_HEIGHT } from "@config/constants"
 import { usePackage } from "@hooks/package"
 import { useService } from "@hooks/service/useService"
 import { TxKeyPath } from "@i18n/i18n"
 import { CreatePackage } from "@models/backend/request/Package"
+import { PackageDetailDTO } from "@models/backend/response/Package"
 import { ServiceDTO } from "@models/backend/response/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -97,15 +97,16 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
             formattedData.categoryId = parseInt(data.categoryId)
             break
           case "price":
-            // formattedData.price = parseFloat(data.price)
+            formattedData.cost = parseFloat(data.price.toString())
             break
-
+          case "retailPrice":
+            formattedData.price = parseFloat(data.retailPrice)
+            break
           default:
             formattedData[key] = data[key]
         }
       })
-
-      // editPackage(data.id, formattedData as PackageDetailDTO)
+      editPackage(data.id, formattedData as PackageDetailDTO)
     } catch (err) {
       setYupError(convertYupErrorInner(err.inner))
     }
@@ -138,7 +139,7 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
           </FormControl.Label>
           <Select
             paddingLeft={"1.5"}
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             fontSize={18}
             _selectedItem={{
               bg: "teal.600",
@@ -184,7 +185,7 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
             {...defaultTextFieldProps}
             defaultValue={data?.price.toString()}
             keyboardType="numeric"
-            onChangeText={(text) => debounceFieldChange("price", text)}
+            onChangeText={(text) => debounceFieldChange("retailPrice", text)}
           />
           <FormControl.ErrorMessage>{yupError?.price}</FormControl.ErrorMessage>
         </FormControl>

@@ -1,6 +1,6 @@
 import { ButtonCustom, Header, Screen } from "@components/index"
 import Text from "@components/text/text"
-import { CALENDAR_FORMAT, DATE_FORMAT, SELECT_HEIGHT, TIME_24H_FORMAT } from "@config/constants"
+import { CALENDAR_FORMAT, DATE_FORMAT, TIME_24H_FORMAT } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { Checkout } from "@models/backend/request/Appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
@@ -21,7 +21,7 @@ interface CheckoutScreenProps {}
 
 const defaultSelectProps = {
   dropdownCloseIcon: <View />,
-  height: SELECT_HEIGHT,
+  py: spacing[1],
   mt: 1,
   borderWidth: 0,
   borderBottomWidth: 1,
@@ -51,9 +51,10 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
   })
 
   useEffect(() => {
+    console.log("alo1", checkoutInfo)
     if (!isEmpty(checkoutInfo) && !checkoutInfo.isPaid) {
       navigate(MAIN_SCREENS.paymentType, {
-        appointment,
+        checkoutInfo,
       } as MainNavigatorParamList[MAIN_SCREENS.paymentType])
     }
   }, [checkoutInfo])
@@ -129,7 +130,7 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
           >
             <Select.Item
               key={customer?.id}
-              label={customer?.firstName + customer?.lastName}
+              label={`${customer?.firstName || ""} ${customer?.lastName || ""}`}
               value={customer?.id?.toString()}
             />
           </Select>

@@ -47,7 +47,7 @@ const SettingsScreen = () => {
   const { logout } = useAuth()
   const { isTablet } = useIsTablet()
   const {
-    currentStoreStore: { CurrentStore: storeData },
+    currentStoreStore: { CurrentStore: storeData, saveCurrentStore },
   } = useStores()
 
   const detailNavigatorRef = useRef<IRefSettingDetailNavigator>()
@@ -126,26 +126,30 @@ const SettingsScreen = () => {
     )
   }
 
-  const SwitchField = (props: { value: boolean; id: string }) => {
+  const debounceUpdate = useCallback(
+    debounce(() => {
+      updateStore(storeData.id, storeData)
+    }, 1000),
+    [],
+  )
+
+  const SwitchField = (props: { value?: boolean; id: string }) => {
     const { value, id } = props
     const [isOn, setOn] = useState(value)
 
-    const debounceUpdate = useCallback(
-      debounce((value) => {
-        updateStore(storeData.id, {
+    const toggleSwitch = (value: boolean) => {
+      setOn(() => {
+        const updatedStoreData = {
           ...storeData,
           appointmentSetting: {
             ...storeData.appointmentSetting,
             [id]: value,
           },
-        })
-      }, 1000),
-      [],
-    )
-
-    const toggleSwtich = (value: boolean) => {
-      setOn(value)
-      return debounceUpdate(value)
+        }
+        saveCurrentStore(updatedStoreData)
+        debounceUpdate()
+        return value
+      })
     }
 
     return (
@@ -161,13 +165,22 @@ const SettingsScreen = () => {
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={"#fff"}
             ios_backgroundColor="#fff"
-            onValueChange={(value) => toggleSwtich(value)}
+            onValueChange={(value) => toggleSwitch(value)}
             value={isOn}
           />
         </View>
       </View>
     )
   }
+
+  const {
+    appointmentSlots,
+    weekStartDay,
+    customServiceCost,
+    customServiceDuration,
+    offHoursBooking,
+    doubleBooking,
+  } = storeData.appointmentSetting
 
   const RenderContent2 = useCallback(() => {
     return (
@@ -232,7 +245,15 @@ const SettingsScreen = () => {
         </TouchableOpacity>
       </View>
     )
-  }, [storeData.appointmentSetting.appointmentSlots, storeData.appointmentSetting.weekStartDay])
+  }, [
+    appointmentSlots,
+    weekStartDay,
+    customServiceCost,
+    customServiceDuration,
+    offHoursBooking,
+    doubleBooking,
+  ])
+
   return (
     <Screen>
       <RenderHeader />

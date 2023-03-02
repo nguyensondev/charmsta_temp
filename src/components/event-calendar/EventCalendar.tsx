@@ -3,26 +3,23 @@
 import _ from "lodash"
 import moment, { Moment } from "moment"
 import React, { ReactNode } from "react"
-import {
-  Image,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-  VirtualizedList,
-  VirtualizedListProps,
-  Text,
-} from "react-native"
+import { Image, View, ViewStyle, VirtualizedList, VirtualizedListProps } from "react-native"
 
 import styleConstructor from "./style"
 
 import { CalendarDTO } from "@models/backend/response/Appointment"
-import DayView from "./DayView"
 import CalendarHeader from "@screens/main/calendar/CalendarHeader"
+import DayView from "./DayView"
 
 interface Props {
   calendarView: string
   initDate?: string
   size?: number
+  /**
+   * Returns the elements of an array that meet the condition specified in a callback function.
+   * @param predicate A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.
+   * @param thisArg An object to which the this keyword can refer in the predicate function. If thisArg is omitted, undefined is used as the this value.
+   */
   onRef?: (EventCalendar: EventCalendar) => void
   width?: number
   format24h?: boolean
@@ -129,6 +126,7 @@ export default class EventCalendar extends React.Component<Props, State> {
     const headerText = upperCaseHeader
       ? date.format(formatHeader || "DD MMMM YYYY").toUpperCase()
       : date.format(formatHeader || "DD MMMM YYYY")
+
     return (
       <View style={[this.styles.container, { width }]}>
         {/* <View style={this.styles.header}> */}
@@ -239,16 +237,16 @@ export default class EventCalendar extends React.Component<Props, State> {
             const offsetX = nativeEvent.contentOffset.x
             const width = nativeEvent.layoutMeasurement.width
             const date = this.state.date
-            const amount = this.props.calendarView === "DAY" ? 1 : this.props.calendarView === "3_DAYS" ? 3 : 7
+            const amount =
+              this.props.calendarView === "DAY" ? 1 : this.props.calendarView === "3_DAYS" ? 3 : 7
             let newDate = date.clone()
             if (offsetX <= width) {
-              newDate =  moment(newDate).subtract(amount, 'day')
+              newDate = moment(newDate).subtract(amount, "day")
             } else {
-              newDate =  moment(newDate).add(amount, 'day')
+              newDate = moment(newDate).add(amount, "day")
             }
             this.props.setCurrentDate(newDate)
           }}
-
           {...virtualizedListProps}
         />
       </View>

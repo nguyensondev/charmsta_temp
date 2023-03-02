@@ -1,4 +1,5 @@
 import Text from "@components/text/text"
+import { HEIGHT_WINDOW } from "@config/constants"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { Box, IBoxProps, ScrollView, View } from "native-base"
@@ -32,6 +33,8 @@ const OptionsPicker = (props: OptionsPickerProps) => {
         scrollEnabled={scrollable}
         backgroundColor={"transparent"}
         marginBottom={spacing[1]}
+        maxHeight={scrollable ? HEIGHT_WINDOW / 2 : HEIGHT_WINDOW}
+        showsVerticalScrollIndicator={false}
       >
         {options.map((option, index) => {
           return (

@@ -3,7 +3,6 @@ import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SELECT_HEIGHT } from "@config/constants"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
 import { UpdateStore } from "@models/backend/request/Store"
 import { RegisterDTO } from "@models/backend/response/Auth"
@@ -18,7 +17,7 @@ import _, { get, isEmpty } from "lodash"
 
 import { convertMinsValue } from "@utils/time"
 import moment from "moment-timezone"
-import { View } from "native-base"
+import { ScrollView, View } from "native-base"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Switch, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import DatePicker from "react-native-date-picker"
@@ -175,8 +174,9 @@ const CompanyHoursScreen = ({ route }) => {
         disabled={loadingCompanyHour}
         isLoading={loadingCompanyHour}
         w="90%"
-        h={SELECT_HEIGHT}
-        marginBottom={spacing[2]}
+        // h={SELECT_HEIGHT}
+        // paddingY={spacing[2]}
+        marginBottom={spacing[1]}
         onPress={save}
       >
         <Text tx="common.save" style={{ color: color.palette.white }} />
@@ -220,11 +220,11 @@ const CompanyHoursScreen = ({ route }) => {
     <Screen>
       <RenderHeader />
       <RenderTimeZone />
-      <View style={styles.childViewTime}>
+      <ScrollView style={styles.childViewTime}>
         {data.map((element: OpenHoursDTO) => {
           return <RenderItem key={element.id} item={element} />
         })}
-      </View>
+      </ScrollView>
       <RenderFooter />
       <DatePicker
         date={new Date()}

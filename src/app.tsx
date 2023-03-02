@@ -10,6 +10,7 @@
  * if you're interested in adding screens and navigators.
  */
 import { DATE_FORMAT } from "@config/constants"
+import LoadingProvider from "@contexts/loadingContext"
 import moment from "moment"
 import { NativeBaseProvider } from "native-base"
 import React, { useEffect, useState } from "react"
@@ -67,14 +68,16 @@ function App() {
         <NativeBaseProvider>
           <CalendarProvider date={moment().format(DATE_FORMAT)}>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-              <IsTabletContextProvider>
-                <ErrorBoundary catchErrors={"dev"}>
-                  <AppNavigator
-                    initialState={initialNavigationState}
-                    onStateChange={onNavigationStateChange}
-                  />
-                </ErrorBoundary>
-              </IsTabletContextProvider>
+              <LoadingProvider>
+                <IsTabletContextProvider>
+                  <ErrorBoundary catchErrors={"dev"}>
+                    <AppNavigator
+                      initialState={initialNavigationState}
+                      onStateChange={onNavigationStateChange}
+                    />
+                  </ErrorBoundary>
+                </IsTabletContextProvider>
+              </LoadingProvider>
             </SafeAreaProvider>
           </CalendarProvider>
         </NativeBaseProvider>

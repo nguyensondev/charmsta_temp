@@ -1,6 +1,7 @@
 import Text from "@components/text"
 import { TxKeyPath } from "@i18n/i18n"
 import { color } from "@theme/color"
+import { spacing } from "@theme/spacing"
 import { Button as NativeButton } from "native-base"
 import { IButtonProps } from "native-base/lib/typescript/components/primitives/Button/types"
 import * as React from "react"
@@ -36,6 +37,7 @@ export function ButtonCustom(props: IButtonCustom) {
       alignSelf={"center"}
       backgroundColor={props.color ? props.color : color.palette.black}
       _pressed={{ opacity: 0.2 }}
+      padding={spacing[1]}
       {...rest}
     >
       {content}

@@ -213,11 +213,10 @@ const NewServiceScreen = () => {
         )
       case "category":
         return (
-          <FormControl mx={spacing[1]} isInvalid={!!errors[item.key]}>
+          <FormControl px={spacing[1]} isInvalid={!!errors[item.key]}>
             <Text preset="fieldLabel" tx="textInput.label.category" />
             <Select
               paddingX={"1.5"}
-              w={"97%"}
               fontSize={18}
               _selectedItem={{
                 bg: "teal.600",
