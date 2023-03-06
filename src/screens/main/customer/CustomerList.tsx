@@ -1,6 +1,6 @@
 import { debounce, isEmpty } from "lodash"
-import { Avatar, Box, Fab, FlatList } from "native-base"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Avatar, Box, Column, Fab, FlatList } from "native-base"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
 
 import { ButtonCustom, Header, Screen } from "@components/index"
@@ -99,13 +99,15 @@ const CustomerListScreen = () => {
     }
   }
 
-  const _renderItem = useCallback(
+  const CustomerItem = useCallback(
     ({ item }: { item: CustomerDTO; index: number }) => {
-      const { firstName, lastName, avatar, phoneNumber } = item
-      const displayName =
-        isEmpty(firstName) && isEmpty(lastName)
-          ? phoneNumber
-          : `${firstName || ""} ${lastName || ""}`
+      const { firstName, lastName, avatar, phoneNumber, countryCode } = item
+      const displayName = useMemo(
+        () =>
+          isEmpty(firstName) && isEmpty(lastName) ? "" : `${firstName || ""} ${lastName || ""}`,
+        [firstName, lastName],
+      )
+      const displayPhoneNumber = useMemo(() => `${countryCode} ${phoneNumber}`, [phoneNumber])
       return (
         <ButtonCustom
           onPress={() => onContactPress(item)}
@@ -118,7 +120,10 @@ const CustomerListScreen = () => {
         >
           <Box flexDirection="row" alignItems="center" padding={"1.5"}>
             <Avatar source={{ uri: avatar }} size="lg" marginRight={spacing[1]} />
-            <Text fontWeight="bold">{displayName}</Text>
+            <Column>
+              <Text fontWeight="bold">{displayName}</Text>
+              <Text fontWeight="light">{displayPhoneNumber}</Text>
+            </Column>
           </Box>
         </ButtonCustom>
       )
@@ -209,7 +214,7 @@ const CustomerListScreen = () => {
         stickyHeaderIndices={[0]}
         ListHeaderComponent={renderSearchBar}
         onEndReached={handleGetMore}
-        renderItem={_renderItem}
+        renderItem={({ item, index }) => <CustomerItem item={item} index={index} />}
       />
       <FooterSection />
     </Screen>

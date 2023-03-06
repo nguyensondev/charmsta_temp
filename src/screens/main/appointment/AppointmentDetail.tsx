@@ -6,6 +6,7 @@ import { CALENDAR_FORMAT, TIME_24H_FORMAT } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { TxKeyPath } from "@i18n/i18n"
 import { translate } from "@i18n/translate"
+import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
 import { goBack, navigate, navigationRef } from "@navigators/navigation-utilities"
@@ -18,7 +19,7 @@ import { convertMinsValue } from "@utils/time"
 import { get, isEmpty } from "lodash"
 import moment from "moment"
 import { FormControl, ISelectProps, Row, ScrollView, Select, TextArea, View } from "native-base"
-import React, { useEffect, useLayoutEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { nativeBaseStyle, styles } from "./styles"
 
 const defaultSelectProps = {
@@ -43,9 +44,9 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
   const { customer, label, start, duration, note, id, status, services, packages } =
     appointmentDetail
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getAppointmentById(appointmentId)
-  }, [...Object.values(params.detail)])
+  }, [params.detail])
 
   useEffect(() => {
     if (!isEmpty(editedAppointment)) {
@@ -180,7 +181,10 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
         text={translate("appointment.total", { defaultValue: convertCurrency(totalPrice) })}
         fontWeight="bold"
       />
-      <Row justifyContent="space-between">
+      <Row
+        justifyContent="space-between"
+        display={status === AppointmentStatusEnum.Completed ? "none" : "flex"}
+      >
         <ButtonCustom
           onPress={() => {
             if (modalRef?.current) {

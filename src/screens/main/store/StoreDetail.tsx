@@ -180,7 +180,7 @@ const StoreDetailScreen = () => {
   )
 
   return (
-    <Screen>
+    <Screen preset="scroll">
       <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
       <FlatList
         ListHeaderComponent={renderHeaderComponent}

@@ -14,7 +14,7 @@ type Output = {
   updating: boolean
   updateSuccess: boolean
   getStores: () => void
-  updateStore: (id: number, data: UpdateStore) => void
+  updateStore: (id: number, data: UpdateStore, updateState?: boolean) => void
   // update company hour
   loadingCompanyHour: boolean
   companyHour: { affected: number }
@@ -39,12 +39,14 @@ export const useStoresInfo = (): Output => {
   const [companyHour, setCompanyHour] = useState<any>()
   const [errCompanyHour, setErrCompanyHour] = useState<Error>(null)
 
-  const updateCompanyHour = async (id: number, data: UpdateStore) => {
+  const updateCompanyHour = async (id: number, data: UpdateStore, updateState = true) => {
     try {
       setLoadingCompanyHour(true)
       const result = await updateStoreApi(id, data)
       if (result?.data) {
-        saveCurrentStore(result?.data)
+        if (updateState) {
+          saveCurrentStore(result?.data)
+        }
         setLoadingCompanyHour(false)
         setCompanyHour(result?.data)
         setErrCompanyHour(null)

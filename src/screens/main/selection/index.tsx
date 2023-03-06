@@ -102,7 +102,6 @@ export const AdditionSelectContext = createContext<IAdditionSelectContext>(null)
 const SelectionScreen = (props: SelectionScreenProps) => {
   const route = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.additionSelect>>()
   const { actionName, prevSelected = {}, routeIndex = 0 } = route.params
-
   const additionSelect: IAdditionSelect = useRef(prevSelected).current
   const { addNewService, newService } = useService()
   const { routes: navigationRoutes, index: navigationIndex } = navigationRef.getRootState()
@@ -142,8 +141,6 @@ const SelectionScreen = (props: SelectionScreenProps) => {
       },
     ])
   }
-
-  console.log("alonavigationRoutes", navigationRoutes)
 
   const handleButtonPress = () => {
     const currentMapList: ISceneProperties[] = sceneMapList[actionName]

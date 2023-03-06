@@ -52,7 +52,7 @@ const schema = yup.object().shape({
       return false
     },
   }),
-  retailPrice: yup.string().required(),
+  price: yup.string().required(),
 })
 
 const EditPackageScreen = (props: EditPackageScreenProps) => {

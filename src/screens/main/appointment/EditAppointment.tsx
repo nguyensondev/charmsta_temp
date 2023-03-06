@@ -16,8 +16,8 @@ import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
-import { goBack, navigate } from "@navigators/navigation-utilities"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { goBack, navigate, navigationRef } from "@navigators/navigation-utilities"
+import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertMinsValue } from "@utils/time"
@@ -51,9 +51,8 @@ const isInBreak = (slotTime: moment.Moment, breakTimes: string[][]) => {
 const EditAppointmentScreen = () => {
   const route = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.editAppointment>>()
   const { detail: appointmentDetail, start: appointmentStartTime } = route.params
-
   const [appointment, setAppointment] = useState<Partial<CalendarDTO>>(appointmentDetail)
-
+  const navigation = useNavigation()
   const [startTime, setStartTime] = useState(appointmentStartTime)
   const [timeSlot, setTimeSlot] = useState([])
 
@@ -70,6 +69,7 @@ const EditAppointmentScreen = () => {
     getListLabel,
     listLabel,
   } = useAppointment()
+  const isFocused = useIsFocused()
   const { getStaffByServicesAndPackages, staffsByService } = useStaff()
   const { getCustomers, customers, skip } = useCustomer()
   const { currentStoreStore } = useStores()
@@ -79,8 +79,13 @@ const EditAppointmentScreen = () => {
     bookingSlotSize,
   } = currentStoreStore.CurrentStore
   const endTime = moment(TIME_SLOTS_CONFIG.endTime, "HH:mm")
-
   useLayoutEffect(() => {
+    if (!isFocused) {
+      navigationRef.setParams({ start: startTime, detail: appointment } as never)
+    }
+  }, [isFocused])
+
+  useEffect(() => {
     setAppointment(appointmentDetail)
   }, [appointmentDetail])
 
@@ -150,11 +155,14 @@ const EditAppointmentScreen = () => {
     if (
       // checkCurrentDate() > -1 &&
       // service.length > 0 &&
+      services.every((i) => i?.staffId) &&
+      packages.every((i) => i?.staffId) &&
       startTime.length > 0 &&
       duration > 0
     ) {
       return true
     } else {
+      console.log("validate fail")
       return false
     }
   }
@@ -303,11 +311,16 @@ const EditAppointmentScreen = () => {
         modalRef.current.closeModal()
       }
       if (date && date.timestamp) {
-        setAppointment((prev) => ({
-          ...prev,
-          // duration: 0,
-          start: moment(date.timestamp).toISOString(),
-        }))
+        setAppointment((prev) => {
+          const editedAppointment = {
+            ...prev,
+            // duration: 0,
+            start: moment(date.timestamp).toISOString(),
+          }
+          navigation.setParams({ detail: editedAppointment } as never)
+
+          return editedAppointment
+        })
         setStartTime("")
         // setDuration("")
         // setStartTime("")

@@ -114,6 +114,8 @@ const CustomerProfileScreen = () => {
   const handleProfileButtonPress = async () => {
     try {
       const invokingData: Customer = {
+        lastName: customerProfile.lastName.trim(),
+        firstName: customerProfile.firstName.trim(),
         ...customerProfile,
         ...profileRef.current,
         avatar: imageData?.url || customerProfile?.avatar,

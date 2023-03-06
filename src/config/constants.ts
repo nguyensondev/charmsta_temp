@@ -17,7 +17,8 @@ export const SCREEN_WIDTH = Dimensions.get("window").width
 export const SCREEN_HEIGHT = Dimensions.get("window").height
 export const TIME_SLOTS_CONFIG = {
   nextSlot: 15,
-  breakTime: [["12:00", "13:00"]],
+  // breakTime: [["12:00", "13:00"]],
+  breakTime: [[]],
   startTime: "08:00",
   endTime: "20:00",
 }

@@ -38,13 +38,16 @@ import styleConstructor from "./styles"
 
 const HomeScreen = () => {
   const styles = styleConstructor()
-  const params = getTabParams(TAB_NAME.main) as Partial<{ fitler: { staffIds: number[] } }>
+
+  const params = getTabParams(TAB_NAME.main) as Partial<{
+    fitler: { staffIds: number[] }
+  }>
 
   const { fitler } = params
   const modalRef = useRef<IRefCustomModal>(null)
   const contentCalendarRef = useRef(null)
   const firstTimeStaffRef = React.useRef(true)
-  const calendarViewRef = useRef<IRefrCustomModal>(null)
+  const calendarViewRef = useRef<IRefCustomModal>(null)
   const calendarZoomRef = useRef<IRefCustomModal>(null)
   const optionsPickerRef = useRef<IRefCustomModal>(null)
   const rnCalendarCtx = useContext(CalendarContext)
@@ -272,7 +275,7 @@ const HomeScreen = () => {
       <>
         <View style={styles.container}>
           <View style={styles.left}>
-            <VectorIcon
+            {/* <VectorIcon
               id={"2"}
               style={styles.icon}
               size={24}
@@ -283,7 +286,7 @@ const HomeScreen = () => {
                   actionName: "filterAppointment",
                 } as unknown as [MAIN_SCREENS.additionSelect])
               }
-            />
+            /> */}
           </View>
           {/* <View style={styles.left}> */}
           {/*   <TouchableOpacity onPress={toDayAction}> */}
@@ -441,7 +444,7 @@ const HomeScreen = () => {
   return (
     <Screen style={styles.content}>
       {_renderHeader()}
-      {calendarView === "DAY" ? _renderStaffs() : null}
+      {/* {calendarView === "DAY" ? _renderStaffs() : null} */}
       <RenderBody />
       <RenderNewApppointment />
 
