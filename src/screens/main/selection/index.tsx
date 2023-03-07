@@ -228,12 +228,13 @@ const SelectionScreen = (props: SelectionScreenProps) => {
           const currentIndex = navigationRoutes.findIndex(
             ({ name }) => name === MAIN_SCREENS.additionSelect,
           )
+
           const newRoutes = navigationRoutes.map(({ name, params, key }, index) =>
             index === currentIndex - 1
               ? {
                   key,
                   name,
-                  params: { ...params, fitler: additionSelect },
+                  params: { ...params, filter: additionSelect },
                 }
               : { key, name, params },
           )

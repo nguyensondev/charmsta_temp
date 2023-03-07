@@ -23,7 +23,7 @@ import useGraphql from "@hooks/graphql"
 import { useStaff } from "@hooks/staff"
 import { CalendarDTO } from "@models/backend/response/Appointment"
 import { StaffDTO } from "@models/backend/response/Staff"
-import { MAIN_SCREENS, TAB_NAME } from "@models/enum/screensName"
+import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
 import { navigate } from "@navigators/navigation-utilities"
@@ -39,11 +39,11 @@ import styleConstructor from "./styles"
 const HomeScreen = () => {
   const styles = styleConstructor()
 
-  const params = getTabParams(TAB_NAME.main) as Partial<{
-    fitler: { staffIds: number[] }
+  const params = getTabParams(MAIN_SCREENS.home) as Partial<{
+    filter: { staffIds: number[] }
   }>
 
-  const { fitler } = params
+  const { filter } = params
   const modalRef = useRef<IRefCustomModal>(null)
   const contentCalendarRef = useRef(null)
   const firstTimeStaffRef = React.useRef(true)
@@ -240,7 +240,7 @@ const HomeScreen = () => {
           {/* </TouchableOpacity> */}
           <View style={styles.listStaff}>
             {staffs.map((value: StaffDTO, index: number) => {
-              if (!fitler?.staffIds.includes(value.id) && !isEmpty(fitler?.staffIds)) return null
+              if (!filter?.staffIds.includes(value.id) && !isEmpty(filter?.staffIds)) return null
               return (
                 <View style={[styles.staff, index === 1 ? styles.middleStaff : {}]} key={value.id}>
                   <Avatar source={{ uri: value.avatar }} size={12} style={{ marginRight: 6 }} />
@@ -275,7 +275,7 @@ const HomeScreen = () => {
       <>
         <View style={styles.container}>
           <View style={styles.left}>
-            {/* <VectorIcon
+            <VectorIcon
               id={"2"}
               style={styles.icon}
               size={24}
@@ -286,7 +286,7 @@ const HomeScreen = () => {
                   actionName: "filterAppointment",
                 } as unknown as [MAIN_SCREENS.additionSelect])
               }
-            /> */}
+            />
           </View>
           {/* <View style={styles.left}> */}
           {/*   <TouchableOpacity onPress={toDayAction}> */}
@@ -444,7 +444,7 @@ const HomeScreen = () => {
   return (
     <Screen style={styles.content}>
       {_renderHeader()}
-      {/* {calendarView === "DAY" ? _renderStaffs() : null} */}
+      {calendarView === "DAY" ? _renderStaffs() : null}
       <RenderBody />
       <RenderNewApppointment />
 

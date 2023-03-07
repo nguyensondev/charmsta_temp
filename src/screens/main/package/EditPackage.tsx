@@ -82,6 +82,19 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
     setData((prev) => ({ ...prev, [key]: value }))
   }
 
+  const onServicesChange = (selecteds: ServiceDTO[]) => {
+    let price = selecteds
+      .map((selected) => selected.price + (selected.price * (selected?.tax?.rate || 0)) / 100)
+      .reduce((prev, curr, arr) => parseFloat(prev.toString()) + parseFloat(curr.toString()))
+      .toFixed(2)
+      .toString()
+    price = price === "NaN" ? "0" : price
+
+    handleFieldChange("price", price)
+    handleFieldChange("retailPrice", price)
+    debounceFieldChange("services", selecteds)
+  }
+
   const debounceFieldChange = debounce(handleFieldChange, 500)
 
   const onSave = async () => {
@@ -112,7 +125,7 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
     }
   }
 
-  const totalPrice = useMemo(() => totalServicesPrice(data.services), [data.services])
+  const totalPrice = useMemo(() => totalServicesPrice(data.services) || 0, [data.services])
 
   return (
     <Screen>
@@ -194,10 +207,7 @@ const EditPackageScreen = (props: EditPackageScreenProps) => {
           <FormControl.Label {...nativeBaseStyle.form.inputLabel}>
             <Text tx="textInput.label.services" />
           </FormControl.Label>
-          <MultiServices
-            defaultValues={data?.services}
-            onSelected={(selecteds) => handleFieldChange("services", selecteds)}
-          />
+          <MultiServices defaultValues={data?.services} onSelected={onServicesChange} />
           <FormControl.ErrorMessage>{yupError?.services}</FormControl.ErrorMessage>
         </FormControl>
       </ScrollView>

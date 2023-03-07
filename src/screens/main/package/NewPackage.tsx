@@ -73,10 +73,12 @@ const NewPackageScreen = (props: NewPackageScreenProps) => {
   }
 
   const onServicesChange = (selecteds: ServiceDTO[]) => {
-    const price = selecteds
-      .map((selected) => selected?.price || 0)
+    let price = selecteds
+      .map((selected) => selected.price + (selected.price * (selected?.tax?.rate || 0)) / 100)
       .reduce((prev, curr, arr) => parseFloat(prev.toString()) + parseFloat(curr.toString()))
+      .toFixed(2)
       .toString()
+    price = price === "NaN" ? "0" : price
     handleFieldChange("price", price)
     handleFieldChange("retailPrice", price)
     debounceFieldChange("services", selecteds)
