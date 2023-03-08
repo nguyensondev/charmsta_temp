@@ -22,7 +22,13 @@ const schema = yup.object().shape({
 const NewTaxScreen = (props: NewTaxScreenProps) => {
   const [errors, setErrors] = useState<{ name?: string; rate?: string }>({})
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { createTax, loading, newTax } = useTax()
+  const { createTax, loading, newTax, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (!isEmpty(newTax)) {

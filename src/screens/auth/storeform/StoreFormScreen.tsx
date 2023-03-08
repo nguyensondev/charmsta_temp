@@ -61,7 +61,7 @@ const schema = yup.object().shape({
   city: yup.string().required("City is required"),
   state: yup.string().required("State is required"),
   zipcode: yup.string().required("Zipcode is required"),
-  categories: yup.string(),
+  categories: yup.string().required("Categories is required"),
   phoneNumber: yup.string().required("Phone number is required"),
 })
 
@@ -219,7 +219,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
               {...restProps}
               key={id}
               buttonClick={() => handleOnPress(id)}
-              placeholderTextColor="black"
+              // placeholderTextColor="black"
               placeholder={placeholder}
               inputStyle={{ color: color.palette.black }}
               onChangeText={(text) => handleFieldChange(id, text)}

@@ -31,7 +31,7 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon,
+  WarningOutlineIcon
 } from "native-base"
 
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -313,172 +313,168 @@ const NewAppointmentScreen = () => {
     }
   }, [customServiceDuration, serviceList])
 
-  const RenderBody = useCallback(
-    () => {
-      return (
-        <ScrollView style={styles.body}>
-          {/* date */}
-          <TouchableOpacity onPress={openCalendar}>
-            <View style={styles.viewDate}>
-              <Text style={styles.txtDate}>{currentDate.format(CALENDAR_FORMAT)}</Text>
-              <Box>
-                <ChevronDownIcon size="5" />
-              </Box>
-            </View>
-          </TouchableOpacity>
-          {/* customer */}
-          <FormControl style={styles.viewCustomer} isRequired isInvalid={false}>
-            <Text tx="appointment.customer" style={styles.lbl} />
-            <Select
-              {...nativeBaseStyle.selectWrapper}
-              selectedValue={customer}
-              py={spacing[1]}
-              accessibilityLabel="Add a Customer"
-              placeholder="Add a Customer"
-              mt={1}
-              onValueChange={(itemValue) => setCustomer(itemValue)}
-            >
-              {customers && customers.length > 0
-                ? customers.map((element) => {
-                    return (
-                      <Select.Item
-                        key={element.id}
-                        label={`${element?.firstName || ""} ${element?.lastName || ""}`}
-                        value={element.id.toString()}
-                      />
-                    )
-                  })
-                : null}
-            </Select>
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-              Please make a selection!
-            </FormControl.ErrorMessage>
-          </FormControl>
-          {/* start time */}
-          <FormControl isRequired isInvalid={startTime.length === 0}>
-            <Text tx="appointment.startTime" style={styles.lbl} pt={spacing[1]} />
-            <Select
-              {...nativeBaseStyle.selectWrapper}
-              selectedValue={startTime}
-              py={spacing[1]}
-              accessibilityLabel=""
-              placeholder=""
-              mt={1}
-              onValueChange={setStartTime}
-            >
-              {timeSlot && timeSlot.length > 0
-                ? timeSlot.map((element) => {
-                    return <Select.Item key={element} label={element} value={element} />
-                  })
-                : null}
-            </Select>
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-              Please make a selection!
-            </FormControl.ErrorMessage>
-          </FormControl>
-          {/* label */}
-          <FormControl isRequired isInvalid={false}>
-            <Text tx="appointment.label" style={styles.lbl} pt={spacing[1]} />
-            <Select
-              {...nativeBaseStyle.selectWrapper}
-              selectedValue={label}
-              py={spacing[1]}
-              accessibilityLabel=""
-              placeholder=""
-              mt={1}
-              onValueChange={(itemValue) => setLabel(itemValue)}
-            >
-              {listLabel && listLabel.length > 0
-                ? listLabel.map((element) => {
-                    return (
-                      <Select.Item
-                        key={element.id}
-                        label={element.name}
-                        value={element.id.toString()}
-                      />
-                    )
-                  })
-                : null}
-            </Select>
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-              Please make a selection!
-            </FormControl.ErrorMessage>
-          </FormControl>
-          {/* services and pacakges area */}
-          <ServicesAndPackages services={services} packages={packages} />
+  const RenderBody = useCallback(() => {
+    return (
+      <ScrollView style={styles.body}>
+        {/* date */}
+        <TouchableOpacity onPress={openCalendar}>
+          <View style={styles.viewDate}>
+            <Text style={styles.txtDate}>{currentDate.format(CALENDAR_FORMAT)}</Text>
+            <Box>
+              <ChevronDownIcon size="5" />
+            </Box>
+          </View>
+        </TouchableOpacity>
+        {/* customer */}
+        <FormControl style={styles.viewCustomer} isRequired isInvalid={false}>
+          <Text tx="appointment.customer" style={styles.lbl} />
+          <Select
+            {...nativeBaseStyle.selectWrapper}
+            selectedValue={customer}
+            py={spacing[1]}
+            accessibilityLabel="Add a Customer"
+            placeholder="Add a Customer"
+            mt={1}
+            onValueChange={(itemValue) => setCustomer(itemValue)}
+          >
+            {customers && customers.length > 0
+              ? customers.map((element) => {
+                  return (
+                    <Select.Item
+                      key={element.id}
+                      label={`${element?.firstName || ""} ${element?.lastName || ""}`}
+                      value={element.id.toString()}
+                    />
+                  )
+                })
+              : null}
+          </Select>
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            Please make a selection!
+          </FormControl.ErrorMessage>
+        </FormControl>
+        {/* start time */}
+        <FormControl isRequired isInvalid={startTime.length === 0}>
+          <Text tx="appointment.startTime" style={styles.lbl} pt={spacing[1]} />
+          <Select
+            {...nativeBaseStyle.selectWrapper}
+            selectedValue={startTime}
+            py={spacing[1]}
+            accessibilityLabel=""
+            placeholder=""
+            mt={1}
+            onValueChange={setStartTime}
+          >
+            {timeSlot && timeSlot.length > 0
+              ? timeSlot.map((element) => {
+                  return <Select.Item key={element} label={element} value={element} />
+                })
+              : null}
+          </Select>
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            Please make a selection!
+          </FormControl.ErrorMessage>
+        </FormControl>
+        {/* label */}
+        <FormControl isRequired isInvalid={false}>
+          <Text tx="appointment.label" style={styles.lbl} pt={spacing[1]} />
+          <Select
+            {...nativeBaseStyle.selectWrapper}
+            selectedValue={label}
+            py={spacing[1]}
+            accessibilityLabel=""
+            placeholder=""
+            mt={1}
+            onValueChange={(itemValue) => setLabel(itemValue)}
+          >
+            {listLabel && listLabel.length > 0
+              ? listLabel.map((element) => {
+                  return (
+                    <Select.Item
+                      key={element.id}
+                      label={element.name}
+                      value={element.id.toString()}
+                    />
+                  )
+                })
+              : null}
+          </Select>
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            Please make a selection!
+          </FormControl.ErrorMessage>
+        </FormControl>
+        {/* services and pacakges area */}
+        <ServicesAndPackages services={services} packages={packages} />
 
-          {/* duration */}
-          <FormControl isRequired isInvalid={duration.length === 0}>
-            <Text tx="appointment.duration" style={styles.lbl} />
-            <Select
-              selectedValue={duration}
-              {...nativeBaseStyle.selectWrapper}
-              isDisabled={!customServiceDuration}
-              py={spacing[1]}
-              accessibilityLabel=""
-              placeholder=""
-              mt={1}
-            >
-              {[
-                ...DURATION,
-                {
-                  label: convertMinsValue(parseInt(duration), "duration"),
-                  value: parseInt(duration),
-                },
-              ].map((element) => {
-                return (
-                  <Select.Item
-                    key={element.value}
-                    label={element.label}
-                    value={element.value.toString()}
-                  />
-                )
-              })}
-            </Select>
-            <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-              Please make a selection!
-            </FormControl.ErrorMessage>
-          </FormControl>
+        {/* duration */}
+        <FormControl isRequired isInvalid={duration.length === 0}>
+          <Text tx="appointment.duration" style={styles.lbl} />
+          <Select
+            selectedValue={duration}
+            {...nativeBaseStyle.selectWrapper}
+            isDisabled={!customServiceDuration}
+            py={spacing[1]}
+            accessibilityLabel=""
+            placeholder=""
+            mt={1}
+          >
+            {[
+              ...DURATION,
+              {
+                label: convertMinsValue(parseInt(duration), "duration"),
+                value: parseInt(duration),
+              },
+            ].map((element) => {
+              return (
+                <Select.Item
+                  key={element.value}
+                  label={element.label}
+                  value={element.value.toString()}
+                />
+              )
+            })}
+          </Select>
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            Please make a selection!
+          </FormControl.ErrorMessage>
+        </FormControl>
 
-          {/* notes */}
-          <Text tx="appointment.notes" style={styles.lbl} pt={spacing[1]} />
-          <TextArea
-            // value={notes}
-            onChangeText={(text) => setNotes(text)}
-            h={20}
-            placeholder="Notes visible to staff only"
-            w="100%"
-            autoCompleteType={"off"}
-          />
-          {/* calendar picker modal */}
-          <CustomModal
-            ref={modalRef}
-            childView={
-              <CustomCalendarList
-                minDate={moment().toString()}
-                currentDate={currentDate}
-                selectedDate={selectedDate}
-              />
-            }
-          />
-        </ScrollView>
-      )
-    },
-    // service
-    [
-      serviceList,
-      staffsByService,
-      customers,
-      customer,
-      startTime,
-      currentDate,
-      label,
-      duration,
-      customServiceDuration,
-      services,
-      packages,
-    ],
-  )
+        {/* notes */}
+        <Text tx="appointment.notes" style={styles.lbl} pt={spacing[1]} />
+        <TextArea
+          // value={notes}
+          onChangeText={(text) => setNotes(text)}
+          h={20}
+          placeholder="Notes visible to staff only"
+          w="100%"
+          autoCompleteType={"off"}
+        />
+        {/* calendar picker modal */}
+        <CustomModal
+          ref={modalRef}
+          childView={
+            <CustomCalendarList
+              minDate={moment().toString()}
+              currentDate={currentDate}
+              selectedDate={selectedDate}
+            />
+          }
+        />
+      </ScrollView>
+    )
+  }, [
+    serviceList,
+    staffsByService,
+    customers,
+    customer,
+    startTime,
+    currentDate,
+    label,
+    duration,
+    customServiceDuration,
+    services,
+    packages,
+  ])
 
   const RenderFooter = () => {
     return (

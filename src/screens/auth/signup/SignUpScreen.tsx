@@ -88,6 +88,7 @@ const SignUpScreen = () => {
       <TextFieldCustom
         defaultValue={formData?.email}
         errorMsg={errors?.email}
+        keyboardType="email-address"
         onChangeText={(value) => handleFormDataChange("email", value)}
         placeholder="Email"
       />

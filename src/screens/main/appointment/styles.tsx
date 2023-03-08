@@ -7,7 +7,7 @@ import { Platform, StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
   body: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: spacing[4],
     // paddingTop: spacing[4],
   },

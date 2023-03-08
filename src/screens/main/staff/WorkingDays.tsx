@@ -2,14 +2,13 @@ import { ButtonCustom } from "@components/button/buttonCustom"
 import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
-import { SELECT_HEIGHT } from "@config/constants"
 import { useStaff } from "@hooks/staff"
 import { IStaffWorkingHour, StaffDTO } from "@models/backend/response/Staff"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import _ from "lodash"
-import { View } from "native-base"
+import { ScrollView, View } from "native-base"
 import React, { useCallback, useEffect, useState } from "react"
 import { Switch } from "react-native"
 import styles from "./styles"
@@ -104,7 +103,8 @@ const WorkingDaysScreen = ({ route }) => {
         disabled={loading}
         isLoading={loading}
         w="90%"
-        h={SELECT_HEIGHT}
+        // h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >
@@ -116,11 +116,11 @@ const WorkingDaysScreen = ({ route }) => {
   return (
     <Screen>
       <RenderHeader />
-      <View style={styles.childViewTime}>
+      <ScrollView style={styles.childViewTime}>
         {data.map((element: IStaffWorkingHour) => {
           return <RenderItem key={element.id} item={element} />
         })}
-      </View>
+      </ScrollView>
       <RenderFooter />
     </Screen>
   )

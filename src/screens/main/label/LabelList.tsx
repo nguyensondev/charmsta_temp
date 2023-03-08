@@ -4,12 +4,14 @@ import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useAppointment } from "@hooks/appointment/useAppointment"
+import { translate } from "@i18n/translate"
 import { AppointmentLabelDTO } from "@models/backend/response/Appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
+import { isEmpty } from "lodash"
 import { Fab } from "native-base"
 import * as React from "react"
 import { useCallback, useEffect } from "react"
@@ -29,7 +31,14 @@ const Item = ({ item }: { item: AppointmentLabelDTO }) => (
 )
 
 const LabelListScreen = () => {
-  const { loadingLabels, getListLabel, listLabel, delStatus, delALabel } = useAppointment()
+  const { loadingLabels, getListLabel, listLabel, delStatus, delALabel, errListLabel } =
+    useAppointment()
+
+  useEffect(() => {
+    if (!isEmpty(errListLabel)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errListLabel])
 
   useFocusEffect(
     useCallback(() => {

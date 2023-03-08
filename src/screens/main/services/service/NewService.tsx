@@ -8,6 +8,7 @@ import Text from "@components/text"
 import { TextFieldColor, TextFieldCustom } from "@components/text-field"
 import { useService } from "@hooks/service/useService"
 import { useUtility } from "@hooks/utility"
+import { translate } from "@i18n/translate"
 import { NewService } from "@models/backend/request/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -17,11 +18,11 @@ import { SceneMapNameEnum } from "@screens/main/selection"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertYupErrorInner } from "@utils/yup/yup"
-import { get } from "lodash"
+import { get, isEmpty } from "lodash"
 import { CheckIcon, ChevronDownIcon, FormControl, Select } from "native-base"
 import * as React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, KeyboardTypeOptions } from "react-native"
+import { Alert, FlatList, KeyboardTypeOptions } from "react-native"
 import { Image } from "react-native-image-crop-picker"
 import * as yup from "yup"
 
@@ -66,6 +67,12 @@ const NewServiceScreen = () => {
   const { loading: uploading, imageData, uploadingImage } = useUtility()
 
   useEffect(() => {
+    if (!isEmpty(errNewService)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errNewService])
+
+  useEffect(() => {
     getCatList("")
   }, [])
 
@@ -88,12 +95,6 @@ const NewServiceScreen = () => {
       }
     }
   }, [])
-
-  useEffect(() => {
-    if (errNewService) {
-      alert(errNewService.message)
-    }
-  }, [errNewService])
 
   const handleImageSelect = (image: Image) => {
     if (serviceRef?.current && image?.path) {

@@ -7,6 +7,7 @@ import { TextFieldColor } from "@components/text-field"
 import { TextFieldCustom } from "@components/text-field/textFieldCustom"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useAppointment } from "@hooks/appointment/useAppointment"
+import { translate } from "@i18n/translate"
 import { CreateLabel } from "@models/backend/request/Appointment"
 import { AppointmentLabelDTO } from "@models/backend/response/Appointment"
 import { goBack } from "@navigators/navigation-utilities"
@@ -16,7 +17,7 @@ import { convertYupErrorInner } from "@utils/yup/yup"
 import { get, isEmpty } from "lodash"
 import * as React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, KeyboardTypeOptions, TouchableOpacity, View } from "react-native"
+import { Alert, FlatList, KeyboardTypeOptions, TouchableOpacity, View } from "react-native"
 import * as yup from "yup"
 import styles from "./styles"
 
@@ -36,8 +37,21 @@ const NewLabelScreen = ({ route }) => {
   const [errors, setErrors] = useState({})
   const modalRef = useRef<IRefCustomModal>(null)
 
-  const { addNewLabel, loadingNewLabel, newLabel, editALabel, loadingEditLabel, editLabel } =
-    useAppointment()
+  const {
+    addNewLabel,
+    loadingNewLabel,
+    newLabel,
+    editALabel,
+    loadingEditLabel,
+    editLabel,
+    errNewLabel,
+  } = useAppointment()
+
+  useEffect(() => {
+    if (!isEmpty(errNewLabel)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errNewLabel])
 
   useEffect(() => {
     if (newLabel) {

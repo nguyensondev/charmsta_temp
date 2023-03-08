@@ -2,10 +2,13 @@ import { NewProduct } from "@models/backend/request/Product"
 import { PaginationDTO } from "@models/backend/response/Pagination"
 import { ProductDTO } from "@models/backend/response/Product"
 import { createProductApi, getProductsApi, updateProductApi } from "@services/api/Product"
+import { consoleLog } from "@utils/debug"
+import { AxiosResponse } from "axios"
 import { useState } from "react"
 
 interface Output {
   loading: boolean
+  error: AxiosResponse
   pagination: PaginationDTO
   products: Array<ProductDTO>
   newProduct: ProductDTO
@@ -18,6 +21,7 @@ interface Output {
 
 export const useProduct = (): Output => {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<AxiosResponse>()
   const [pagination, setPagination] = useState<PaginationDTO>({
     page: 0,
     size: 20,
@@ -42,7 +46,8 @@ export const useProduct = (): Output => {
       setPagination(rest)
       setLoading(false)
     } catch (err) {
-      console.log("Get products error: ", err)
+      consoleLog("Get products error: ", err)
+      setError(err)
       setLoading(false)
     }
   }
@@ -56,7 +61,9 @@ export const useProduct = (): Output => {
       }
       setLoading(false)
     } catch (err) {
-      console.log("Update product fail: ", err)
+      consoleLog("Update product fail: ", err)
+      setError(err)
+
       setLoading(false)
     }
   }
@@ -71,13 +78,15 @@ export const useProduct = (): Output => {
       }
       setLoading(false)
     } catch (err) {
-      console.log("Create product fail: ", err)
+      consoleLog("Create product fail: ", err)
+      setError(err)
       setLoading(false)
     }
   }
 
   return {
     loading,
+    error,
     newProduct,
     pagination,
     products,

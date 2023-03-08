@@ -1,7 +1,7 @@
 import { debounce, isEmpty } from "lodash"
 import { Avatar, Box, Column, Fab, FlatList } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Alert, Animated } from "react-native"
 
 import { ButtonCustom, Header, Screen } from "@components/index"
 import { TextFieldCustom } from "@components/text-field"
@@ -12,6 +12,7 @@ import { TxKeyPath } from "@i18n/i18n"
 import { CustomerDTO } from "@models/backend/response/Customer"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
+import { translate } from "@i18n/translate"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
@@ -45,8 +46,14 @@ const expandOptions = [
 
 const CustomerListScreen = () => {
   const [searchText, setSearchText] = useState("")
-  const { customers, getCustomers, skip, setSkip } = useCustomer()
+  const { customers, getCustomers, skip, setSkip, error, loading } = useCustomer()
   const [isOptionExpand, setOptionExapnd] = useState(false)
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {
@@ -67,7 +74,9 @@ const CustomerListScreen = () => {
   }
 
   useEffect(() => {
-    getCustomers(skip, searchText)
+    if (skip > 0) {
+      getCustomers(skip, searchText)
+    }
   }, [searchText, skip])
 
   const renderSearchBar = useCallback(() => {
@@ -208,6 +217,7 @@ const CustomerListScreen = () => {
     <Screen>
       <Header onLeftPress={goBack} headerTx={"screens.headerTitle.customerList"} />
       <FlatList
+        ListEmptyComponent={() => <Text text="No data" alignSelf={"center"} />}
         data={customers}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}

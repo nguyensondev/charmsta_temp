@@ -5,17 +5,18 @@ import SearchBar from "@components/search-bar"
 import { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text"
 import { useService } from "@hooks/service/useService"
+import { translate } from "@i18n/translate"
 import { CategoryDTO } from "@models/backend/response/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
 import { navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
-import { debounce } from "lodash"
+import { debounce, isEmpty } from "lodash"
 import { Fab } from "native-base"
 import * as React from "react"
 import { useCallback } from "react"
-import { FlatList, TouchableOpacity, View } from "react-native"
+import { Alert, FlatList, TouchableOpacity, View } from "react-native"
 import styles from "./styles"
 
 const Item = ({ item }: { item: CategoryDTO }) => (
@@ -33,7 +34,13 @@ const Item = ({ item }: { item: CategoryDTO }) => (
 const CategoryListScreen = () => {
   const ref = React.useRef<RefSearch>(null)
 
-  const { loadingCatList, getCatList, catList } = useService()
+  const { loadingCatList, getCatList, catList, errCatList } = useService()
+
+  React.useEffect(() => {
+    if (!isEmpty(errCatList)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errCatList])
 
   useFocusEffect(
     useCallback(() => {

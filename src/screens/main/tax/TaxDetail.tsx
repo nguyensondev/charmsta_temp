@@ -10,6 +10,7 @@ import { goBack, navigate } from "@navigators/navigation-utilities"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { isEmpty } from "lodash"
 import { Row, ScrollView } from "native-base"
 import React, { useEffect, useRef } from "react"
 import { Alert } from "react-native"
@@ -26,7 +27,13 @@ const TaxDetailScreen = (props: TaxDetailScreenProps) => {
     params: { detail },
   } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.taxDetail>>()
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { deleteTax, isDeleted } = useTax()
+  const { deleteTax, isDeleted, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (isDeleted) {

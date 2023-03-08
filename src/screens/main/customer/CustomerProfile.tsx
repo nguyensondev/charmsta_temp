@@ -16,6 +16,7 @@ import Text from "@components/text/text"
 import { useCustomer } from "@hooks/customer"
 import { useUtility } from "@hooks/utility"
 import { TxKeyPath } from "@i18n/i18n"
+import { translate } from "@i18n/translate"
 import { Customer } from "@models/backend/request/Customer"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -23,12 +24,19 @@ import { goBack } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertYupErrorInner } from "@utils/yup/yup"
+import { Alert } from "react-native"
 
 const profileFields = [
   { id: "firstName", key: "firstName", label: "First name", isOptional: true },
   { id: "lastName", key: "lastName", label: "Last name", isOptional: true },
   { id: "phoneNumber", key: "phoneNumber", label: "Phone number" },
-  { id: "email", key: "email", label: "Email", isOptional: true },
+  {
+    id: "email",
+    key: "email",
+    label: "Email",
+    isOptional: true,
+    keyboardType: "email-address",
+  },
   { id: "dob", key: "dob", label: "Date of birth", isOptional: true },
   { id: "address", key: "address.address", label: "Address", isOptional: true },
   { id: "address2", key: "address.address2", label: "Address 2", isOptional: true },
@@ -56,9 +64,16 @@ const CustomerProfileScreen = () => {
   const profileRef = useRef<Partial<Customer>>({})
   const imagePickerRef = useRef<IRefCustomModal>(null)
 
-  const { updateCustomer, createCustomer, loading, createStatus, updateStatus } = useCustomer()
+  const { updateCustomer, createCustomer, loading, createStatus, updateStatus, error } =
+    useCustomer()
 
   const { uploadingImage, imageData, loading: uploading } = useUtility()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (createStatus) {
@@ -114,12 +129,13 @@ const CustomerProfileScreen = () => {
   const handleProfileButtonPress = async () => {
     try {
       const invokingData: Customer = {
-        lastName: customerProfile.lastName.trim(),
-        firstName: customerProfile.firstName.trim(),
+        lastName: customerProfile?.lastName.trim(),
+        firstName: customerProfile?.firstName.trim(),
         ...customerProfile,
         ...profileRef.current,
         avatar: imageData?.url || customerProfile?.avatar,
       }
+
       switch (screenStatus) {
         case "cancel":
           return setEditable(false)
@@ -172,7 +188,6 @@ const CustomerProfileScreen = () => {
       isLoading={uploading}
     />
   )
-
   const renderItem = ({ item, index }) => {
     switch (item.id) {
       case "dob":

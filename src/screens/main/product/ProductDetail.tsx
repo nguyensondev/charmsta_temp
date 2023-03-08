@@ -2,7 +2,7 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { get, isEmpty, isMatch, isNumber } from "lodash"
 import { ScrollView } from "native-base"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { KeyboardType } from "react-native"
+import { Alert, KeyboardType } from "react-native"
 import { Image } from "react-native-image-crop-picker"
 import * as yup from "yup"
 
@@ -14,6 +14,7 @@ import Text from "@components/text/text"
 import { useProduct } from "@hooks/product"
 import { useUtility } from "@hooks/utility"
 import { TxKeyPath } from "@i18n/i18n"
+import { translate } from "@i18n/translate"
 import { ProductDTO } from "@models/backend/response/Product"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -81,11 +82,18 @@ const ProductDetailScreen = () => {
     updateProductStatus,
     createProductStatus,
     newProduct,
+    error,
   } = useProduct()
   const { loading: uploading, imageData, uploadingImage } = useUtility()
   const modalRef = useRef<IRefCustomModal>(null)
 
   const productDetailRef = useRef<Partial<ProductDTO>>({})
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useLayoutEffect(() => {
     setIsDiff(!isMatch(detail, productDetailRef.current))

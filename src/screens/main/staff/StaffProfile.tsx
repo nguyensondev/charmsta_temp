@@ -36,8 +36,13 @@ const schema = yup.object().shape({
 
 const staffFields = [
   { id: "name", label: "name" },
-  { id: "phoneNumber", label: "phoneNumber" },
-  { id: "email", label: "email", isOptional: true },
+  { id: "phoneNumber", label: "phoneNumber", keyboardType: "phone-pad" },
+  {
+    id: "email",
+    label: "email",
+    isOptional: true,
+    keyboardType: "email-address",
+  },
   { id: "workingDays", label: "Working Days", isOptional: true, isHasButton: true },
   { id: "breaks", label: "Breaks", isOptional: true, isHasButton: true, editable: true },
   { id: "timeOff", label: "Time Off", isOptional: true, isHasButton: true, editable: true },
@@ -58,6 +63,7 @@ const StaffProfileScreen = () => {
   const [errors, setErrors] = useState<any>({})
   const {
     loading,
+    error,
     loadingDelete,
     createStaffProfile,
     editStaffProfile,
@@ -70,6 +76,13 @@ const StaffProfileScreen = () => {
   const { uploadingImage, loading: uploading, imageData } = useUtility()
   const staffRef = useRef<Partial<StaffDTO>>({})
   const imagePickerRef = useRef<IRefCustomModal>(null)
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
+
   useEffect(() => {
     if (createStaffStatus) {
       alert("Create staff successful !")
@@ -254,7 +267,7 @@ const StaffProfileScreen = () => {
         )}
         <ButtonCustom
           isLoading={loading}
-          disabled={uploading}
+          disabled={uploading || loadingDelete}
           w={detail?.id ? "48%" : "90%"}
           onPress={handleProfileButtonPress}
         >

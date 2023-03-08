@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native"
 import { Box, Fab, FlatList, Image } from "native-base"
-import React, { useCallback, useRef } from "react"
-import { TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect, useRef } from "react"
+import { Alert, TouchableOpacity } from "react-native"
 
 import { Header, Screen } from "@components/index"
 import Loading from "@components/loading/Loading"
@@ -10,14 +10,21 @@ import Text from "@components/text/text"
 import { useProduct } from "@hooks/product"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
+import { translate } from "@i18n/translate"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { debounce, isEmpty } from "lodash"
 
 const ProductListScreen = () => {
-  const { loading, products, getProducts, pagination } = useProduct()
+  const { loading, products, getProducts, pagination, error } = useProduct()
   const searchBarRef = useRef<RefSearch>()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {

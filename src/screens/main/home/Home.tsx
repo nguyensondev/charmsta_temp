@@ -15,9 +15,6 @@ import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { DATE_FORMAT, SCREEN_WIDTH } from "@config/constants"
 
 import AgendaCalendar from "@components/agenda-calendar"
-import CalendarView from "@components/modal/CalendarView"
-import CalendarZoom from "@components/modal/CalendarZoom"
-import OptionsPicker from "@components/modal/OptionsPicker"
 import { GET_APPOINTMENTS_QUERY } from "@graphql/appointment"
 import useGraphql from "@hooks/graphql"
 import { useStaff } from "@hooks/staff"
@@ -275,7 +272,7 @@ const HomeScreen = () => {
       <>
         <View style={styles.container}>
           <View style={styles.left}>
-            <VectorIcon
+            {/* <VectorIcon
               id={"2"}
               style={styles.icon}
               size={24}
@@ -286,7 +283,7 @@ const HomeScreen = () => {
                   actionName: "filterAppointment",
                 } as unknown as [MAIN_SCREENS.additionSelect])
               }
-            />
+            /> */}
           </View>
           {/* <View style={styles.left}> */}
           {/*   <TouchableOpacity onPress={toDayAction}> */}
@@ -444,11 +441,11 @@ const HomeScreen = () => {
   return (
     <Screen style={styles.content}>
       {_renderHeader()}
-      {calendarView === "DAY" ? _renderStaffs() : null}
+      {/* {calendarView === "DAY" ? _renderStaffs() : null} */}
       <RenderBody />
       <RenderNewApppointment />
 
-      <CustomModal
+      {/* <CustomModal
         ref={calendarZoomRef}
         childView={
           <CalendarZoom
@@ -477,7 +474,7 @@ const HomeScreen = () => {
             }}
           />
         }
-      />
+      /> */}
     </Screen>
   )
 }

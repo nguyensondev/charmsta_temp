@@ -1,8 +1,8 @@
 import { ButtonCustom } from "@components/button/buttonCustom"
 import { CustomCalendarList } from "@components/calendar/CustomCalendarList"
 import { Header } from "@components/header/header"
+import { Screen } from "@components/index"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
-import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
 import { CALENDAR_FORMAT, DURATION, TIME_SLOTS_CONFIG } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
@@ -16,8 +16,14 @@ import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
-import { goBack, navigate, navigationRef } from "@navigators/navigation-utilities"
-import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
+import { goBack, navigationRef } from "@navigators/navigation-utilities"
+import {
+  RouteProp,
+  StackActions,
+  useIsFocused,
+  useNavigation,
+  useRoute
+} from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertMinsValue } from "@utils/time"
@@ -30,7 +36,7 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon,
+  WarningOutlineIcon
 } from "native-base"
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Alert, ScrollView, TouchableOpacity, View } from "react-native"
@@ -114,9 +120,11 @@ const EditAppointmentScreen = () => {
         {
           text: "Ok",
           onPress: () =>
-            navigate(MAIN_SCREENS.appointmentDetail, {
-              detail: { ...appointmentDetail, ...editedAppointment },
-            } as MainNavigatorParamList[MAIN_SCREENS.appointmentDetail]),
+            navigation.dispatch(
+              StackActions.replace(MAIN_SCREENS.appointmentDetail, {
+                detail: { ...appointmentDetail, ...editedAppointment },
+              } as MainNavigatorParamList[MAIN_SCREENS.appointmentDetail]),
+            ),
         },
       ])
     }
@@ -504,6 +512,7 @@ const EditAppointmentScreen = () => {
         {/* notes */}
         <Text tx="appointment.notes" style={styles.lbl} />
         <TextArea
+          key="editinput"
           // value={notes}
           defaultValue={note}
           onChangeText={(text) => handleAppointmentChange("note", text)}
@@ -545,7 +554,7 @@ const EditAppointmentScreen = () => {
         disabled={loadingEditAppointment || duration === 0 || startTime.length === 0}
         isLoading={loadingEditAppointment}
         w="90%"
-        marginBottom={spacing[2]}
+        marginY={spacing[1]}
         onPress={submit}
       >
         <Text tx="common.save" style={{ color: color.palette.white }} />

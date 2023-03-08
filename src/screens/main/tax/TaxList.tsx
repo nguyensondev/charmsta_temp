@@ -2,6 +2,7 @@ import { Header, Screen } from "@components/index"
 import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
 import { useTax } from "@hooks/tax"
+import { translate } from "@i18n/translate"
 import { TaxDTO } from "@models/backend/response/Tax"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -11,14 +12,20 @@ import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { debounce, isEmpty } from "lodash"
 import { Fab, FlatList, Row } from "native-base"
-import React, { useCallback, useMemo, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Alert, TouchableOpacity } from "react-native"
 
 interface TaxListScreenProps {}
 
 const TaxListScreen = (props: TaxListScreenProps) => {
-  const { getTaxList, taxList } = useTax()
   const [searchText, setSearchText] = useState("")
+  const { getTaxList, taxList, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {

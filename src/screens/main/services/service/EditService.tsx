@@ -97,8 +97,14 @@ const EditServiceScreen: React.FC<IEditServiceScreen> = () => {
   const modalRef = useRef<IRefCustomModal>()
   const [editedService, setEditedService] = useState<Partial<ServiceDTO>>(detail)
   const serviceRef = useRef<Partial<NewService>>({})
-  const { errNewService, newService, editSerivce, loading, getCatList, catList } = useService()
+  const { errEditService, newService, editSerivce, loading, getCatList, catList } = useService()
   const { imageData, uploadingImage, loading: uploading } = useUtility()
+
+  useEffect(() => {
+    if (!isEmpty(errEditService)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errEditService])
 
   useEffect(() => {
     getCatList("")
@@ -136,12 +142,6 @@ const EditServiceScreen: React.FC<IEditServiceScreen> = () => {
       }
     }
   }, [])
-
-  useEffect(() => {
-    if (errNewService) {
-      alert(errNewService.message)
-    }
-  }, [errNewService])
 
   const handleAvatarSelect = (image: Image) => {
     if (image?.path) {

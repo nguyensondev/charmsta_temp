@@ -237,6 +237,7 @@ const SignInScreen = () => {
           onChangeText={(value) => handleTextChange("email", value)}
           placeholderTextColor="black"
           placeholder="Email"
+          keyboardType="email-address"
           errorMsg={errors?.email}
         />
         <TextFieldCustom

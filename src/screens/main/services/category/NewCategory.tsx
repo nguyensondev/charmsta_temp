@@ -4,6 +4,7 @@ import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
 import { TextFieldCustom } from "@components/text-field"
 import { useService } from "@hooks/service/useService"
+import { translate } from "@i18n/translate"
 import { NewCategory } from "@models/backend/request/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
@@ -15,7 +16,7 @@ import { convertYupErrorInner } from "@utils/yup/yup"
 import { get } from "lodash"
 import * as React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, KeyboardTypeOptions } from "react-native"
+import { Alert, FlatList, KeyboardTypeOptions } from "react-native"
 import * as yup from "yup"
 
 const profileFields = [{ id: "name", key: "name", label: "Category name", keyboardType: "default" }]
@@ -49,7 +50,7 @@ const NewCategoryScreen = () => {
 
   useEffect(() => {
     if (errNewCategory) {
-      alert(errNewCategory.message)
+      Alert.alert("Error", translate("errors.unexpected"))
     }
   }, [errNewCategory])
 

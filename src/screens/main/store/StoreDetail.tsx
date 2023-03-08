@@ -40,7 +40,7 @@ const fields = [
   { id: "bookingPage", label: "bookingPage" },
   { id: "name", label: "storeName" },
   { id: "categories", label: "categories", isHasButton: true },
-  { id: "email", label: "email" },
+  { id: "email", label: "email", keyboardType: "email-address" },
   { id: "phoneNumber", label: "phoneNumber" },
   { id: "currency", label: "currency" },
   { id: "website", label: "website", isOptional: true },

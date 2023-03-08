@@ -27,7 +27,7 @@ import {
   TimeOffDetailScreen,
   TimeOffScreen,
   TimeZonesScreen,
-  WorkingDaysScreen,
+  WorkingDaysScreen
 } from "@screens/main"
 import { AccountProfileScreen } from "@screens/main/account"
 import EditAccountScreen from "@screens/main/account/EditAccount"
@@ -36,26 +36,26 @@ import {
   CancelAppointmentScreen,
   CheckoutScreen,
   EditAppointmentScreen,
-  NewAppointmentScreen,
+  NewAppointmentScreen
 } from "@screens/main/appointment"
 import { CustomerImportScreen, CustomerProfileScreen } from "@screens/main/customer"
 import {
   DiscountDetailScreen,
   DiscountListScreen,
   EditDiscountScreen,
-  NewDiscountScreen,
+  NewDiscountScreen
 } from "@screens/main/discount"
 import {
   EditPackageScreen,
   NewPackageScreen,
   PackageDetailScreen,
-  PackageListScreen,
+  PackageListScreen
 } from "@screens/main/package"
 import {
   CardPaymentScreen,
   CashPaymentScreen,
   OtherPaymentScreen,
-  PaymentTypeScreen,
+  PaymentTypeScreen
 } from "@screens/main/payment"
 import { ProductDetailScreen, ProductListScreen } from "@screens/main/product"
 import SelectionScreen from "@screens/main/selection"
@@ -64,7 +64,7 @@ import {
   BookingPoliciesScreen,
   BookingSlotSizeScreen,
   CancellationPolicyScreen,
-  CustomerNotesScreen,
+  CustomerNotesScreen
 } from "@screens/main/settings/BookingPolicies"
 import { AppointmentSlotScreen } from "@screens/main/settings/CalenderSettings"
 import WeekStartDayScreen from "@screens/main/settings/CalenderSettings/WeekStartDay"
@@ -135,13 +135,13 @@ const MainStack = () => {
         <Stack.Screen name={MAIN_SCREENS.serviceList} component={ServiceListScreen} />
         <Stack.Screen name={MAIN_SCREENS.newService} component={NewServiceScreen} />
         <Stack.Screen name={MAIN_SCREENS.serviceDetail} component={ServiceDetailScreen} />
-        <Stack.Group screenOptions={{ presentation: "modal", animationDuration: 0 }}>
-          <Stack.Screen name={MAIN_SCREENS.newAppointment} component={NewAppointmentScreen} />
-          <Stack.Screen name={MAIN_SCREENS.editAppointment} component={EditAppointmentScreen} />
-          <Stack.Screen name={MAIN_SCREENS.appointmentDetail} component={AppointmentDetailScreen} />
-          <Stack.Screen name={MAIN_SCREENS.additionSelect} component={SelectionScreen} />
-          <Stack.Screen name={MAIN_SCREENS.cancelAppointment} component={CancelAppointmentScreen} />
-        </Stack.Group>
+        {/* <Stack.Group screenOptions={{ presentation: "modal" }}> */}
+        <Stack.Screen name={MAIN_SCREENS.appointmentDetail} component={AppointmentDetailScreen} />
+        <Stack.Screen name={MAIN_SCREENS.newAppointment} component={NewAppointmentScreen} />
+        <Stack.Screen name={MAIN_SCREENS.editAppointment} component={EditAppointmentScreen} />
+        <Stack.Screen name={MAIN_SCREENS.additionSelect} component={SelectionScreen} />
+        <Stack.Screen name={MAIN_SCREENS.cancelAppointment} component={CancelAppointmentScreen} />
+        {/* </Stack.Group> */}
         <Stack.Screen name={MAIN_SCREENS.checkout} component={CheckoutScreen} />
         <Stack.Screen name={MAIN_SCREENS.staffList} component={StaffListScreen} />
         <Stack.Screen name={MAIN_SCREENS.staffProfile} component={StaffProfileScreen} />

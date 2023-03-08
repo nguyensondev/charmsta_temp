@@ -4,7 +4,7 @@ import { Screen } from "@components/index"
 import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SCREEN_WIDTH, SELECT_HEIGHT } from "@config/constants"
+import { SCREEN_WIDTH } from "@config/constants"
 import { DATA_TIMEZONE } from "@config/timeZoneCountry"
 import { TimeZoneDTO } from "@models/backend/response/Store"
 import { MAIN_SCREENS } from "@models/enum/screensName"
@@ -61,7 +61,8 @@ const TimeZonesScreen = ({ route }) => {
         disabled={false}
         isLoading={false}
         w="90%"
-        h={SELECT_HEIGHT}
+        // h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >

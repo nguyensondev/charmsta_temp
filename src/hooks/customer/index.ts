@@ -6,11 +6,13 @@ import {
   createCustomerApi,
   getCustomersApi,
   importCustomersApi,
-  updateCustomersApi,
+  updateCustomersApi
 } from "@services/api/Customer"
+import { AxiosResponse } from "axios"
 
 interface Output {
   loading: boolean
+  error: AxiosResponse
   createStatus: boolean
   updateStatus: boolean
   importStatus: boolean
@@ -25,6 +27,7 @@ interface Output {
 
 export const useCustomer = (): Output => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<AxiosResponse>()
   const [customers, setCustomers] = useState<Array<CustomerDTO>>([])
   const [createStatus, setCreateStatus] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
@@ -40,7 +43,7 @@ export const useCustomer = (): Output => {
         setCustomers(data)
       }
     } catch (err) {
-      console.log("err", { err })
+      setError(err)
     }
   }
 
@@ -50,7 +53,9 @@ export const useCustomer = (): Output => {
       await updateCustomersApi(profile)
       setUpdateStatus(true)
       setLoading(false)
-    } catch (err) {}
+    } catch (err) {
+      setError(err)
+    }
   }
 
   const createCustomer = async (profile: Customer) => {
@@ -60,7 +65,7 @@ export const useCustomer = (): Output => {
       setCreateStatus(true)
     } catch (err) {
       setLoading(false)
-      throw err
+      setError(err)
     }
   }
 
@@ -74,10 +79,12 @@ export const useCustomer = (): Output => {
       setLoading(false)
     } catch (err) {
       setLoading(false)
+      setError(err)
     }
   }
 
   return {
+    error,
     loading,
     customers,
     skip,

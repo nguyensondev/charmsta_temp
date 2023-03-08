@@ -28,7 +28,13 @@ const EditTaxScreen = (props: EditTaxScreenProps) => {
   } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.taxDetail>>()
   const [errors, setErrors] = useState<{ name?: string; rate?: string }>({})
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { updateTax, loading, newTax } = useTax()
+  const { updateTax, loading, newTax, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (!isEmpty(newTax)) {

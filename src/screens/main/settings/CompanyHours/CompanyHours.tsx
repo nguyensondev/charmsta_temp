@@ -89,19 +89,20 @@ const CompanyHoursScreen = ({ route }) => {
   const save = () => {
     try {
       const dif = _.differenceWith(data, store.openHours, _.isEqual)
+      const invokingData = {
+        ...store,
+        openHours: data,
+        timezone: timeZone ? timeZoneTemp.name : currentTimeZone,
+      }
 
       if ((dif && dif.length > 0) || currentTimeZone !== currentTime) {
-        const invokingData = {
-          ...store,
-          openHours: data,
-          timezone: timeZone ? timeZoneTemp.name : currentTimeZone,
-        }
-
         updateCompanyHour(store.id, invokingData as UpdateStore)
       } else {
         if (navigationRef.canGoBack()) {
           goBack()
         } else {
+          updateCompanyHour(store.id, invokingData as UpdateStore)
+
           userStore.saveUserId(registerData.userInfo.id)
           Alert.alert("Alert", "Register successful!", [
             {

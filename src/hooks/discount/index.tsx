@@ -4,7 +4,7 @@ import {
   createDiscountApi,
   deleteDiscountsApi,
   editDiscountApi,
-  getDiscountsApi,
+  getDiscountsApi
 } from "@services/api/Discount"
 import { AxiosResponse } from "axios"
 import { isEmpty, omit } from "lodash"

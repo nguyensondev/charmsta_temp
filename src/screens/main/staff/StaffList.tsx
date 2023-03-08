@@ -1,6 +1,6 @@
 import { Fab, FlatList } from "native-base"
-import React, { useCallback, useMemo, useState } from "react"
-import { ListRenderItemInfo } from "react-native"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Alert, ListRenderItemInfo } from "react-native"
 
 import { ButtonCustom, Header, Screen } from "@components/index"
 import { TextFieldCustom } from "@components/text-field"
@@ -9,15 +9,22 @@ import { useStaff } from "@hooks/staff"
 import { StaffDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
+import { translate } from "@i18n/translate"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { debounce } from "lodash"
+import { debounce, isEmpty } from "lodash"
 
 const StaffListScreen = () => {
   const [searchText, setSearchText] = useState("")
-  const { getStaff, staffs, page, totalPages } = useStaff()
+  const { getStaff, staffs, page, totalPages, error } = useStaff()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {
