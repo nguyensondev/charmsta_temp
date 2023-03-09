@@ -93,7 +93,6 @@ const TimeOffScreen = ({ route }) => {
         disabled={loading}
         isLoading={loading}
         w="90%"
-        // h={SELECT_HEIGHT}
         py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}

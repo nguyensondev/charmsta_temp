@@ -44,7 +44,12 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
   }, [amounts.given, amounts.return])
 
   const onButtonPress = () => {
-    payment({ billId, payment_method, amount })
+    const { given, return: returnAmount } = amounts
+    if (given > amount) {
+      payment({ billId, payment_method, amount })
+    } else {
+      alert(`Please check customer give amount`)
+    }
   }
 
   return (
@@ -68,7 +73,7 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
           <Text text={"Amount return to customer"} />
           <TextFieldCustom
             editable={false}
-            value={amounts.return.toString()}
+            value={amounts.return.toFixed(2).toString()}
             onChangeText={(text) => {
               setAmounts((amounts) => ({
                 ...amounts,

@@ -17,7 +17,6 @@ interface MultiServicesProps {
 
 const MultiServices = (props: MultiServicesProps) => {
   const { onSelected, defaultValues = [], displayOnly = false } = props
-
   const [selecteds, setSelecteds] = useState<Partial<ServiceDTO>[]>([{}])
   const [isAddAvailable, setAddAvailable] = useState(false)
   const { getServiceList, serviceList, pagination, getAllServices, setServiceList } = useService()

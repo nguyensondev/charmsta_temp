@@ -19,7 +19,7 @@ interface EditTaxScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  rate: yup.number().required(),
+  rate: yup.number().required().min(1),
 })
 
 const EditTaxScreen = (props: EditTaxScreenProps) => {
@@ -56,7 +56,7 @@ const EditTaxScreen = (props: EditTaxScreenProps) => {
         newTaxRef["name"] = value
         break
       case "rate":
-        newTaxRef["rate"] = parseFloat(value)
+        newTaxRef["rate"] = isEmpty(value) ? 0 : parseFloat(value)
         break
     }
   }

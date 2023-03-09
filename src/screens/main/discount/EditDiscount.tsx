@@ -74,16 +74,12 @@ const EditDiscountScreen = (props: EditDiscountScreenProps) => {
   const onEdit = async () => {
     try {
       const editedDiscount = { ...detail, ...editDiscountRef, percentage: amountType }
-      console.log("editedDiscount", editedDiscount)
       await schema.validate(editedDiscount, { abortEarly: false })
       editDiscount(editedDiscount)
     } catch (err) {
-      console.log("alo1", err)
       setErrors(convertYupErrorInner(err.inner))
     }
   }
-
-  console.log("alo1", errors)
 
   const RenderBody = useCallback(
     () => (

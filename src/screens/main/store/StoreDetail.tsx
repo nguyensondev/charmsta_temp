@@ -16,7 +16,7 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertYupErrorInner } from "@utils/yup/yup"
-import { get, isEmpty, isMatch } from "lodash"
+import { get, isMatch } from "lodash"
 import { FlatList } from "native-base"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Alert } from "react-native"
@@ -100,6 +100,7 @@ const StoreDetailScreen = () => {
         invokingData.image = imageData.url
       }
       await schema.validate(invokingData, { abortEarly: false })
+      setErrors({})
       updateStore(storeDetail.id, invokingData as UpdateStore)
     } catch (err) {
       setErrors(convertYupErrorInner(err.inner))
@@ -120,11 +121,7 @@ const StoreDetailScreen = () => {
     const { id, label, ...rest } = item
 
     const handleFieldChange = (text: string) => {
-      if (isEmpty(text)) {
-        delete detailRef[id]
-      } else {
-        detailRef[id] = text
-      }
+      detailRef[id] = text
       setDiff(!isMatch(storeDetail, detailRef))
     }
 
@@ -160,8 +157,10 @@ const StoreDetailScreen = () => {
             alignSelf="center"
             labelTx={`textInput.label.${label}` as TxKeyPath}
             onChangeText={handleFieldChange}
-            defaultValue={get(storeDetail, id, "")}
-            value={rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : null}
+            defaultValue={storeDetail[id]}
+            value={
+              rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : detailRef[id]
+            }
           />
         )
     }
@@ -180,7 +179,7 @@ const StoreDetailScreen = () => {
   )
 
   return (
-    <Screen preset="scroll">
+    <Screen>
       <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
       <FlatList
         ListHeaderComponent={renderHeaderComponent}

@@ -170,7 +170,14 @@ const EditAppointmentScreen = () => {
     ) {
       return true
     } else {
-      console.log("validate fail")
+      let alertStrs = []
+      if (!packages.every((i) => i?.staffId)) {
+        alertStrs.push("Please pick a staff for your package")
+      }
+      if (!services.every((i) => i?.staffId)) {
+        alertStrs.push("Please pick a staff for your service")
+      }
+      alert(alertStrs.join(", "))
       return false
     }
   }

@@ -66,7 +66,6 @@ const NewDiscountScreen = (props: NewDiscountScreenProps) => {
   }
 
   const onCreate = () => {
-    console.log("alo1", newDiscountRef)
     schema
       .validate(newDiscountRef, { abortEarly: false })
       .then(() => {

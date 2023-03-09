@@ -16,7 +16,7 @@ interface NewTaxScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  rate: yup.number().required(),
+  rate: yup.number().required().min(1),
 })
 
 const NewTaxScreen = (props: NewTaxScreenProps) => {
@@ -47,7 +47,7 @@ const NewTaxScreen = (props: NewTaxScreenProps) => {
         newTaxRef["name"] = value
         break
       case "rate":
-        newTaxRef["rate"] = parseFloat(value)
+        newTaxRef["rate"] = isEmpty(value) ? 0 : parseFloat(value)
         break
     }
   }

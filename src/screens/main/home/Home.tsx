@@ -15,6 +15,9 @@ import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { DATE_FORMAT, SCREEN_WIDTH } from "@config/constants"
 
 import AgendaCalendar from "@components/agenda-calendar"
+import CalendarView from "@components/modal/CalendarView"
+import CalendarZoom from "@components/modal/CalendarZoom"
+import OptionsPicker from "@components/modal/OptionsPicker"
 import { GET_APPOINTMENTS_QUERY } from "@graphql/appointment"
 import useGraphql from "@hooks/graphql"
 import { useStaff } from "@hooks/staff"
@@ -445,7 +448,7 @@ const HomeScreen = () => {
       <RenderBody />
       <RenderNewApppointment />
 
-      {/* <CustomModal
+      <CustomModal
         ref={calendarZoomRef}
         childView={
           <CalendarZoom
@@ -474,7 +477,7 @@ const HomeScreen = () => {
             }}
           />
         }
-      /> */}
+      />
     </Screen>
   )
 }

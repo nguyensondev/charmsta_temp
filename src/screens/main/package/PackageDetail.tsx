@@ -31,7 +31,6 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
   const { packageId } = params
 
   const { getPackageDetail, packageDetail, deletePackage, deletePackageStatus } = usePackage()
-
   const { categoryId, category, cost, name, services, price } = packageDetail
   useLayoutEffect(() => {
     if (deletePackageStatus) {
@@ -121,7 +120,7 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
             />
           </Select>
         </FormControl>
-        {/* cost */}
+        {/* price */}
         <FormControl pointerEvents="none">
           <FormControl.Label {...nativeBaseStyle.form.inputLabel}>
             <Text tx="textInput.label.price" />
@@ -132,7 +131,7 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
             value={convertCurrency(totalPrice)}
           />
         </FormControl>
-        {/* price */}
+        {/* retail price */}
         <FormControl pointerEvents="none">
           <FormControl.Label {...nativeBaseStyle.form.inputLabel}>
             <Text tx="textInput.label.retailPrice" />
