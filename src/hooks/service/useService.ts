@@ -4,14 +4,14 @@ import {
   ListSearch,
   ListServiceInCategory,
   NewCategory,
-  NewService
+  NewService,
 } from "@models/backend/request/Service"
 import { PaginationDTO } from "@models/backend/response/Pagination"
 import {
   CategoryByIdDTO,
   CategoryDTO,
   ServiceDTO,
-  ServiceInCategoryDTO
+  ServiceInCategoryDTO,
 } from "@models/backend/response/Service"
 import {
   addNewCategoryApi,
@@ -23,7 +23,7 @@ import {
   getCatListApi,
   getListServiceInCategoryAPI,
   getServiceListApi,
-  updateListServiceInCategoryAPI
+  updateListServiceInCategoryAPI,
 } from "@services/api/Service"
 import { consoleLog } from "@utils/debug"
 import { AxiosError, AxiosResponse } from "axios"

@@ -125,17 +125,18 @@ const CustomerProfileScreen = () => {
     }
     setIsDiff(!isMatch(customerProfile, profileRef.current))
   }
-
+  console.log("editable", { isEditable, screenStatus })
   const handleProfileButtonPress = async () => {
     try {
       const invokingData: Customer = {
-        lastName: customerProfile?.lastName.trim(),
-        firstName: customerProfile?.firstName.trim(),
+        lastName: customerProfile?.lastName?.trim(),
+        firstName: customerProfile?.firstName?.trim(),
         ...customerProfile,
         ...profileRef.current,
         avatar: imageData?.url || customerProfile?.avatar,
       }
 
+      console.log("screenStatus", screenStatus)
       switch (screenStatus) {
         case "cancel":
           return setEditable(false)
@@ -151,6 +152,7 @@ const CustomerProfileScreen = () => {
           return setEditable(true)
       }
     } catch (err) {
+      console.log("alo1", err)
       if (err?.inner) {
         setErrors(convertYupErrorInner(err.inner))
       }

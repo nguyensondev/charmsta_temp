@@ -74,9 +74,7 @@ const CustomerListScreen = () => {
   }
 
   useEffect(() => {
-    if (skip > 0) {
-      getCustomers(skip, searchText)
-    }
+    getCustomers(skip, searchText)
   }, [searchText, skip])
 
   const renderSearchBar = useCallback(() => {

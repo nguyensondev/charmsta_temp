@@ -158,9 +158,7 @@ const StoreDetailScreen = () => {
             labelTx={`textInput.label.${label}` as TxKeyPath}
             onChangeText={handleFieldChange}
             defaultValue={storeDetail[id]}
-            value={
-              rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : detailRef[id]
-            }
+            value={rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : null}
           />
         )
     }

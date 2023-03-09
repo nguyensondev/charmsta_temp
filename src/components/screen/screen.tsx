@@ -5,7 +5,7 @@ import {
   Platform,
   ScrollView,
   StatusBar,
-  View
+  View,
 } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { isNonScrolling, offsets, presets } from "./screen.presets"

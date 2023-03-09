@@ -89,7 +89,7 @@ const ServiceDetailScreen = ({}) => {
   const serviceRef = useRef<Partial<NewService>>({})
 
   const { errNewService, newService, editSerivce, errEditService } = useService()
-  
+
   useEffect(() => {
     if (!isEmpty(errEditService)) {
       Alert.alert("Error", translate("errors.unexpected"))

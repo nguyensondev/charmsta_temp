@@ -12,6 +12,7 @@ import { MAIN_SCREENS } from "@models/enum/screensName"
 import { navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { isTablet } from "@utils/mathMetric"
 import _ from "lodash"
 import * as React from "react"
 import { useCallback, useEffect, useState } from "react"
@@ -29,11 +30,14 @@ const TimeZonesScreen = ({ route }) => {
 
   const save = () => {
     const newData = selected > -1 ? DATA_TIMEZONE[selected] : timeZoneTemp
-    navigate({
-      name: MAIN_SCREENS.companyHours,
-      params: { storeDetail, timeZone: newData as TimeZoneDTO },
-      merge: true,
-    })
+    if (isTablet) {
+    } else {
+      navigate({
+        name: MAIN_SCREENS.companyHours,
+        params: { storeDetail, timeZone: newData as TimeZoneDTO },
+        merge: true,
+      })
+    }
   }
 
   const cancelAction = () => {

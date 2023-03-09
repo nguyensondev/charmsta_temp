@@ -55,6 +55,7 @@ export const useCustomer = (): Output => {
       setLoading(false)
     } catch (err) {
       setError(err)
+      setLoading(false)
     }
   }
 

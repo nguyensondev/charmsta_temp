@@ -62,6 +62,9 @@ const SignInScreen = () => {
         resetAuth()
         eraseUser()
       }
+      if (GoogleSignin.isSignedIn()) {
+        GoogleSignin.signOut()
+      }
     }, []),
   )
 
