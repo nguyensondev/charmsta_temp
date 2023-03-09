@@ -1,6 +1,6 @@
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { goBack, navigationRef } from "@navigators/navigation-utilities"
+import { navigationRef } from "@navigators/navigation-utilities"
 import { useNavigation } from "@react-navigation/native"
 import { isFunction } from "lodash"
 import React from "react"
@@ -42,7 +42,7 @@ export function Header(props: HeaderProps) {
     leftVectorIcon,
   } = props
 
-  const { canGoBack } = useNavigation()
+  const { canGoBack, goBack } = useNavigation()
 
   const header =
     headerTx && headerTx.length > 0

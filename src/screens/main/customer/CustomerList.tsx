@@ -46,7 +46,7 @@ const expandOptions = [
 
 const CustomerListScreen = () => {
   const [searchText, setSearchText] = useState("")
-  const { customers, getCustomers, skip, setSkip, error, loading } = useCustomer()
+  const { customers, getCustomers, take, setTake, error, loading } = useCustomer()
   const [isOptionExpand, setOptionExapnd] = useState(false)
 
   useEffect(() => {
@@ -57,9 +57,9 @@ const CustomerListScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setSkip(() => {
-        getCustomers(0, searchText)
-        return 0
+      setTake(() => {
+        getCustomers(10, searchText)
+        return 10
       })
     }, []),
   )
@@ -74,12 +74,12 @@ const CustomerListScreen = () => {
   }
 
   useEffect(() => {
-    getCustomers(skip, searchText)
-  }, [searchText, skip])
+    getCustomers(take, searchText)
+  }, [searchText, take])
 
   const renderSearchBar = useCallback(() => {
     const handleChangeText = (text: string) => {
-      setSkip(0)
+      setTake(10)
       setSearchText(text)
     }
 
@@ -101,8 +101,8 @@ const CustomerListScreen = () => {
   }
 
   const handleGetMore = () => {
-    if (customers.length >= skip) {
-      setSkip((prev) => prev + 10)
+    if (customers.length % 10 == 0) {
+      setTake((prev) => prev + 10)
     }
   }
 

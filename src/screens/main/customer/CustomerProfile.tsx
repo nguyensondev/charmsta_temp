@@ -125,7 +125,7 @@ const CustomerProfileScreen = () => {
     }
     setIsDiff(!isMatch(customerProfile, profileRef.current))
   }
-  console.log("editable", { isEditable, screenStatus })
+
   const handleProfileButtonPress = async () => {
     try {
       const invokingData: Customer = {
@@ -136,7 +136,6 @@ const CustomerProfileScreen = () => {
         avatar: imageData?.url || customerProfile?.avatar,
       }
 
-      console.log("screenStatus", screenStatus)
       switch (screenStatus) {
         case "cancel":
           return setEditable(false)

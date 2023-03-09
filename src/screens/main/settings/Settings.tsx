@@ -10,7 +10,7 @@ import { translate } from "@i18n/translate"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator,
+  IRefSettingDetailNavigator
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -60,14 +60,6 @@ const SettingsScreen = () => {
   }
 
   const RenderHeader = useCallback(() => <Header headerText={"Settings"} leftIcon="back" />, [])
-
-  const RenderEmpty = useCallback(() => {
-    return (
-      <View style={styles.empty}>
-        <Text tx="common.empty" />
-      </View>
-    )
-  }, [])
 
   const RenderContent1 = () => {
     return (

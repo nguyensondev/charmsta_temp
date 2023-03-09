@@ -7,15 +7,15 @@ const UPDATE_CUSTOMER = "/customers/update"
 const GET_CUSTOMER_BY_ID = "/customers/customer/"
 const IMPORT_CUSTOMER = "/customers/import"
 
-export const getCustomersApi = async (skip: number, search: string = null) =>
+export const getCustomersApi = async (take = 10, search: string = null) =>
   api<Array<CustomerDTO>>(
     CUSTOMER,
     "GET",
     undefined,
     {},
     {
-      skip,
-      take: 10,
+      skip: 0,
+      take,
       search,
     },
   )

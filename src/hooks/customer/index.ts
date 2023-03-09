@@ -6,7 +6,7 @@ import {
   createCustomerApi,
   getCustomersApi,
   importCustomersApi,
-  updateCustomersApi
+  updateCustomersApi,
 } from "@services/api/Customer"
 import { AxiosResponse } from "axios"
 
@@ -17,9 +17,9 @@ interface Output {
   updateStatus: boolean
   importStatus: boolean
   customers: Array<CustomerDTO>
-  skip: number
-  getCustomers: (skip: number, search?: string) => void
-  setSkip: Dispatch<SetStateAction<number>>
+  take: number
+  getCustomers: (take: number, search?: string) => void
+  setTake: Dispatch<SetStateAction<number>>
   updateCustomer: (data: Customer) => void
   createCustomer: (data: Customer) => void
   importCustomers: (data: ImportCustomer[]) => void
@@ -32,16 +32,16 @@ export const useCustomer = (): Output => {
   const [createStatus, setCreateStatus] = useState(false)
   const [updateStatus, setUpdateStatus] = useState(false)
   const [importStatus, setImportStatus] = useState(false)
-  const [skip, setSkip] = useState<number>(0)
+  const [take, setTake] = useState<number>(0)
 
-  const getCustomers = async (skip: number, search?: string) => {
+  const getCustomers = async (take: number, search?: string) => {
     try {
-      const { data } = await getCustomersApi(skip, search)
-      if (skip > 0) {
-        setCustomers([...customers, ...data])
-      } else {
-        setCustomers(data)
-      }
+      const { data } = await getCustomersApi(take, search)
+      // if (skip > 0) {
+      // setCustomers([...customers, ...data])
+      // } else {
+      setCustomers(data)
+      // }
     } catch (err) {
       setError(err)
     }
@@ -88,11 +88,11 @@ export const useCustomer = (): Output => {
     error,
     loading,
     customers,
-    skip,
+    take,
     createStatus,
     updateStatus,
     importStatus,
-    setSkip,
+    setTake,
     getCustomers,
     updateCustomer,
     createCustomer,

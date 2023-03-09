@@ -16,9 +16,9 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertYupErrorInner } from "@utils/yup/yup"
-import { get, isMatch } from "lodash"
+import { get, isEmpty } from "lodash"
 import { FlatList } from "native-base"
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { Image } from "react-native-image-crop-picker"
 import * as yup from "yup"
@@ -51,10 +51,10 @@ const fields = [
   { id: "zipcode", label: "zipcode" },
 ]
 const StoreDetailScreen = () => {
-  const { storeDetail } =
-    useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.storeDetail>>().params
+  const {
+    params: { storeDetail },
+  } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.storeDetail>>()
   const [changedDetail, setChangedDetail] = useState<Partial<StoreDTO>>({})
-  const [isDiff, setDiff] = useState(false)
   const [errors, setErrors] = useState<Partial<{ [key: string]: string }>>({})
   const { loading: uploading, imageData, uploadingImage } = useUtility()
   const { updating, updateSuccess, updateStore } = useStoresInfo()
@@ -70,13 +70,10 @@ const StoreDetailScreen = () => {
   useEffect(() => {
     if (updateSuccess) {
       Alert.alert("Success", "Your store detail has been updated successful")
+      setErrors({})
       // goBack()
     }
   }, [updateSuccess])
-
-  useLayoutEffect(() => {
-    setDiff(!isMatch(storeDetail, changedDetail))
-  }, [changedDetail])
 
   const onAvatarPress = () => {
     if (modalRef.current) {
@@ -89,7 +86,6 @@ const StoreDetailScreen = () => {
       detailRef.image = image.path
       uploadingImage(image)
       modalRef.current.closeModal()
-      setDiff(!isMatch(storeDetail, detailRef))
     }
   }
 
@@ -100,14 +96,13 @@ const StoreDetailScreen = () => {
         invokingData.image = imageData.url
       }
       await schema.validate(invokingData, { abortEarly: false })
-      setErrors({})
       updateStore(storeDetail.id, invokingData as UpdateStore)
     } catch (err) {
       setErrors(convertYupErrorInner(err.inner))
     }
   }
 
-  const renderHeaderComponent = () => (
+  const RenderHeaderComponent = () => (
     <Avatar
       source={{
         uri: detailRef?.image ? detailRef.image : storeDetail?.image,
@@ -117,12 +112,15 @@ const StoreDetailScreen = () => {
     />
   )
 
-  const renderItem = ({ item }) => {
+  const RenderItem = ({ item }) => {
     const { id, label, ...rest } = item
 
     const handleFieldChange = (text: string) => {
-      detailRef[id] = text
-      setDiff(!isMatch(storeDetail, detailRef))
+      if (isEmpty(text)) {
+        delete detailRef[id]
+      } else {
+        detailRef[id] = text
+      }
     }
 
     const handleFieldPress = (id: string) => {
@@ -139,6 +137,7 @@ const StoreDetailScreen = () => {
       case "currency":
         return (
           <TextFieldCurrency
+            key={id}
             labelTx={`textInput.label.${id}` as TxKeyPath}
             onSelectCurrency={(data) => {
               handleFieldChange(data.code)
@@ -148,17 +147,21 @@ const StoreDetailScreen = () => {
             defaultValue={get(storeDetail, "currency", "USD")}
           />
         )
+
       default:
         return (
           <TextFieldCustom
+            key={id}
             {...rest}
             errorMsg={errors[id]}
             buttonClick={() => handleFieldPress(id)}
             alignSelf="center"
             labelTx={`textInput.label.${label}` as TxKeyPath}
             onChangeText={handleFieldChange}
-            defaultValue={storeDetail[id]}
-            value={rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : null}
+            defaultValue={
+              rest.isHasButton && !!changedDetail[id] ? changedDetail[id] : storeDetail[id]
+            }
+            // value={rest.isHasButton && !!changedDetail[id] ? get(changedDetail, id, "") : null}
           />
         )
     }
@@ -180,17 +183,18 @@ const StoreDetailScreen = () => {
     <Screen>
       <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
       <FlatList
-        ListHeaderComponent={renderHeaderComponent}
+        ListHeaderComponent={() => <RenderHeaderComponent />}
         paddingX={spacing[1]}
         data={fields}
         keyExtractor={(item) => item.id}
-        renderItem={renderItem}
+        renderItem={({ item }) => <RenderItem item={item} />}
       />
+
       <ButtonCustom
         w="90%"
         isLoading={updating}
         marginBottom={spacing[2]}
-        disabled={!isDiff || uploading}
+        disabled={uploading}
         onPress={onSavePress}
       >
         <Text tx="button.save" style={{ color: color.palette.white }} />
@@ -206,6 +210,35 @@ const StoreDetailScreen = () => {
           />
         }
       />
+    </Screen>
+  )
+}
+
+const StoreDetailScreenA = () => {
+  return (
+    <Screen>
+      <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCustom />
+      <TextFieldCurrency />
+      <ButtonCustom
+        w="90%"
+        // isLoading={updating}
+        marginBottom={spacing[2]}
+        // disabled={uploading}
+        // onPress={onSavePress}
+      >
+        <Text tx="button.save" style={{ color: color.palette.white }} />
+      </ButtonCustom>
     </Screen>
   )
 }

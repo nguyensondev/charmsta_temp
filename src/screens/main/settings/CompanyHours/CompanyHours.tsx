@@ -10,11 +10,12 @@ import { OpenHoursDTO, StoreDTO, TimeZoneDTO } from "@models/backend/response/St
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 
-import { goBack, navigate, navigationRef } from "@navigators/navigation-utilities"
+import { goBack, navigationRef } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import _, { get, isEmpty } from "lodash"
 
+import { useNavigation } from "@react-navigation/native"
 import { convertMinsValue } from "@utils/time"
 import moment from "moment-timezone"
 import { ScrollView, View } from "native-base"
@@ -23,6 +24,7 @@ import { Alert, Switch, TouchableOpacity, TouchableWithoutFeedback } from "react
 import DatePicker from "react-native-date-picker"
 import styles from "./styles"
 const CompanyHoursScreen = ({ route }) => {
+  const navigation = useNavigation()
   const { storeDetail, timeZone } = route.params
   const registerData = get<Partial<Omit<RegisterDTO, "accessToken">>>(
     route.params,
@@ -46,10 +48,13 @@ const CompanyHoursScreen = ({ route }) => {
   const { userStore } = useStores()
 
   const navTimeZone = () => {
-    navigate(MAIN_SCREENS.timeZone, {
-      storeDetail,
-      timeZone: timeZone ? timeZoneTemp : ({ group: [currentTimeZone] } as any),
-    })
+    navigation.navigate(
+      MAIN_SCREENS.timeZone as never,
+      {
+        storeDetail,
+        timeZone: timeZone ? timeZoneTemp : ({ group: [currentTimeZone] } as any),
+      } as never,
+    )
   }
 
   const toggleSwitch = (day: number, prev: boolean) => {
@@ -122,7 +127,6 @@ const CompanyHoursScreen = ({ route }) => {
     if (companyHour) {
       if (navigationRef.canGoBack()) {
         alert("Update Company Hours successful!")
-        goBack()
       } else {
         userStore.saveUserId(registerData.userInfo.id)
         Alert.alert("Alert", "Register successful!", [
@@ -132,11 +136,6 @@ const CompanyHoursScreen = ({ route }) => {
           },
         ])
       }
-      //   navigation.navigate({
-      //     name: MAIN_SCREENS.staffProfile,
-      //     params: { detail: staffData, editable: false },
-      //     merge: true,
-      //   })
     }
   }, [companyHour])
 
