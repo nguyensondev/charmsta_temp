@@ -1,7 +1,7 @@
 import { debounce, isEmpty } from "lodash"
-import { Avatar, Box, Fab, FlatList } from "native-base"
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Avatar, Box, Column, Fab, FlatList } from "native-base"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Alert, Animated } from "react-native"
 
 import { ButtonCustom, Header, Screen } from "@components/index"
 import { TextFieldCustom } from "@components/text-field"
@@ -12,6 +12,7 @@ import { TxKeyPath } from "@i18n/i18n"
 import { CustomerDTO } from "@models/backend/response/Customer"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
+import { translate } from "@i18n/translate"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
@@ -45,14 +46,20 @@ const expandOptions = [
 
 const CustomerListScreen = () => {
   const [searchText, setSearchText] = useState("")
-  const { customers, getCustomers, skip, setSkip } = useCustomer()
+  const { customers, getCustomers, take, setTake, error, loading } = useCustomer()
   const [isOptionExpand, setOptionExapnd] = useState(false)
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {
-      setSkip(() => {
-        getCustomers(0, searchText)
-        return 0
+      setTake(() => {
+        getCustomers(10, searchText)
+        return 10
       })
     }, []),
   )
@@ -67,12 +74,12 @@ const CustomerListScreen = () => {
   }
 
   useEffect(() => {
-    getCustomers(skip, searchText)
-  }, [searchText, skip])
+    getCustomers(take, searchText)
+  }, [searchText, take])
 
   const renderSearchBar = useCallback(() => {
     const handleChangeText = (text: string) => {
-      setSkip(0)
+      setTake(10)
       setSearchText(text)
     }
 
@@ -94,18 +101,20 @@ const CustomerListScreen = () => {
   }
 
   const handleGetMore = () => {
-    if (customers.length >= skip) {
-      setSkip((prev) => prev + 10)
+    if (customers.length % 10 == 0) {
+      setTake((prev) => prev + 10)
     }
   }
 
-  const _renderItem = useCallback(
+  const CustomerItem = useCallback(
     ({ item }: { item: CustomerDTO; index: number }) => {
-      const { firstName, lastName, avatar, phoneNumber } = item
-      const displayName =
-        isEmpty(firstName) && isEmpty(lastName)
-          ? phoneNumber
-          : `${firstName || ""} ${lastName || ""}`
+      const { firstName, lastName, avatar, phoneNumber, countryCode } = item
+      const displayName = useMemo(
+        () =>
+          isEmpty(firstName) && isEmpty(lastName) ? "" : `${firstName || ""} ${lastName || ""}`,
+        [firstName, lastName],
+      )
+      const displayPhoneNumber = useMemo(() => `${countryCode} ${phoneNumber}`, [phoneNumber])
       return (
         <ButtonCustom
           onPress={() => onContactPress(item)}
@@ -118,7 +127,10 @@ const CustomerListScreen = () => {
         >
           <Box flexDirection="row" alignItems="center" padding={"1.5"}>
             <Avatar source={{ uri: avatar }} size="lg" marginRight={spacing[1]} />
-            <Text fontWeight="bold">{displayName}</Text>
+            <Column>
+              <Text fontWeight="bold">{displayName}</Text>
+              <Text fontWeight="light">{displayPhoneNumber}</Text>
+            </Column>
           </Box>
         </ButtonCustom>
       )
@@ -203,13 +215,14 @@ const CustomerListScreen = () => {
     <Screen>
       <Header onLeftPress={goBack} headerTx={"screens.headerTitle.customerList"} />
       <FlatList
+        ListEmptyComponent={() => <Text text="No data" alignSelf={"center"} />}
         data={customers}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={renderSearchBar}
         onEndReached={handleGetMore}
-        renderItem={_renderItem}
+        renderItem={({ item, index }) => <CustomerItem item={item} index={index} />}
       />
       <FooterSection />
     </Screen>

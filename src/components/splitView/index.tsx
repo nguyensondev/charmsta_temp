@@ -1,6 +1,6 @@
 import { useIsTablet } from "@contexts/isTabletContext"
+import { Row, View } from "native-base"
 import React from "react"
-import { View } from "react-native"
 import { styles } from "./styles"
 
 interface ISplitView {
@@ -14,10 +14,10 @@ const SplitView: React.FC<ISplitView> = ({ master, detail }) => {
   if (!isTablet) return master
 
   return (
-    <View style={styles.root}>
+    <Row style={styles.root}>
       <View style={styles.masterView}>{master}</View>
       <View style={styles.detailView}>{detail}</View>
-    </View>
+    </Row>
   )
 }
 

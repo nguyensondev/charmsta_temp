@@ -4,12 +4,12 @@ import { Screen } from "@components/index"
 import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SCREEN_WIDTH, SELECT_HEIGHT } from "@config/constants"
+import { SCREEN_WIDTH } from "@config/constants"
 import { DATA_TIMEZONE } from "@config/timeZoneCountry"
 import { TimeZoneDTO } from "@models/backend/response/Store"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
-import { navigate } from "@navigators/navigation-utilities"
+import { useNavigation } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import _ from "lodash"
@@ -19,6 +19,7 @@ import { FlatList, TouchableOpacity, View } from "react-native"
 import styles from "./styles"
 
 const TimeZonesScreen = ({ route }) => {
+  const { navigate } = useNavigation()
   const { timeZone, storeDetail } = route.params
   const timeZoneTemp = timeZone as TimeZoneDTO
   const dataTimeZone = DATA_TIMEZONE as unknown as TimeZoneDTO[]
@@ -29,11 +30,12 @@ const TimeZonesScreen = ({ route }) => {
 
   const save = () => {
     const newData = selected > -1 ? DATA_TIMEZONE[selected] : timeZoneTemp
+
     navigate({
       name: MAIN_SCREENS.companyHours,
       params: { storeDetail, timeZone: newData as TimeZoneDTO },
       merge: true,
-    })
+    } as never)
   }
 
   const cancelAction = () => {
@@ -61,7 +63,8 @@ const TimeZonesScreen = ({ route }) => {
         disabled={false}
         isLoading={false}
         w="90%"
-        h={SELECT_HEIGHT}
+        // h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >

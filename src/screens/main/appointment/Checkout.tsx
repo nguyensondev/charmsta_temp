@@ -51,7 +51,6 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
   })
 
   useEffect(() => {
-    console.log("alo1", checkoutInfo)
     if (!isEmpty(checkoutInfo) && !checkoutInfo.isPaid) {
       navigate(MAIN_SCREENS.paymentType, {
         checkoutInfo,

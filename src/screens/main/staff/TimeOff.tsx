@@ -3,7 +3,7 @@ import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SELECT_HEIGHT, STAFF_TIME_FORMAT, TIME_12H_FORMAT } from "@config/constants"
+import { STAFF_TIME_FORMAT, TIME_12H_FORMAT } from "@config/constants"
 import { useStaff } from "@hooks/staff"
 import { IStaffTimeOff, StaffDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
@@ -23,6 +23,13 @@ const TimeOffScreen = ({ route }) => {
   const [data, setData] = useState<IStaffTimeOff[]>(staffData.timeOffs)
 
   const { loading } = useStaff()
+
+  // useEffect(() => {
+  //   if (!isEmpty(error)) {
+  //     Alert.alert("Error", translate("errors.unexpected"))
+  //   }
+  // }, [error])
+
   const save = () => {
     navigate(MAIN_SCREENS.timeOffDetail, { staffDetail })
   }
@@ -86,7 +93,7 @@ const TimeOffScreen = ({ route }) => {
         disabled={loading}
         isLoading={loading}
         w="90%"
-        h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >

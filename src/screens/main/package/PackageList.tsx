@@ -3,6 +3,7 @@ import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useService } from "@hooks/service/useService"
+import { translate } from "@i18n/translate"
 import { PackageDTO } from "@models/backend/response/Package"
 import { CategoryDTO } from "@models/backend/response/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
@@ -15,16 +16,22 @@ import { convertCurrency, getFilteredCategoryList } from "@utils/data"
 import { convertMinsValue } from "@utils/time"
 import { debounce, isEmpty } from "lodash"
 import { Box, Fab, FlatList, Row, View } from "native-base"
-import React, { useCallback, useRef, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Alert, TouchableOpacity } from "react-native"
 import { styles } from "./styles"
 interface PackageListScreenProps {}
 
 const PackageListScreen = (props: PackageListScreenProps) => {
   const [searchText, setSearchText] = useState("")
 
-  const { getCatList, catList } = useService()
+  const { getCatList, catList, errCatList } = useService()
   const ref = useRef<RefSearch>(null)
+
+  useEffect(() => {
+    if (!isEmpty(errCatList)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errCatList])
 
   useFocusEffect(
     useCallback(() => {

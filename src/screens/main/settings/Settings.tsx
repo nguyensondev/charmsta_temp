@@ -1,5 +1,4 @@
 import { Header } from "@components/header/header"
-import { Screen } from "@components/index"
 import SplitView from "@components/splitView"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
@@ -10,9 +9,8 @@ import { TxKeyPath } from "@i18n/i18n"
 import { translate } from "@i18n/translate"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
-
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator,
+  IRefSettingDetailNavigator
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -20,7 +18,7 @@ import { color } from "@theme/color"
 import { convertIntToWeekdayString } from "@utils/mathMetric"
 import { debounce, get } from "lodash"
 import { observer } from "mobx-react-lite"
-import { ScrollView } from "native-base"
+import { Box, ScrollView } from "native-base"
 import React, { useCallback, useRef, useState } from "react"
 import { Switch, TouchableOpacity, View } from "react-native"
 import styles from "./styles"
@@ -62,14 +60,6 @@ const SettingsScreen = () => {
   }
 
   const RenderHeader = useCallback(() => <Header headerText={"Settings"} leftIcon="back" />, [])
-
-  const RenderEmpty = useCallback(() => {
-    return (
-      <View style={styles.empty}>
-        <Text tx="common.empty" />
-      </View>
-    )
-  }, [])
 
   const RenderContent1 = () => {
     return (
@@ -128,7 +118,7 @@ const SettingsScreen = () => {
 
   const debounceUpdate = useCallback(
     debounce(() => {
-      updateStore(storeData.id, storeData)
+      updateStore(storeData.id, storeData, false)
     }, 1000),
     [],
   )
@@ -255,9 +245,8 @@ const SettingsScreen = () => {
   ])
 
   return (
-    <Screen>
+    <Box style={{ flexGrow: 1, backgroundColor: color.background }}>
       <RenderHeader />
-
       <SplitView
         master={
           <ScrollView>
@@ -267,7 +256,7 @@ const SettingsScreen = () => {
         }
         detail={<SettingDetailNavigator ref={detailNavigatorRef} />}
       />
-    </Screen>
+    </Box>
   )
 }
 

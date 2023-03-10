@@ -14,7 +14,7 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertCurrency } from "@utils/data"
-import { get } from "lodash"
+import { get, isEmpty } from "lodash"
 import { Row, ScrollView } from "native-base"
 import * as React from "react"
 import { useEffect, useRef, useState } from "react"
@@ -88,7 +88,13 @@ const ServiceDetailScreen = ({}) => {
 
   const serviceRef = useRef<Partial<NewService>>({})
 
-  const { errNewService, newService, editSerivce } = useService()
+  const { errNewService, newService, editSerivce, errEditService } = useService()
+
+  useEffect(() => {
+    if (!isEmpty(errEditService)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errEditService])
 
   useEffect(() => {
     if (newService) {

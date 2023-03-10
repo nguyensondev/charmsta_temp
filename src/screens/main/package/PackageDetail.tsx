@@ -2,7 +2,6 @@ import { ButtonCustom, Header, Screen } from "@components/index"
 import { MultiServices } from "@components/multi-select"
 import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
-import { SELECT_HEIGHT } from "@config/constants"
 import { usePackage } from "@hooks/package"
 import { TxKeyPath } from "@i18n/i18n"
 import { translate } from "@i18n/translate"
@@ -32,7 +31,6 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
   const { packageId } = params
 
   const { getPackageDetail, packageDetail, deletePackage, deletePackageStatus } = usePackage()
-
   const { categoryId, category, cost, name, services, price } = packageDetail
   useLayoutEffect(() => {
     if (deletePackageStatus) {
@@ -101,7 +99,7 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
             <Text tx="textInput.label.category" />
           </FormControl.Label>
           <Select
-            height={SELECT_HEIGHT}
+            py={spacing[1]}
             fontSize={18}
             paddingLeft={"1.5"}
             _selectedItem={{
@@ -122,7 +120,7 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
             />
           </Select>
         </FormControl>
-        {/* cost */}
+        {/* price */}
         <FormControl pointerEvents="none">
           <FormControl.Label {...nativeBaseStyle.form.inputLabel}>
             <Text tx="textInput.label.price" />
@@ -133,7 +131,7 @@ const PackageDetailScreen = (props: PackageDetailScreenProps) => {
             value={convertCurrency(totalPrice)}
           />
         </FormControl>
-        {/* price */}
+        {/* retail price */}
         <FormControl pointerEvents="none">
           <FormControl.Label {...nativeBaseStyle.form.inputLabel}>
             <Text tx="textInput.label.retailPrice" />

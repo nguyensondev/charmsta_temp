@@ -5,6 +5,7 @@ import Text from "@components/text/text"
 import { usePackage } from "@hooks/package"
 import { useService } from "@hooks/service/useService"
 import { TxKeyPath } from "@i18n/i18n"
+import { translate } from "@i18n/translate"
 import { CreatePackage } from "@models/backend/request/Package"
 import { ServiceDTO } from "@models/backend/response/Service"
 import { goBack } from "@navigators/navigation-utilities"
@@ -14,6 +15,7 @@ import { convertYupErrorInner } from "@utils/yup/yup"
 import { debounce, isEmpty, isUndefined } from "lodash"
 import { CheckIcon, ChevronDownIcon, FormControl, ScrollView, Select } from "native-base"
 import React, { useEffect, useState } from "react"
+import { Alert } from "react-native"
 import * as yup from "yup"
 import { nativeBaseStyle } from "./styles"
 
@@ -54,9 +56,15 @@ const NewPackageScreen = (props: NewPackageScreenProps) => {
   const [data, setData] = useState<Partial<IDataForm>>({})
   const [yupError, setYupError] = useState<{ [key: string]: string }>({})
 
-  const { createPackage, newPackage } = usePackage()
+  const { createPackage, newPackage, createPackageErr } = usePackage()
 
-  const { getCatList, catList } = useService()
+  const { getCatList, catList, errCatList } = useService()
+
+  useEffect(() => {
+    if (!isEmpty(createPackageErr) || !isEmpty(errCatList)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [createPackageErr, errCatList])
 
   useEffect(() => {
     if (!isEmpty(newPackage)) {
@@ -73,10 +81,12 @@ const NewPackageScreen = (props: NewPackageScreenProps) => {
   }
 
   const onServicesChange = (selecteds: ServiceDTO[]) => {
-    const price = selecteds
-      .map((selected) => selected?.price || 0)
+    let price = selecteds
+      .map((selected) => selected.price + (selected.price * (selected?.tax?.rate || 0)) / 100)
       .reduce((prev, curr, arr) => parseFloat(prev.toString()) + parseFloat(curr.toString()))
+      .toFixed(2)
       .toString()
+    price = price === "NaN" ? "0" : price
     handleFieldChange("price", price)
     handleFieldChange("retailPrice", price)
     debounceFieldChange("services", selecteds)

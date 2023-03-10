@@ -4,6 +4,7 @@ import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useService } from "@hooks/service/useService"
 import { TxKeyPath } from "@i18n/i18n"
+import { translate } from "@i18n/translate"
 import { EditCategory } from "@models/backend/request/Service"
 import { ServiceInCategoryDTO } from "@models/backend/response/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
@@ -54,7 +55,7 @@ const CategoryDetail = () => {
     if (!isEmpty(error)) {
       switch (error.status) {
         default:
-          return Alert.alert("Error", "Something unexpected has happened, please try again.")
+          return Alert.alert("Error", translate("errors.unexpected"))
       }
     }
   }, [error])

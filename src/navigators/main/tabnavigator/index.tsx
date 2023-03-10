@@ -13,7 +13,6 @@ const Tab = createBottomTabNavigator()
 function HomeTabs() {
   const route = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.home>>()
   const initialRouteName = get(route.params, "initialRouteName", "Home")
-
   return (
     <Tab.Navigator
       initialRouteName={initialRouteName}

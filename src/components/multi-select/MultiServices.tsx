@@ -17,7 +17,6 @@ interface MultiServicesProps {
 
 const MultiServices = (props: MultiServicesProps) => {
   const { onSelected, defaultValues = [], displayOnly = false } = props
-
   const [selecteds, setSelecteds] = useState<Partial<ServiceDTO>[]>([{}])
   const [isAddAvailable, setAddAvailable] = useState(false)
   const { getServiceList, serviceList, pagination, getAllServices, setServiceList } = useService()
@@ -28,12 +27,6 @@ const MultiServices = (props: MultiServicesProps) => {
     }
   }, [displayOnly])
 
-  // useEffect(() => {
-  //   if (pagination.totalElements > 0 && !displayOnly) {
-  //     getAllServices()
-  //   }
-  // }, [pagination.totalElements])
-
   useLayoutEffect(() => {
     if (selecteds.every((selected) => !isEmpty(selected))) {
       setAddAvailable(true)
@@ -43,14 +36,16 @@ const MultiServices = (props: MultiServicesProps) => {
   useEffect(() => {
     if (!isEmpty(defaultValues)) {
       setSelecteds(defaultValues)
-      setServiceList(defaultValues)
+      if (displayOnly) {
+        setServiceList(defaultValues)
+      }
     }
-  }, [defaultValues])
+  }, [defaultValues, defaultValues])
 
   const onAddMorePress = () => {
     if (isAddAvailable) {
       setAddAvailable(false)
-      setSelecteds([...selecteds, {}])
+      setSelecteds((prev) => [...prev, {}])
     }
   }
 
@@ -117,9 +112,9 @@ const MultiServices = (props: MultiServicesProps) => {
             >
               {serviceList.map((service) => (
                 <Select.Item
-                  key={`service-${service.id}`}
-                  label={service.name}
-                  value={service.id.toString()}
+                  key={`service-${service?.id}`}
+                  label={service?.name}
+                  value={service?.id?.toString()}
                 />
               ))}
             </Select>

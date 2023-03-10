@@ -78,8 +78,8 @@ const ServicesAndPackages = (props: ServicesAndPacakgesProps) => {
   return (
     <>
       <Text fontWeight={"bold"} mt={spacing[1]} tx="textInput.label.services" />
-      {services.map((service) => (
-        <Row key={`service-${service.id}`} {...nativeBaseStyle.serviceArea}>
+      {services.map((service, index) => (
+        <Row key={`service-${service.id}-${index}`} {...nativeBaseStyle.serviceArea}>
           <Box flex={1}>
             <Text text={service.name} />
             <Row>
@@ -101,8 +101,8 @@ const ServicesAndPackages = (props: ServicesAndPacakgesProps) => {
         </Row>
       ))}
       <Text fontWeight={"bold"} mt={spacing[1]} tx="textInput.label.packages" />
-      {packages.map((pack) => (
-        <Row key={`package-${pack.id}`} {...nativeBaseStyle.serviceArea}>
+      {packages.map((pack, index) => (
+        <Row key={`package-${pack.id}-${index}`} {...nativeBaseStyle.serviceArea}>
           <Box>
             <Text text={pack.name} />
             {pack.services.map((service) => (

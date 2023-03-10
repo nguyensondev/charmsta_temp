@@ -6,10 +6,11 @@ import { CALENDAR_FORMAT, TIME_24H_FORMAT } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
 import { TxKeyPath } from "@i18n/i18n"
 import { translate } from "@i18n/translate"
+import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
-import { goBack, navigate, navigationRef } from "@navigators/navigation-utilities"
-import { RouteProp, StackActions, useRoute } from "@react-navigation/native"
+import { goBack, navigationRef } from "@navigators/navigation-utilities"
+import { RouteProp, StackActions, useNavigation, useRoute } from "@react-navigation/native"
 import { ServicesAndPackages } from "@screens/main/appointment/components"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
@@ -18,7 +19,7 @@ import { convertMinsValue } from "@utils/time"
 import { get, isEmpty } from "lodash"
 import moment from "moment"
 import { FormControl, ISelectProps, Row, ScrollView, Select, TextArea, View } from "native-base"
-import React, { useEffect, useLayoutEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { nativeBaseStyle, styles } from "./styles"
 
 const defaultSelectProps = {
@@ -35,7 +36,7 @@ interface AppointmentDetailScreenProps {}
 
 const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
   const { params } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.appointmentDetail>>()
-
+  const navigation = useNavigation()
   const appointmentId = get(params, "detail.id") as number
   const modalRef = useRef<IRefCustomModal>(null)
   const { editAppointment, editedAppointment, getAppointmentById, appointmentDetail } =
@@ -43,9 +44,9 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
   const { customer, label, start, duration, note, id, status, services, packages } =
     appointmentDetail
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getAppointmentById(appointmentId)
-  }, [...Object.values(params.detail)])
+  }, [params.detail])
 
   useEffect(() => {
     if (!isEmpty(editedAppointment)) {
@@ -161,6 +162,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
         <FormControl pointerEvents="none" {...nativeBaseStyle.formController}>
           <Text tx="appointment.notes" style={styles.lbl} />
           <TextArea
+            key="detailinput"
             defaultValue={note}
             h={20}
             placeholder="Notes visible to staff only"
@@ -180,7 +182,10 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
         text={translate("appointment.total", { defaultValue: convertCurrency(totalPrice) })}
         fontWeight="bold"
       />
-      <Row justifyContent="space-between">
+      <Row
+        justifyContent="space-between"
+        display={status === AppointmentStatusEnum.Completed ? "none" : "flex"}
+      >
         <ButtonCustom
           onPress={() => {
             if (modalRef?.current) {
@@ -203,7 +208,6 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
                 appointment: appointmentDetail,
               } as MainNavigatorParamList[MAIN_SCREENS.checkout]),
             )
-            // navigate()
           }}
         >
           <Text tx="button.checkout" style={{ color: color.palette.white }} />
@@ -217,10 +221,12 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
       label: "Edit appointment detail",
       function: async () => {
         await modalRef.current.closeModal()
-        navigate(MAIN_SCREENS.editAppointment, {
-          detail: appointmentDetail,
-          start: moment(start).format(TIME_24H_FORMAT),
-        })
+        navigationRef.dispatch(
+          StackActions.replace(MAIN_SCREENS.editAppointment, {
+            detail: appointmentDetail,
+            start: moment(start).format(TIME_24H_FORMAT),
+          }),
+        )
       },
     },
     {
@@ -229,10 +235,9 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
       function: async () => {
         await modalRef.current.closeModal()
         navigationRef.dispatch(
-          StackActions.push(MAIN_SCREENS.cancelAppointment, {
+          StackActions.replace(MAIN_SCREENS.cancelAppointment, {
             appointmentId: appointmentDetail.id,
           } as MainNavigatorParamList[MAIN_SCREENS.cancelAppointment]),
-          // editAppointment(id, { status: AppointmentStatusEnum.Canceled } as AppointmentDTO)
         )
       },
     },

@@ -18,19 +18,25 @@ interface NewDiscountScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  amount: yup.string().required(),
+  amount: yup.number().required().min(1),
 })
 
 const NewDiscountScreen = (props: NewDiscountScreenProps) => {
   const [errors, setErrors] = useState<{ name?: string; amount?: string }>({})
   const [amountType, setAmountType] = useState(false)
-  const { loading, createDiscount, newDiscount } = useDiscount()
+  const { loading, createDiscount, newDiscount, error } = useDiscount()
 
   const {
     currentStoreStore: {
       CurrentStore: { currency },
     },
   } = useStores()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   const newDiscountRef = useRef<Partial<DiscountDTO>>({ percentage: false }).current
 
@@ -51,7 +57,7 @@ const NewDiscountScreen = (props: NewDiscountScreenProps) => {
         })
         break
       case "amount":
-        newDiscountRef.amount = parseFloat(value)
+        newDiscountRef.amount = isEmpty(value) ? 0 : parseFloat(value)
         break
       default:
         newDiscountRef[key as string] = value

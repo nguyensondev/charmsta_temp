@@ -10,6 +10,7 @@ import { goBack, navigate } from "@navigators/navigation-utilities"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { isEmpty } from "lodash"
 import { Row, ScrollView } from "native-base"
 import React, { useEffect, useRef } from "react"
 import { Alert } from "react-native"
@@ -26,7 +27,13 @@ const TaxDetailScreen = (props: TaxDetailScreenProps) => {
     params: { detail },
   } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.taxDetail>>()
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { deleteTax, isDeleted } = useTax()
+  const { deleteTax, isDeleted, error, loading } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (isDeleted) {
@@ -77,10 +84,15 @@ const TaxDetailScreen = (props: TaxDetailScreenProps) => {
         />
       </ScrollView>
       <Row justifyContent={"space-between"} p={spacing[1]} mb={spacing[1]}>
-        <ButtonCustom w={"48%"} backgroundColor={color.error} onPress={onDeletePress}>
+        <ButtonCustom
+          isLoading={loading}
+          w={"48%"}
+          backgroundColor={color.error}
+          onPress={onDeletePress}
+        >
           {translate("button.delete")}
         </ButtonCustom>
-        <ButtonCustom w={"48%"} onPress={onEditPress}>
+        <ButtonCustom isLoading={loading} w={"48%"} onPress={onEditPress}>
           {translate("button.edit")}
         </ButtonCustom>
       </Row>

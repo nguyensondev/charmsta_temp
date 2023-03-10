@@ -16,13 +16,19 @@ interface NewTaxScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  rate: yup.number().required(),
+  rate: yup.number().required().min(1),
 })
 
 const NewTaxScreen = (props: NewTaxScreenProps) => {
   const [errors, setErrors] = useState<{ name?: string; rate?: string }>({})
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { createTax, loading, newTax } = useTax()
+  const { createTax, loading, newTax, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (!isEmpty(newTax)) {
@@ -41,7 +47,7 @@ const NewTaxScreen = (props: NewTaxScreenProps) => {
         newTaxRef["name"] = value
         break
       case "rate":
-        newTaxRef["rate"] = parseFloat(value)
+        newTaxRef["rate"] = isEmpty(value) ? 0 : parseFloat(value)
         break
     }
   }

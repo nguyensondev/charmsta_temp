@@ -26,7 +26,7 @@ import {
   updateListServiceInCategoryAPI,
 } from "@services/api/Service"
 import { consoleLog } from "@utils/debug"
-import { AxiosError } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { Dispatch, SetStateAction, useState } from "react"
 
 type Output = {
@@ -64,16 +64,18 @@ type Output = {
   // category detail
   categoryDetail: Partial<CategoryByIdDTO>
   getCategoryById: (id: number) => void
+  // edit service
   editSerivce: (data: ServiceDTO) => void
+  errEditService: AxiosResponse
   // delete category
   deleteCategory: (id: number) => void
   categoryDeleted: boolean
-  error: AxiosError
+  error: AxiosResponse
 }
 
 export const useService = (): Output => {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<AxiosError>()
+  const [error, setError] = useState<AxiosResponse>()
   const [pagination, setPagination] = useState<PaginationDTO>({
     page: 0,
     size: 20,
@@ -101,6 +103,8 @@ export const useService = (): Output => {
   const [serviceInCategory, setServiceInCategory] = useState<ServiceInCategoryDTO[]>([])
   // delete category
   const [categoryDeleted, setCategoryDeleted] = useState(false)
+  // edit service
+  const [errEditService, setErrEditService] = useState<AxiosResponse>()
 
   const getServiceList = async (search: string, page: number = pagination.page) => {
     try {
@@ -332,6 +336,7 @@ export const useService = (): Output => {
       }
     } catch (err) {
       consoleLog("editService Error: ", err)
+      setErrEditService(err)
     } finally {
       setLoading(false)
     }
@@ -385,5 +390,6 @@ export const useService = (): Output => {
     error,
     getAllServices,
     pagination,
+    errEditService,
   }
 }

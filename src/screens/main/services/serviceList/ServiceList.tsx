@@ -6,6 +6,7 @@ import { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useService } from "@hooks/service/useService"
+import { translate } from "@i18n/translate"
 import { CategoryDTO, ServiceDTO } from "@models/backend/response/Service"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
@@ -16,8 +17,8 @@ import { spacing } from "@theme/spacing"
 import { convertCurrency, getFilteredCategoryList } from "@utils/data"
 import { debounce, isEmpty, isNull, omit } from "lodash"
 import { Box, Fab, FlatList, Row, View } from "native-base"
-import React, { useCallback, useRef, useState } from "react"
-import { Image, TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Alert, Image, TouchableOpacity } from "react-native"
 import styles from "./styles"
 
 const Item = ({ item }: { item: ServiceDTO }) => (
@@ -87,7 +88,14 @@ const ServiceListScreen = () => {
     getCatList,
     catList,
     loadingCatList,
+    errServiceList,
   } = useService()
+
+  useEffect(() => {
+    if (!isEmpty(errServiceList)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errServiceList])
 
   useFocusEffect(
     useCallback(() => {

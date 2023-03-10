@@ -5,15 +5,15 @@ import {
   NavigationAction,
   NavigationContainer,
   NavigationContainerRefWithCurrent,
-  useNavigation,
+  useNavigation
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { CompanyHoursScreen } from "@screens/index"
+import { CompanyHoursScreen, TimeZonesScreen } from "@screens/index"
 import {
   BookingPoliciesScreen,
   BookingSlotSizeScreen,
   CancellationPolicyScreen,
-  CustomerNotesScreen,
+  CustomerNotesScreen
 } from "@screens/main/settings/BookingPolicies"
 import { AppointmentSlotScreen, WeekStartDayScreen } from "@screens/main/settings/CalenderSettings"
 import { StoreDetailScreen } from "@screens/main/store"
@@ -41,7 +41,6 @@ const SettingDetailNavigator = (
 
     return { navigate, goBack, dispatch }
   })
-
   return (
     <NavigationContainer independent ref={SettingDetailNavigatorRef}>
       <Stack.Navigator
@@ -88,6 +87,7 @@ const SettingDetailNavigator = (
           name={MAIN_SCREENS.cancellationPolicy}
           component={withSystemBackFix(CancellationPolicyScreen)}
         />
+        <Stack.Screen name={MAIN_SCREENS.timeZone} component={withSystemBackFix(TimeZonesScreen)} />
       </Stack.Navigator>
     </NavigationContainer>
   )

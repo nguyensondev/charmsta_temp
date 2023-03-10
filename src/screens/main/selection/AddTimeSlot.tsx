@@ -78,7 +78,8 @@ const AddTimeSlot = (props: AddTimeSlotProps) => {
     ) {
       saveAdditionSelect({ startTime: selectedTimeSlot })
     } else {
-      Alert.alert("Warning", "This time slot is not available, please try another")
+      !!selectedTimeSlot &&
+        Alert.alert("Warning", "This time slot is not available, please try another")
       saveAdditionSelect({ startTime: null })
     }
   }, [selectedTimeSlot])

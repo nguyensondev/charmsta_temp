@@ -62,6 +62,9 @@ const SignInScreen = () => {
         resetAuth()
         eraseUser()
       }
+      if (GoogleSignin.isSignedIn()) {
+        GoogleSignin.signOut()
+      }
     }, []),
   )
 
@@ -237,6 +240,7 @@ const SignInScreen = () => {
           onChangeText={(value) => handleTextChange("email", value)}
           placeholderTextColor="black"
           placeholder="Email"
+          keyboardType="email-address"
           errorMsg={errors?.email}
         />
         <TextFieldCustom

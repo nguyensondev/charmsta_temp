@@ -4,7 +4,7 @@ import Text from "@components/text/text"
 import { usePayment } from "@hooks/payment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { RouteProp, StackActions, useNavigation, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertCurrency } from "@utils/data"
@@ -17,6 +17,7 @@ interface CashPaymentScreenProps {}
 
 const CashPaymentScreen = (props: CashPaymentScreenProps) => {
   const route = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.cashPayment>>()
+  const navigate = useNavigation()
   const {
     params: { amount, billId, payment_method },
   } = route
@@ -27,12 +28,13 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
   React.useEffect(() => {
     if (!isEmpty(data)) {
       Alert.alert("Success", "Your payment has been successfully processed ")
+      navigate.dispatch(StackActions.popToTop())
     }
   }, [data])
 
   React.useLayoutEffect(() => {
     setAmounts((amounts) => {
-      const calculatedReturn = amount - (amounts?.given ?? 0)
+      const calculatedReturn = (amounts?.given ?? 0) - amount
 
       return {
         ...amounts,
@@ -42,11 +44,16 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
   }, [amounts.given, amounts.return])
 
   const onButtonPress = () => {
-    payment({ billId, payment_method, amount })
+    const { given, return: returnAmount } = amounts
+    if (given > amount) {
+      payment({ billId, payment_method, amount })
+    } else {
+      alert(`Please check customer give amount`)
+    }
   }
 
   return (
-    <Screen>
+    <Screen preset="fixed">
       <Header leftIcon="back" headerTx="screens.headerTitle.cashPayment" />
       <Box paddingX={spacing[1]} flex={1}>
         <Text text={`Amount to pay: ${convertCurrency(amount)}`} fontWeight="bold" />
@@ -66,7 +73,7 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
           <Text text={"Amount return to customer"} />
           <TextFieldCustom
             editable={false}
-            value={amounts.return.toString()}
+            value={amounts.return.toFixed(2).toString()}
             onChangeText={(text) => {
               setAmounts((amounts) => ({
                 ...amounts,
@@ -76,7 +83,12 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
           />
         </FormControl>
       </Box>
-      <ButtonCustom isLoading={loading} marginBottom={spacing[1]} onPress={onButtonPress}>
+      <ButtonCustom
+        disabled={amounts.given === 0}
+        isLoading={loading}
+        marginBottom={spacing[1]}
+        onPress={onButtonPress}
+      >
         <Text text={`Charge ${convertCurrency(amount)}`} style={{ color: color.palette.white }} />
       </ButtonCustom>
     </Screen>

@@ -14,7 +14,8 @@
     }
   },
   "errors": {
-    "invalidEmail": "Invalid email address."
+    "invalidEmail": "Invalid email address.",
+    "unexpected": "Something unexpected happened, please try again"
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY Uzmos",
@@ -121,8 +122,8 @@
       "search": "Search"
     },
     "label": {
-      "amount": "amount",
-      "type": "type",
+      "amount": "Amount",
+      "type": "Type",
       "services": "Services",
       "packages": "Packages",
       "optional": "(optional)",

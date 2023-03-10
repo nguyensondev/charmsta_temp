@@ -20,7 +20,7 @@ interface EditDiscountScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  amount: yup.string().required(),
+  amount: yup.number().required().min(1),
 })
 
 const EditDiscountScreen = (props: EditDiscountScreenProps) => {
@@ -30,13 +30,19 @@ const EditDiscountScreen = (props: EditDiscountScreenProps) => {
   const { percentage, name, amount, description } = detail
   const [errors, setErrors] = useState<{ name?: string; amount?: string }>({})
   const [amountType, setAmountType] = useState(percentage)
-  const { loading, editDiscount, newDiscount } = useDiscount()
+  const { loading, editDiscount, newDiscount, error } = useDiscount()
 
   const {
     currentStoreStore: {
       CurrentStore: { currency },
     },
   } = useStores()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   const editDiscountRef = useRef<Partial<DiscountDTO>>({ percentage: percentage }).current
 
@@ -57,7 +63,7 @@ const EditDiscountScreen = (props: EditDiscountScreenProps) => {
         setAmountType((prev) => !prev)
         break
       case "amount":
-        editDiscountRef.amount = parseFloat(value)
+        editDiscountRef.amount = isEmpty(value) ? 0 : parseFloat(value)
         break
       default:
         editDiscountRef[key as string] = value
@@ -116,7 +122,7 @@ const EditDiscountScreen = (props: EditDiscountScreenProps) => {
         />
       </ScrollView>
     ),
-    [amountType],
+    [amountType, errors],
   )
   return (
     <Screen>

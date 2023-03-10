@@ -5,7 +5,7 @@ import {
   AppointmentLabelDTO,
   CalendarAgenda,
   CalendarDTO,
-  CheckoutDTO,
+  CheckoutDTO
 } from "@models/backend/response/Appointment"
 import { AppointmentStatusEnum } from "@models/enum/appointment"
 import {
@@ -19,7 +19,7 @@ import {
   editLabelAppointmentApi,
   getAppointmentByIdApi,
   listAppointmentApi,
-  listLabelAppointmentApi,
+  listLabelAppointmentApi
 } from "@services/api/Appontment"
 import { convertAppointmentData, convertToAgendaItems } from "@utils/data"
 import { consoleLog } from "@utils/debug"
@@ -133,9 +133,9 @@ export const useAppointment = (): Output => {
         setLoadingLabels(false)
       } else {
         setListLabel([])
-        const newErr = new Error("Data is empty!")
+        // const newErr = new Error("Data is empty!")
         setLoadingLabels(false)
-        setErrListLabel(newErr)
+        // setErrListLabel(newErr)
       }
     } catch (err) {
       setErrListLabel(err)

@@ -43,4 +43,6 @@ export interface ScreenProps {
    * Only applies to scroll preset.
    */
   keyboardShouldPersistTaps?: "handled" | "always" | "never"
+
+  customBehavior?: "height" | "position" | "padding" | undefined
 }

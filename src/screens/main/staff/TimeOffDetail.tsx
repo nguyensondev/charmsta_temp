@@ -3,16 +3,18 @@ import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SELECT_HEIGHT, STAFF_TIME_FORMAT, TIME_12H_FORMAT } from "@config/constants"
+import { STAFF_TIME_FORMAT, TIME_12H_FORMAT } from "@config/constants"
 import { useStaff } from "@hooks/staff"
+import { translate } from "@i18n/translate"
 import { IStaffTimeOff, StaffDTO } from "@models/backend/response/Staff"
 import { navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { isEmpty } from "lodash"
 import moment from "moment"
 import { TextArea, View } from "native-base"
 import React, { useCallback, useEffect, useState } from "react"
-import { Switch, TouchableOpacity } from "react-native"
+import { Alert, Switch, TouchableOpacity } from "react-native"
 import DatePicker from "react-native-date-picker"
 import styles from "./styles"
 
@@ -33,7 +35,13 @@ const TimeOffDetailScreen = ({ route }) => {
   const [allDay, setAllDay] = useState(true)
   const staffData = staffDetail as StaffDTO
 
-  const { loading, editStaffStatus, editStaffProfile } = useStaff()
+  const { loading, editStaffStatus, editStaffProfile, error } = useStaff()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   const toggleSwitch = () => setAllDay((previousState) => !previousState)
 
@@ -135,7 +143,8 @@ const TimeOffDetailScreen = ({ route }) => {
         disabled={loading}
         isLoading={loading}
         w="90%"
-        h={SELECT_HEIGHT}
+        // h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >

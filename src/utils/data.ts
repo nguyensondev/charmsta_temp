@@ -2,9 +2,9 @@ import { DATE_FORMAT, EVENT_CALENDAR_FORMAT } from "@config/constants"
 import { AppointmentDTO, CalendarAgenda, CalendarDTO } from "@models/backend/response/Appointment"
 import { PackageDTO } from "@models/backend/response/Package"
 import { CategoryDTO, ServiceDTO } from "@models/backend/response/Service"
-import { TAB_NAME } from "@models/enum/screensName"
+import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
-import { navigationRef } from "@navigators/navigation-utilities"
+import { useNavigation } from "@react-navigation/native"
 import i18n from "i18n-js"
 import { has, isEmpty } from "lodash"
 import moment from "moment"
@@ -109,12 +109,7 @@ export const getFilteredCategoryList = (list: CategoryDTO[] = [], searchText = "
           ),
         }))
 
-export const getTabParams = (name: TAB_NAME): any => {
-  var params = {}
-  const state = navigationRef.getState()
-  if (state?.routes) {
-    const matchedRoute = state.routes.find((route) => route.name === name)
-    params = matchedRoute?.params || {}
-  }
-  return params
+export const getTabParams = (name: MAIN_SCREENS): any => {
+  const state = useNavigation().getParent().getState()
+  return state.routes.find((route) => route.name === name)?.params ?? {}
 }

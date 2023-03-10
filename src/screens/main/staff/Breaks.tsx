@@ -3,19 +3,19 @@ import { Header } from "@components/header/header"
 import { Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
-import { SELECT_HEIGHT } from "@config/constants"
 import { useStaff } from "@hooks/staff"
+import { translate } from "@i18n/translate"
 import { IStaffBreakTime, StaffDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import _ from "lodash"
+import _, { isEmpty } from "lodash"
 import moment from "moment"
 import { View } from "native-base"
 import React, { useCallback, useEffect, useState } from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import { Alert, ScrollView, TouchableOpacity } from "react-native"
 import DatePicker from "react-native-date-picker"
 import styles from "./styles"
 
@@ -68,7 +68,13 @@ const BreaksScreen = ({ route }) => {
       : staffData.breakTimes,
   )
 
-  const { loading, editStaffStatus, editStaffProfile } = useStaff()
+  const { loading, editStaffStatus, editStaffProfile, error } = useStaff()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   const setBreaksFromTime = (frTime: string) => {
     setData(
@@ -197,7 +203,8 @@ const BreaksScreen = ({ route }) => {
         disabled={loading}
         isLoading={loading}
         w="90%"
-        h={SELECT_HEIGHT}
+        // h={SELECT_HEIGHT}
+        py={spacing[1]}
         marginBottom={spacing[2]}
         onPress={save}
       >

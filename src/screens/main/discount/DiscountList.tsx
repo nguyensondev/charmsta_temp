@@ -1,6 +1,7 @@
 import { Header, Screen } from "@components/index"
 import Text from "@components/text/text"
 import { useDiscount } from "@hooks/discount"
+import { translate } from "@i18n/translate"
 import { DiscountDTO } from "@models/backend/response/Discount"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
@@ -10,15 +11,21 @@ import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertCurrency } from "@utils/data"
 import { Column, Fab, Row, ScrollView } from "native-base"
-import React, { useCallback } from "react"
-import { TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect } from "react"
+import { Alert, TouchableOpacity } from "react-native"
 import { isEmpty } from "validate.js"
 import { nativeBaseStyles } from "./styles"
 
 interface DiscountListScreenProps {}
 
 const DiscountListScreen = (props: DiscountListScreenProps) => {
-  const { getDiscounts, discounts } = useDiscount()
+  const { getDiscounts, discounts, error } = useDiscount()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useFocusEffect(
     useCallback(() => {

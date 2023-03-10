@@ -1,8 +1,8 @@
 import { ButtonCustom } from "@components/button/buttonCustom"
 import { CustomCalendarList } from "@components/calendar/CustomCalendarList"
 import { Header } from "@components/header/header"
+import { Screen } from "@components/index"
 import CustomModal, { IRefCustomModal } from "@components/modal/CustomModal"
-import { Screen } from "@components/screen/screen"
 import Text from "@components/text"
 import { CALENDAR_FORMAT, DURATION, TIME_SLOTS_CONFIG } from "@config/constants"
 import { useAppointment } from "@hooks/appointment/useAppointment"
@@ -16,8 +16,14 @@ import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
-import { goBack, navigate } from "@navigators/navigation-utilities"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { goBack, navigationRef } from "@navigators/navigation-utilities"
+import {
+  RouteProp,
+  StackActions,
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertMinsValue } from "@utils/time"
@@ -51,9 +57,8 @@ const isInBreak = (slotTime: moment.Moment, breakTimes: string[][]) => {
 const EditAppointmentScreen = () => {
   const route = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.editAppointment>>()
   const { detail: appointmentDetail, start: appointmentStartTime } = route.params
-
   const [appointment, setAppointment] = useState<Partial<CalendarDTO>>(appointmentDetail)
-
+  const navigation = useNavigation()
   const [startTime, setStartTime] = useState(appointmentStartTime)
   const [timeSlot, setTimeSlot] = useState([])
 
@@ -70,6 +75,7 @@ const EditAppointmentScreen = () => {
     getListLabel,
     listLabel,
   } = useAppointment()
+  const isFocused = useIsFocused()
   const { getStaffByServicesAndPackages, staffsByService } = useStaff()
   const { getCustomers, customers, skip } = useCustomer()
   const { currentStoreStore } = useStores()
@@ -79,8 +85,13 @@ const EditAppointmentScreen = () => {
     bookingSlotSize,
   } = currentStoreStore.CurrentStore
   const endTime = moment(TIME_SLOTS_CONFIG.endTime, "HH:mm")
-
   useLayoutEffect(() => {
+    if (!isFocused) {
+      navigationRef.setParams({ start: startTime, detail: appointment } as never)
+    }
+  }, [isFocused])
+
+  useEffect(() => {
     setAppointment(appointmentDetail)
   }, [appointmentDetail])
 
@@ -109,9 +120,11 @@ const EditAppointmentScreen = () => {
         {
           text: "Ok",
           onPress: () =>
-            navigate(MAIN_SCREENS.appointmentDetail, {
-              detail: { ...appointmentDetail, ...editedAppointment },
-            } as MainNavigatorParamList[MAIN_SCREENS.appointmentDetail]),
+            navigation.dispatch(
+              StackActions.replace(MAIN_SCREENS.appointmentDetail, {
+                detail: { ...appointmentDetail, ...editedAppointment },
+              } as MainNavigatorParamList[MAIN_SCREENS.appointmentDetail]),
+            ),
         },
       ])
     }
@@ -150,11 +163,21 @@ const EditAppointmentScreen = () => {
     if (
       // checkCurrentDate() > -1 &&
       // service.length > 0 &&
+      services.every((i) => i?.staffId) &&
+      packages.every((i) => i?.staffId) &&
       startTime.length > 0 &&
       duration > 0
     ) {
       return true
     } else {
+      let alertStrs = []
+      if (!packages.every((i) => i?.staffId)) {
+        alertStrs.push("Please pick a staff for your package")
+      }
+      if (!services.every((i) => i?.staffId)) {
+        alertStrs.push("Please pick a staff for your service")
+      }
+      alert(alertStrs.join(", "))
       return false
     }
   }
@@ -303,11 +326,16 @@ const EditAppointmentScreen = () => {
         modalRef.current.closeModal()
       }
       if (date && date.timestamp) {
-        setAppointment((prev) => ({
-          ...prev,
-          // duration: 0,
-          start: moment(date.timestamp).toISOString(),
-        }))
+        setAppointment((prev) => {
+          const editedAppointment = {
+            ...prev,
+            // duration: 0,
+            start: moment(date.timestamp).toISOString(),
+          }
+          navigation.setParams({ detail: editedAppointment } as never)
+
+          return editedAppointment
+        })
         setStartTime("")
         // setDuration("")
         // setStartTime("")
@@ -491,6 +519,7 @@ const EditAppointmentScreen = () => {
         {/* notes */}
         <Text tx="appointment.notes" style={styles.lbl} />
         <TextArea
+          key="editinput"
           // value={notes}
           defaultValue={note}
           onChangeText={(text) => handleAppointmentChange("note", text)}
@@ -532,7 +561,7 @@ const EditAppointmentScreen = () => {
         disabled={loadingEditAppointment || duration === 0 || startTime.length === 0}
         isLoading={loadingEditAppointment}
         w="90%"
-        marginBottom={spacing[2]}
+        marginY={spacing[1]}
         onPress={submit}
       >
         <Text tx="common.save" style={{ color: color.palette.white }} />

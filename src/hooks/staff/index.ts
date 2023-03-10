@@ -13,10 +13,12 @@ import {
   updateStaffServicesApi,
 } from "@services/api/Staff"
 import { consoleLog } from "@utils/debug"
+import { AxiosResponse } from "axios"
 import { useState } from "react"
 
 interface Output {
   loading: boolean
+  error: AxiosResponse
   loadingDelete: boolean
   editStaffStatus: boolean
   createStaffStatus: boolean
@@ -39,6 +41,7 @@ interface Output {
 
 export const useStaff = (): Output => {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<AxiosResponse>()
   const [loadingDelete, setLoadingDelete] = useState(false)
   const [staffs, setStaffs] = useState<Array<StaffDTO>>([])
   const [totalPages, setTotalPages] = useState<number>(0)
@@ -68,6 +71,7 @@ export const useStaff = (): Output => {
       setLoading(false)
     } catch (err) {
       consoleLog("get staff error: ", err)
+      setError(err)
       setLoading(false)
     }
   }
@@ -109,6 +113,7 @@ export const useStaff = (): Output => {
       }
     } catch (err) {
       setLoading(false)
+      setError(err)
       setEditStaffStatus(false)
     }
   }
@@ -123,6 +128,7 @@ export const useStaff = (): Output => {
       setLoading(false)
     } catch (err) {
       setLoading(false)
+      setError(err)
     }
   }
 
@@ -135,6 +141,7 @@ export const useStaff = (): Output => {
       }
       setLoadingDelete(false)
     } catch (err) {
+      setError(err)
       setLoadingDelete(false)
     }
   }
@@ -171,6 +178,7 @@ export const useStaff = (): Output => {
 
   return {
     loading,
+    error,
     loadingDelete,
     staffs,
     totalPages,

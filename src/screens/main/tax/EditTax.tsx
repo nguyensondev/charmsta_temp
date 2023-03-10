@@ -19,7 +19,7 @@ interface EditTaxScreenProps {}
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  rate: yup.number().required(),
+  rate: yup.number().required().min(1),
 })
 
 const EditTaxScreen = (props: EditTaxScreenProps) => {
@@ -28,7 +28,13 @@ const EditTaxScreen = (props: EditTaxScreenProps) => {
   } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.taxDetail>>()
   const [errors, setErrors] = useState<{ name?: string; rate?: string }>({})
   const newTaxRef = useRef<Partial<INewTax>>({}).current
-  const { updateTax, loading, newTax } = useTax()
+  const { updateTax, loading, newTax, error } = useTax()
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   useEffect(() => {
     if (!isEmpty(newTax)) {
@@ -50,7 +56,7 @@ const EditTaxScreen = (props: EditTaxScreenProps) => {
         newTaxRef["name"] = value
         break
       case "rate":
-        newTaxRef["rate"] = parseFloat(value)
+        newTaxRef["rate"] = isEmpty(value) ? 0 : parseFloat(value)
         break
     }
   }
