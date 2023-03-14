@@ -1,6 +1,6 @@
 import { withSystemBackFix } from "@hoc/splitView/withSystemBackFix"
-import { MAIN_SCREENS } from "@models/enum/screensName"
-import { MainNavigatorParamList } from "@models/navigator"
+import { COMMON_SCREENS, MAIN_SCREENS } from "@models/enum/screensName"
+import { CommonNavigatorParamList, MainNavigatorParamList } from "@models/navigator"
 import {
   NavigationAction,
   NavigationContainer,
@@ -8,6 +8,7 @@ import {
   useNavigation
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { SearchLocationScreen } from "@screens/common/location"
 import { CompanyHoursScreen, TimeZonesScreen } from "@screens/index"
 import {
   BookingPoliciesScreen,
@@ -28,7 +29,7 @@ export interface IRefSettingDetailNavigator {
   dispatch: (action: NavigationAction) => void
 }
 
-const Stack = createStackNavigator<MainNavigatorParamList>()
+const Stack = createStackNavigator<MainNavigatorParamList & CommonNavigatorParamList>()
 
 const SettingDetailNavigator = (
   props: ISettingDetailNavigator,
@@ -88,6 +89,10 @@ const SettingDetailNavigator = (
           component={withSystemBackFix(CancellationPolicyScreen)}
         />
         <Stack.Screen name={MAIN_SCREENS.timeZone} component={withSystemBackFix(TimeZonesScreen)} />
+        <Stack.Screen
+          name={COMMON_SCREENS.searchLocation}
+          component={withSystemBackFix(SearchLocationScreen)}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,4 +1,5 @@
 import { Header } from "@components/header/header"
+import { Screen } from "@components/index"
 import SplitView from "@components/splitView"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
@@ -10,7 +11,7 @@ import { translate } from "@i18n/translate"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator
+  IRefSettingDetailNavigator,
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -18,7 +19,7 @@ import { color } from "@theme/color"
 import { convertIntToWeekdayString } from "@utils/mathMetric"
 import { debounce, get } from "lodash"
 import { observer } from "mobx-react-lite"
-import { Box, ScrollView } from "native-base"
+import { ScrollView } from "native-base"
 import React, { useCallback, useRef, useState } from "react"
 import { Switch, TouchableOpacity, View } from "react-native"
 import styles from "./styles"
@@ -245,7 +246,8 @@ const SettingsScreen = () => {
   ])
 
   return (
-    <Box style={{ flexGrow: 1, backgroundColor: color.background }}>
+    // <Box style={{ flexGrow: 1, backgroundColor: color.background }}>
+    <Screen>
       <RenderHeader />
       <SplitView
         master={
@@ -256,7 +258,8 @@ const SettingsScreen = () => {
         }
         detail={<SettingDetailNavigator ref={detailNavigatorRef} />}
       />
-    </Box>
+    </Screen>
+    // </Box>
   )
 }
 

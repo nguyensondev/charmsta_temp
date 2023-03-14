@@ -206,7 +206,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
   )
 
   return (
-    <Screen>
+    <Screen keyboardOffset="opt1">
       <ScrollView
         flex={1}
         backgroundColor={color.palette.white}

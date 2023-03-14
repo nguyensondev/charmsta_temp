@@ -10,7 +10,7 @@ import {
   getStaffApi,
   getStaffByServiceApi,
   getStaffByServicesAndPackagesApi,
-  updateStaffServicesApi,
+  updateStaffServicesApi
 } from "@services/api/Staff"
 import { consoleLog } from "@utils/debug"
 import { AxiosResponse } from "axios"

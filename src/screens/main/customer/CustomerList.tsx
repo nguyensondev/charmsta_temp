@@ -1,10 +1,9 @@
-import { debounce, isEmpty } from "lodash"
-import { Avatar, Box, Column, Fab, FlatList } from "native-base"
+import { debounce, get, isEmpty } from "lodash"
+import { Avatar, Box, Column, Fab } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Alert, Animated } from "react-native"
+import { Alert, Animated, FlatList } from "react-native"
 
 import { ButtonCustom, Header, Screen } from "@components/index"
-import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useCustomer } from "@hooks/customer"
@@ -18,6 +17,9 @@ import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { palette } from "@theme/palette"
 import { spacing } from "@theme/spacing"
+
+import SearchBar from "@components/search-bar"
+import { RefSearch } from "@components/search-bar/SearchBar"
 import { styles } from "./styles"
 
 const expandOptionStyle = {
@@ -45,10 +47,10 @@ const expandOptions = [
 ]
 
 const CustomerListScreen = () => {
-  const [searchText, setSearchText] = useState("")
   const { customers, getCustomers, take, setTake, error, loading } = useCustomer()
   const [isOptionExpand, setOptionExapnd] = useState(false)
-
+  const searchBarRef = useRef<RefSearch>()
+  const searchStr = get(searchBarRef.current, "searchPhrase", "")
   useEffect(() => {
     if (!isEmpty(error)) {
       Alert.alert("Error", translate("errors.unexpected"))
@@ -58,7 +60,7 @@ const CustomerListScreen = () => {
   useFocusEffect(
     useCallback(() => {
       setTake(() => {
-        getCustomers(10, searchText)
+        getCustomers(10, searchStr)
         return 10
       })
     }, []),
@@ -74,27 +76,24 @@ const CustomerListScreen = () => {
   }
 
   useEffect(() => {
-    getCustomers(take, searchText)
-  }, [searchText, take])
+    getCustomers(take, searchStr)
+  }, [take])
 
-  const renderSearchBar = useCallback(() => {
-    const handleChangeText = (text: string) => {
-      setTake(10)
-      setSearchText(text)
-    }
+  const debounceGetCustomers = debounce((text) => {
+    setTake(10)
+    getCustomers(10, text)
+  }, 500)
 
-    const debounceChangeText = debounce(handleChangeText, 500)
+  const handleSearchChange = (text: string) => {
+    debounceGetCustomers(text)
+  }
 
-    return (
-      <TextFieldCustom
-        marginBottom={spacing[1]}
-        style={styles.searchBar}
-        onChangeText={debounceChangeText}
-        placeholder={"Input name or phone number here"}
-        hideError
-      />
-    )
-  }, [])
+  const onSearchCancel = () => {
+    setTake(() => {
+      getCustomers(10)
+      return 10
+    })
+  }
 
   const onContactPress = (customerProfile: CustomerDTO) => {
     navigate(MAIN_SCREENS.customerProfile, { customerProfile })
@@ -214,15 +213,20 @@ const CustomerListScreen = () => {
   return (
     <Screen>
       <Header onLeftPress={goBack} headerTx={"screens.headerTitle.customerList"} />
+      <SearchBar
+        onChangeText={handleSearchChange}
+        ref={searchBarRef}
+        cancelAction={onSearchCancel}
+      />
       <FlatList
         ListEmptyComponent={() => <Text text="No data" alignSelf={"center"} />}
         data={customers}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={renderSearchBar}
+        // stickyHeaderIndices={[0]}
         onEndReached={handleGetMore}
         renderItem={({ item, index }) => <CustomerItem item={item} index={index} />}
+        style={styles.list}
       />
       <FooterSection />
     </Screen>

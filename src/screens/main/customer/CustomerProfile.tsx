@@ -151,7 +151,6 @@ const CustomerProfileScreen = () => {
           return setEditable(true)
       }
     } catch (err) {
-      console.log("alo1", err)
       if (err?.inner) {
         setErrors(convertYupErrorInner(err.inner))
       }

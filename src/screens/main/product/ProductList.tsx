@@ -69,7 +69,7 @@ const ProductListScreen = () => {
             source={{
               uri: photo,
             }}
-            alt=""
+            alt="no image"
             borderRadius="md"
             size={"md"}
           />

@@ -124,7 +124,7 @@ export function TextFieldCustom(props: TextFieldProps) {
         <Input
           ref={forwardRef}
           placeholder={actualPlaceholder}
-          placeholderTextColor={color.palette.lighterGrey}
+          // placeholderTextColor={color.palette.lighterGrey}
           underlineColorAndroid={color.transparent}
           secureTextEntry={isPassword ? hidePassword : false}
           variant="underlined"

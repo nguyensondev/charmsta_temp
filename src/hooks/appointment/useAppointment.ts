@@ -5,7 +5,7 @@ import {
   AppointmentLabelDTO,
   CalendarAgenda,
   CalendarDTO,
-  CheckoutDTO
+  CheckoutDTO,
 } from "@models/backend/response/Appointment"
 import { AppointmentStatusEnum } from "@models/enum/appointment"
 import {
@@ -19,7 +19,7 @@ import {
   editLabelAppointmentApi,
   getAppointmentByIdApi,
   listAppointmentApi,
-  listLabelAppointmentApi
+  listLabelAppointmentApi,
 } from "@services/api/Appontment"
 import { convertAppointmentData, convertToAgendaItems } from "@utils/data"
 import { consoleLog } from "@utils/debug"
