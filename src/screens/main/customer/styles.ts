@@ -3,6 +3,6 @@ import { StyleSheet } from "react-native"
 export const styles = StyleSheet.create({
   avatar: { alignSelf: "center" },
   container: {},
-  searchBar: { paddingVertical: 0 },
   list: { paddingVertical: 15 },
+  searchBar: { paddingVertical: 0 },
 })

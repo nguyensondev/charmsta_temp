@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   useWindowDimensions,
-  View
+  View,
 } from "react-native"
 import FastImage from "react-native-fast-image"
 import { styles } from "./styles"

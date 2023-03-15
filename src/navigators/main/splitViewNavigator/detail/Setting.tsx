@@ -5,7 +5,7 @@ import {
   NavigationAction,
   NavigationContainer,
   NavigationContainerRefWithCurrent,
-  useNavigation
+  useNavigation,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SearchLocationScreen } from "@screens/common/location"
@@ -14,7 +14,7 @@ import {
   BookingPoliciesScreen,
   BookingSlotSizeScreen,
   CancellationPolicyScreen,
-  CustomerNotesScreen
+  CustomerNotesScreen,
 } from "@screens/main/settings/BookingPolicies"
 import { AppointmentSlotScreen, WeekStartDayScreen } from "@screens/main/settings/CalenderSettings"
 import { StoreDetailScreen } from "@screens/main/store"

@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     // padding: 3,
     width: AVATAR_SIZE,
   },
+  avatarImage: { borderRadius: 100, height: "100%", width: "100%" },
   avatarTouchArea: {
     alignSelf: "center",
     // borderRadius: AVATAR_SIZE / 2,

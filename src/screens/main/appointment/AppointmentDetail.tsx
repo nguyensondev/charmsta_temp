@@ -174,7 +174,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
     )
   }
 
-  const RenderButtons = () => (
+  const RenderFooter = () => (
     <View m={spacing[1]}>
       <Text
         alignSelf={"center"}
@@ -184,7 +184,11 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
       />
       <Row
         justifyContent="space-between"
-        display={status === AppointmentStatusEnum.Completed ? "none" : "flex"}
+        display={
+          status === AppointmentStatusEnum.Completed || status === AppointmentStatusEnum.Canceled
+            ? "none"
+            : "flex"
+        }
       >
         <ButtonCustom
           onPress={() => {
@@ -247,7 +251,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
     <Screen>
       <Header leftIcon="back" onLeftPress={goBack} />
       <RenderBody />
-      <RenderButtons />
+      <RenderFooter />
       <CustomModal
         ref={modalRef}
         childView={

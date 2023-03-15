@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native"
-import { Box, Fab, FlatList, Image } from "native-base"
+import { Box, Fab, FlatList } from "native-base"
 import React, { useCallback, useEffect, useRef } from "react"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert, Image, TouchableOpacity } from "react-native"
 
 import { Header, Screen } from "@components/index"
 import Loading from "@components/loading/Loading"
@@ -15,6 +15,7 @@ import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { debounce, isEmpty } from "lodash"
+import { styles } from "./styles"
 
 const ProductListScreen = () => {
   const { loading, products, getProducts, pagination, error } = useProduct()
@@ -69,9 +70,7 @@ const ProductListScreen = () => {
             source={{
               uri: photo,
             }}
-            alt="no image"
-            borderRadius="md"
-            size={"md"}
+            style={styles.productItemImage}
           />
           <Box paddingLeft={spacing[1]} flex={1}>
             <Text text={name} />

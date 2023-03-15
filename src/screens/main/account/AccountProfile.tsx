@@ -19,6 +19,7 @@ const AccountProfileScreen = (props: AccountProfileScreenProps) => {
   const { User } = useStores().userStore
   const { image, fullName, email, address, phoneNumber, id } = User
   const { deleteUserProfile, deleteSuccess } = useUser()
+
   useLayoutEffect(() => {
     if (deleteSuccess) {
       Alert.alert("Success", "Your account has been deleted!")

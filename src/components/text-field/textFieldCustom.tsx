@@ -1,7 +1,7 @@
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { Box, IInputProps, Input } from "native-base"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { translate, TxKeyPath } from "../../i18n"
 import { color } from "../../theme"
@@ -83,21 +83,16 @@ export function TextFieldCustom(props: TextFieldProps) {
     pointerEvents,
     ...rest
   } = props
+
   const [hidePassword, setHidePassword] = useState(true)
   const containerStyles = [styles.CONTAINER, PRESETS[preset], styleOverride]
   const inputStyles = [styles.INPUT, inputStyleOverride, errorMsg && styles.ERROR]
   const errorMsgStyles = [styles.ERROR, styles.errorMsg]
   const actualPlaceholder = placeholderTx ? translate(placeholderTx) : placeholder
 
-  return (
-    <Box style={containerStyles} pointerEvents={pointerEvents}>
-      {(label || labelTx) && (
-        <Text>
-          <Text preset="fieldLabel" tx={labelTx} text={label} />{" "}
-          {isOptional && <Text preset="fieldLabel" tx={"textInput.label.optional"} />}
-        </Text>
-      )}
-      {isHasButton ? (
+  const RenderInput = useCallback(
+    () =>
+      isHasButton ? (
         <TouchableOpacity disabled={!editable} onPress={buttonClick}>
           <View pointerEvents="none">
             <Input
@@ -148,7 +143,19 @@ export function TextFieldCustom(props: TextFieldProps) {
           editable={editable}
           {...rest}
         />
+      ),
+    [isHasButton],
+  )
+
+  return (
+    <Box style={containerStyles} pointerEvents={pointerEvents}>
+      {(label || labelTx) && (
+        <Text>
+          <Text preset="fieldLabel" tx={labelTx} text={label} />{" "}
+          {isOptional && <Text preset="fieldLabel" tx={"textInput.label.optional"} />}
+        </Text>
       )}
+      <RenderInput />
       {!hideError && <Text style={errorMsgStyles}>{errorMsg}</Text>}
     </Box>
   )

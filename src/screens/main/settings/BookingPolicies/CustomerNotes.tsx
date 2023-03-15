@@ -42,7 +42,7 @@ const CustomerNotesScreen = (props: ICustomerNotesScreenProps) => {
   }
 
   return (
-    <Screen>
+    <Screen customBehavior="height">
       <Header leftIcon="back" onLeftPress={goBack} headerTx="screens.headerTitle.customerNotes" />
       <Box paddingX={spacing[1]} flex={1}>
         <Text tx="settings.bookingPolicies.customerNotes.intruction" />

@@ -26,7 +26,7 @@ const schema = yup.object().shape({
   bookingPage: yup.string().nullable().required(),
   name: yup.string().required(),
   categories: yup.string().required(),
-  email: yup.string().required(),
+  email: yup.string().nullable().required(),
   phoneNumber: yup.string().required(),
   currency: yup.string().required(),
   address: yup.string().required(),
@@ -130,7 +130,6 @@ const StoreDetailScreen = () => {
           categoryModalRef.current.openModal()
           break
         case "address":
-
         case "city":
         case "state":
           navigation.navigate(
@@ -193,7 +192,7 @@ const StoreDetailScreen = () => {
   )
 
   return (
-    <Screen>
+    <Screen customBehavior="height">
       <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
       <FlatList
         ListHeaderComponent={() => <RenderHeaderComponent />}

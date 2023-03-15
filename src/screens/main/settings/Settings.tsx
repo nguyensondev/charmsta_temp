@@ -246,8 +246,7 @@ const SettingsScreen = () => {
   ])
 
   return (
-    // <Box style={{ flexGrow: 1, backgroundColor: color.background }}>
-    <Screen>
+    <Screen preset="fixed">
       <RenderHeader />
       <SplitView
         master={
@@ -259,7 +258,6 @@ const SettingsScreen = () => {
         detail={<SettingDetailNavigator ref={detailNavigatorRef} />}
       />
     </Screen>
-    // </Box>
   )
 }
 
