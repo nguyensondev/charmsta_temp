@@ -39,7 +39,7 @@ const AppointmentSlotScreen = (props: IAppointmentSlotScreenProps) => {
       appointmentSetting: { ...storeDetail.appointmentSetting, appointmentSlots: minutes },
     })
   }
-  console.log("alo1", { minutes })
+
   return (
     <Screen>
       <Header leftIcon="back" onLeftPress={goBack} headerTx="screens.headerTitle.appointmentSlot" />

@@ -114,6 +114,7 @@ const CustomerListScreen = () => {
         [firstName, lastName],
       )
       const displayPhoneNumber = useMemo(() => `${countryCode} ${phoneNumber}`, [phoneNumber])
+      console.log("alo1", { firstName, avatar })
       return (
         <ButtonCustom
           onPress={() => onContactPress(item)}

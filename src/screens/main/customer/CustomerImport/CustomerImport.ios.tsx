@@ -3,6 +3,7 @@ import { TextFieldCustom } from "@components/text-field"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useCustomer } from "@hooks/customer"
+import { useUtility } from "@hooks/utility"
 import { ImportCustomer } from "@models/backend/request/Customer"
 import { goBack } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
@@ -21,6 +22,47 @@ const CustomerImportScreenIOS = () => {
   const [selecteds, setSelecteds] = useState<Contact[]>([])
   const [searchText, setSearchText] = useState<string>("")
   const { loading, importStatus, importCustomers } = useCustomer()
+  const { uploadImages, imagesData } = useUtility()
+
+  useEffect(() => {
+    if (!isEmpty(imagesData)) {
+      const formattedData: ImportCustomer[] = selecteds.map((selected) => {
+        const {
+          phoneNumbers,
+          birthday,
+          givenName,
+          familyName,
+          emailAddresses,
+          postalAddresses,
+          thumbnailPath,
+          hasThumbnail,
+        } = selected
+        return {
+          avatar: hasThumbnail ? thumbnailPath : null,
+          phoneNumber: phoneNumbers.length > 0 ? phoneNumbers[0].number : null,
+          dob: birthday ? moment().set(birthday).unix() : null,
+          firstName: givenName,
+          lastName: familyName,
+          email: emailAddresses.length > 0 ? emailAddresses[0].email : null,
+          ...(postalAddresses.length > 0
+            ? {
+                isoCode: postalAddresses[0].region,
+                address: {
+                  zipcode: postalAddresses[0].postCode,
+                  city: postalAddresses[0].city,
+                  address: postalAddresses[0].street,
+                },
+              }
+            : {}),
+        }
+      })
+      imagesData.forEach((image) => {
+        const { belongedToIndex, url } = image
+        formattedData[belongedToIndex].avatar = url
+      })
+      importCustomers(formattedData)
+    }
+  }, [imagesData])
 
   useEffect(() => {
     if (importStatus) {
@@ -65,38 +107,10 @@ const CustomerImportScreenIOS = () => {
   }, 500)
 
   const onImportPress = () => {
-    const invokingData: ImportCustomer[] = selecteds.map((selected) => {
-      const {
-        phoneNumbers,
-        birthday,
-        givenName,
-        familyName,
-        emailAddresses,
-        postalAddresses,
-        thumbnailPath,
-        hasThumbnail,
-      } = selected
-      return {
-        avatar: hasThumbnail ? thumbnailPath : null,
-        phoneNumber: phoneNumbers.length > 0 ? phoneNumbers[0].number : null,
-        dob: birthday ? moment().set(birthday).unix() : null,
-        firstName: givenName,
-        lastName: familyName,
-        email: emailAddresses.length > 0 ? emailAddresses[0].email : null,
-        ...(postalAddresses.length > 0
-          ? {
-              isoCode: postalAddresses[0].region,
-              address: {
-                zipcode: postalAddresses[0].postCode,
-                city: postalAddresses[0].city,
-                address: postalAddresses[0].street,
-              },
-            }
-          : {}),
-      }
-    })
-
-    importCustomers(invokingData)
+    uploadImages(
+      selecteds.map((item) => ({ path: item.hasThumbnail ? item.thumbnailPath : null })) as any,
+    )
+    // importCustomers(invokingData)
   }
 
   const renderHeaderComponent = () => {
