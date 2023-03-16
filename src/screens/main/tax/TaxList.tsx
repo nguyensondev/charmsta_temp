@@ -1,4 +1,4 @@
-import { Header, Screen } from "@components/index"
+import { EmptyData, Header, Screen } from "@components/index"
 import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text/text"
 import { useTax } from "@hooks/tax"
@@ -105,10 +105,11 @@ const TaxListScreen = (props: TaxListScreenProps) => {
       <Header leftIcon="back" headerTx="screens.headerTitle.taxList" />
       <SearchBar ref={searchBarRef} onChangeText={onSearchChange} cancelAction={onSearchCancel} />
       <FlatList
-        // ListHeaderComponent={renderHeader}
+        ListEmptyComponent={<EmptyData />}
         data={fitleredTaxList}
         renderItem={renderItem}
         style={styles.list}
+        contentContainerStyle={styles.contentList}
       />
       {renderNewService()}
     </Screen>

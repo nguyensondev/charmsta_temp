@@ -5,8 +5,9 @@ import {
   Platform,
   ScrollView,
   StatusBar,
-  View,
+  View
 } from "react-native"
+import { isLandscapeSync } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { isNonScrolling, offsets, presets } from "./screen.presets"
 import { ScreenProps } from "./screen.props"
@@ -16,7 +17,7 @@ const isIos = Platform.OS === "ios"
 function ScreenWithoutScrolling(props: ScreenProps) {
   const insets = useSafeAreaInsets()
   const preset = presets.fixed
-  const custombehavior = props.customBehavior || "padding"
+  const custombehavior = props.customBehavior || isLandscapeSync() ? "height" : "padding"
   const style = props.style || {}
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
   const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }

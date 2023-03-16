@@ -1,4 +1,4 @@
-import { Header, Screen } from "@components/index"
+import { EmptyData, Header, Screen } from "@components/index"
 import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
@@ -104,9 +104,11 @@ const PackageListScreen = (props: PackageListScreenProps) => {
       />
       <FlatList
         padding={spacing[1]}
+        ListEmptyComponent={<EmptyData />}
         data={getFilteredCategoryList(catList, searchText)}
         renderItem={(item) => <RenderItem {...item} />}
         keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
       <Fab
         onPress={() => navigate(MAIN_SCREENS.newPackage)}

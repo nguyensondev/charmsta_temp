@@ -74,7 +74,6 @@ export const useUtility = (): Output => {
       }
       setLoading(false)
     } catch (err) {
-      console.log("alo1", err)
       setLoading(false)
     }
   }

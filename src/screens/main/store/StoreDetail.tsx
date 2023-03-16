@@ -192,7 +192,7 @@ const StoreDetailScreen = () => {
   )
 
   return (
-    <Screen customBehavior="height">
+    <Screen>
       <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
       <FlatList
         ListHeaderComponent={() => <RenderHeaderComponent />}

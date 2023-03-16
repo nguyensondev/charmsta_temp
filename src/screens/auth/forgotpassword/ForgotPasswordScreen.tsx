@@ -1,15 +1,17 @@
-import * as React from "react"
+import { ButtonCustom } from "@components/button/buttonCustom"
 import Text from "@components/text"
 import { TextFieldCustom } from "@components/text-field"
-import * as yup from "yup"
-import { Box } from "native-base"
-import { ButtonCustom } from "@components/button/buttonCustom"
 import { useAuth } from "@hooks/auth"
-import { styles } from "./styles"
-import { color } from "@theme/color"
-import { AuthLayout } from "../components"
-import { isBoolean } from "lodash"
+import { translate } from "@i18n/translate"
 import { goBack } from "@navigators/navigation-utilities"
+import { color } from "@theme/color"
+import { isBoolean, isEmpty } from "lodash"
+import { Box } from "native-base"
+import React, { useEffect, useLayoutEffect, useState } from "react"
+import { Alert } from "react-native"
+import * as yup from "yup"
+import { AuthLayout } from "../components"
+import { styles } from "./styles"
 
 const schema = yup
   .string()
@@ -19,14 +21,23 @@ const schema = yup
   .email("Enter a valid email.")
 
 const ForgotPasswordScreen = () => {
-  const [email, setEmail] = React.useState("")
-  const [error, setError] = React.useState(null)
-  const { loading, forgotPassword, forgotPasswordStatus } = useAuth()
-  React.useEffect(() => {
+  const [email, setEmail] = useState("")
+  const [error, setError] = useState(null)
+  const { loading, forgotPassword, forgotPasswordStatus, errors } = useAuth()
+
+  useLayoutEffect(() => {
+    if (!isEmpty(errors.forgetPasswordErr)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [errors.forgetPasswordErr])
+
+  useEffect(() => {
     if (isBoolean(forgotPasswordStatus)) {
       if (forgotPasswordStatus) {
         alert("Your account has been successfully reset.")
         goBack()
+      } else {
+        alert("Your email address is incorrect.")
       }
     }
   }, [forgotPasswordStatus])
@@ -34,7 +45,7 @@ const ForgotPasswordScreen = () => {
   const onSubmit = async () => {
     try {
       setError(null)
-      await schema.validate(email)
+      await schema.validate("" || email)
       forgotPassword(email)
     } catch (err) {
       setError(err.message)

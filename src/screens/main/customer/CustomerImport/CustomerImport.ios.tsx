@@ -1,5 +1,5 @@
 import { ButtonCustom, Header, Screen } from "@components/index"
-import { TextFieldCustom } from "@components/text-field"
+import SearchBar from "@components/search-bar/SearchBar"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useCustomer } from "@hooks/customer"
@@ -11,9 +11,8 @@ import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { debounce, isEmpty } from "lodash"
 import moment from "moment"
-import { FlatList } from "native-base"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { FlatList, TouchableOpacity, View } from "react-native"
 import RNContacts, { Contact } from "react-native-contacts"
 import { styles } from "./styles"
 
@@ -180,15 +179,17 @@ const CustomerImportScreenIOS = () => {
   return (
     <Screen>
       <Header leftIcon="back" onLeftPress={goBack} headerTx="screens.headerTitle.customerImport" />
-      <TextFieldCustom
+      {/* <TextFieldCustom
         onChangeText={debounceSearchBarChange}
         placeholderTx={"customer.placeholder.importSearchBar"}
-      />
+      /> */}
+      <SearchBar onChangeText={debounceSearchBarChange} />
       <FlatList
         data={filteredContacts}
         ListHeaderComponent={renderHeaderComponent}
         keyExtractor={(item) => item.recordID}
         renderItem={renderItem}
+        style={styles.contactList}
       />
       <ButtonCustom
         disabled={isEmpty(selecteds)}

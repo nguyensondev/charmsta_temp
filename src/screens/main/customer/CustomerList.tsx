@@ -3,7 +3,7 @@ import { Avatar, Box, Column, Fab } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Alert, Animated, FlatList } from "react-native"
 
-import { ButtonCustom, Header, Screen } from "@components/index"
+import { ButtonCustom, EmptyData, Header, Screen } from "@components/index"
 import Text from "@components/text/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useCustomer } from "@hooks/customer"
@@ -114,7 +114,6 @@ const CustomerListScreen = () => {
         [firstName, lastName],
       )
       const displayPhoneNumber = useMemo(() => `${countryCode} ${phoneNumber}`, [phoneNumber])
-      console.log("alo1", { firstName, avatar })
       return (
         <ButtonCustom
           onPress={() => onContactPress(item)}
@@ -220,7 +219,7 @@ const CustomerListScreen = () => {
         cancelAction={onSearchCancel}
       />
       <FlatList
-        ListEmptyComponent={() => <Text text="No data" alignSelf={"center"} />}
+        ListEmptyComponent={<EmptyData />}
         data={customers}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}

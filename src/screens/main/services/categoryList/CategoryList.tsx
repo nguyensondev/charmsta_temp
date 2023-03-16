@@ -1,3 +1,4 @@
+import { EmptyData } from "@components/empty"
 import { Header } from "@components/header/header"
 import Loading from "@components/loading/Loading"
 import { Screen } from "@components/screen/screen"
@@ -71,21 +72,13 @@ const CategoryListScreen = () => {
     )
   }
 
-  const renderEmpty = useCallback(() => {
-    return (
-      <View style={styles.empty}>
-        <Text tx="common.empty" />
-      </View>
-    )
-  }, [])
-
   const renderCatList = useCallback(() => {
     return (
       <View style={styles.viewServiceList}>
         {loadingCatList ? (
           <Loading color={"black"} />
         ) : catList.length === 0 ? (
-          renderEmpty()
+          <EmptyData />
         ) : (
           <FlatList
             data={catList}

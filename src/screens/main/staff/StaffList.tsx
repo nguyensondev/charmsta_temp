@@ -2,7 +2,7 @@ import { Fab, FlatList } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Alert, ListRenderItemInfo } from "react-native"
 
-import { ButtonCustom, Header, Screen } from "@components/index"
+import { ButtonCustom, EmptyData, Header, Screen } from "@components/index"
 import Text from "@components/text/text"
 import { useStaff } from "@hooks/staff"
 import { StaffDTO } from "@models/backend/response/Staff"
@@ -101,12 +101,12 @@ const StaffListScreen = () => {
         cancelAction={onSearchCancel}
       />
       <FlatList
-        // ListHeaderComponent={renderSearchBar}
-        // stickyHeaderIndices={[0]}
+        ListEmptyComponent={<EmptyData />}
         data={fitleredStaffs}
         keyExtractor={(item) => item.id.toString()}
         renderItem={_renderItem}
         onEndReached={onEndReached}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
       <Fab
         bottom={50}

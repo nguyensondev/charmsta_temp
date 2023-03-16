@@ -1,3 +1,4 @@
+import { EmptyData } from "@components/empty"
 import { Header } from "@components/header/header"
 import Loading from "@components/loading/Loading"
 import { Screen } from "@components/screen/screen"
@@ -113,21 +114,13 @@ const ServiceListScreen = () => {
     }
   }
 
-  const renderEmpty = useCallback(() => {
-    return (
-      <View style={styles.empty}>
-        <Text tx="common.empty" />
-      </View>
-    )
-  }, [])
-
   const renderServiceList = () => {
     return (
       <View style={styles.viewServiceList}>
         {loadingCatList && isEmpty(catList) ? (
           <Loading color={"black"} />
         ) : catList.length === 0 ? (
-          renderEmpty()
+          <EmptyData />
         ) : (
           <FlatList
             px={spacing[1]}

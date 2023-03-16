@@ -73,7 +73,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
 
   const route = useRoute<RouteProp<AuthNavigatorParamList, AUTH_SCREENS.storeForm>>()
   const { data: userInfo, providerName, registerData: registerDataParam } = route.params
-  console.log("alo1", route.params)
+
   const [storeData, setStoreData] = React.useState({
     name: "",
     address: "",
@@ -143,7 +143,6 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
   }, [registerStatus])
 
   const handleFieldChange = (key: string, text: string) => {
-    console.log("alo1", { key, text })
     setStoreData((prev) => {
       if (Object.keys(errors).includes(key)) {
         delete errors[key]
@@ -230,7 +229,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
           ),
         )}
         <ButtonCustom isLoading={loading} onPress={onSignUp}>
-          Sign Up
+          Sign up
         </ButtonCustom>
         <CustomModal
           ref={modalRef}

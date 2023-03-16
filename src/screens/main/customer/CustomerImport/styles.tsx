@@ -12,7 +12,10 @@ export const styles = StyleSheet.create({
     height: 50,
     justifyContent: "space-between",
     marginBottom: spacing[2],
-    marginHorizontal: spacing[3],
+    marginHorizontal: spacing[4],
     padding: spacing[3],
+  },
+  contactList: {
+    paddingVertical: spacing[2],
   },
 })

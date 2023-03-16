@@ -19,7 +19,8 @@ import { AxiosResponse } from "axios"
 import { useState } from "react"
 
 interface IErrors {
-  signInErr: Partial<AxiosResponse>
+  signInErr?: Partial<AxiosResponse>
+  forgetPasswordErr?: Partial<AxiosResponse>
 }
 
 type Output = {
@@ -56,7 +57,7 @@ export const useAuth = (): Output => {
   const [registerErrorCode, setRegisterErrorCode] = useState<null | number>(null)
   const [socialContinueStatusCode, setSocialContinueStatusCode] = useState<null | number>(null)
   const [forgotPasswordStatus, setForgotPasswordStatus] = useState<null | boolean>(null)
-  const [errors, setErrors] = useState<IErrors>({ signInErr: {} })
+  const [errors, setErrors] = useState<IErrors>({ signInErr: {}, forgetPasswordErr: {} })
   const { userStore, authStore, currentStoreStore } = useStores()
   const { saveUser, saveUserId } = userStore
   const { saveCurrentStore } = currentStoreStore
@@ -126,7 +127,8 @@ export const useAuth = (): Output => {
       setForgotPasswordStatus(response.data.status)
       setLoading(false)
     } catch (err) {
-      console.log("error", err)
+      setErrors({ ...errors, forgetPasswordErr: err })
+      setLoading(false)
     }
   }
 
