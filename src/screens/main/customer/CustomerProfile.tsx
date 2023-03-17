@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { get, isEmpty, isMatch, isNumber, isObject, isString, omit } from "lodash"
+import { get, isEmpty, isMatch, isNumber, isObject, omit } from "lodash"
 import { FlatList } from "native-base"
 import React, { useEffect, useRef, useState } from "react"
 import DatePicker from "react-native-date-picker"
@@ -23,7 +23,7 @@ import { MainNavigatorParamList } from "@models/navigator"
 import { goBack } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { Alert } from "react-native"
 
 const profileFields = [
@@ -48,7 +48,7 @@ const profileFields = [
 const schema = yup.object().shape({
   phoneNumber: yup
     .string()
-    .matches(/\d+/g, "Phone number is not correct")
+    .matches(validateRegex.phoneNumber, "Phone number is not correct")
     .required("Phone numer is required"),
   email: yup.string().email("Email format is not correct").nullable(),
 })
@@ -120,9 +120,9 @@ const CustomerProfileScreen = () => {
       default:
         profileRef.current[id] = value
     }
-    if (isEmpty(value) && isString(value)) {
-      delete profileRef.current[id]
-    }
+    // if (isEmpty(value) && isString(value)) {
+    //   delete profileRef.current[id]
+    // }
     setIsDiff(!isMatch(customerProfile, profileRef.current))
   }
 

@@ -45,7 +45,7 @@ const ForgotPasswordScreen = () => {
   const onSubmit = async () => {
     try {
       setError(null)
-      await schema.validate("" || email)
+      await schema.validate(email)
       forgotPassword(email)
     } catch (err) {
       setError(err.message)

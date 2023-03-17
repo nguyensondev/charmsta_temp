@@ -14,7 +14,7 @@ import { RouteProp, StackActions, useNavigation, useRoute } from "@react-navigat
 import { ServicesAndPackages } from "@screens/main/appointment/components"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertCurrency, totalAppointmentPrice } from "@utils/data"
+import { convertCurrency, displayFullname, totalAppointmentPrice } from "@utils/data"
 import { convertMinsValue } from "@utils/time"
 import { get, isEmpty } from "lodash"
 import moment from "moment"
@@ -75,7 +75,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
           >
             <Select.Item
               key={customer?.id}
-              label={`${customer?.firstName || ""} ${customer?.lastName || ""}`}
+              label={displayFullname(customer?.firstName, customer?.lastName)}
               value={customer?.id?.toString()}
             />
           </Select>

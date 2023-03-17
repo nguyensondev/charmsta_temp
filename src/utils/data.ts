@@ -113,3 +113,7 @@ export const getTabParams = (name: MAIN_SCREENS): any => {
   const state = useNavigation().getParent().getState()
   return state.routes.find((route) => route.name === name)?.params ?? {}
 }
+
+export const displayFullname = (firstName?: string, lastName?: string) => {
+  return `${firstName || ""} ${lastName || ""}`
+}

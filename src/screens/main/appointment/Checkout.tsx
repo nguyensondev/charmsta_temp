@@ -9,7 +9,12 @@ import { navigate } from "@navigators/navigation-utilities"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertCurrency, totalAppointmentPrice, totalAppointmentTax } from "@utils/data"
+import {
+  convertCurrency,
+  displayFullname,
+  totalAppointmentPrice,
+  totalAppointmentTax
+} from "@utils/data"
 import { isEmpty } from "lodash"
 import moment from "moment"
 import { Box, FormControl, ISelectProps, Row, ScrollView, Select, View } from "native-base"
@@ -129,7 +134,7 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
           >
             <Select.Item
               key={customer?.id}
-              label={`${customer?.firstName || ""} ${customer?.lastName || ""}`}
+              label={displayFullname(customer.firstName, customer.lastName)}
               value={customer?.id?.toString()}
             />
           </Select>

@@ -13,7 +13,7 @@ import { CommonNavigatorParamList, MainNavigatorParamList } from "@models/naviga
 import { navigate, navigationRef } from "@navigators/navigation-utilities"
 import { RouteProp, StackActions, useRoute } from "@react-navigation/native"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { get, omit } from "lodash"
 import { observer } from "mobx-react-lite"
 import { FormControl, ScrollView } from "native-base"
@@ -27,7 +27,7 @@ interface EditAccountScreenProps {}
 const schema = yup.object().shape({
   fullName: yup.string().required(),
   email: yup.string().email().required(),
-  phoneNumber: yup.string().required(),
+  phoneNumber: yup.string().nullable().matches(validateRegex.phoneNumber).required(),
 })
 
 const EditAccountScreen = (props: EditAccountScreenProps) => {

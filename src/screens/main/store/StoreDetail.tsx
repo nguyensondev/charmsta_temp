@@ -15,7 +15,7 @@ import { goBack } from "@navigators/navigation-utilities"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { get, isEmpty } from "lodash"
 import { FlatList } from "native-base"
 import React, { useEffect, useMemo, useRef, useState } from "react"
@@ -27,7 +27,10 @@ const schema = yup.object().shape({
   name: yup.string().required(),
   categories: yup.string().required(),
   email: yup.string().nullable().required(),
-  phoneNumber: yup.string().required(),
+  phoneNumber: yup
+    .string()
+    .matches(validateRegex.phoneNumber, "Phone number is not correct")
+    .required(),
   currency: yup.string().required(),
   address: yup.string().required(),
   address2: yup.string().nullable(),

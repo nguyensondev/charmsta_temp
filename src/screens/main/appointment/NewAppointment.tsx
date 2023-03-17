@@ -21,6 +21,7 @@ import { goBack, navigationRef } from "@navigators/navigation-utilities"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { displayFullname } from "@utils/data"
 import { convertMinsValue } from "@utils/time"
 import { get, isEmpty } from "lodash"
 import moment from "moment"
@@ -31,7 +32,7 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon,
+  WarningOutlineIcon
 } from "native-base"
 
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -79,7 +80,7 @@ const NewAppointmentScreen = () => {
   } = useAppointment()
   const { getServiceList, serviceList } = useService()
   const { getStaffByServicesAndPackages, staffsByService } = useStaff()
-  const { getCustomers, customers, skip } = useCustomer()
+  const { getCustomers, customers, take } = useCustomer()
   const { currentStoreStore } = useStores()
   const { customServiceDuration } = currentStoreStore.CurrentStore.appointmentSetting
   const endTime = moment(TIME_SLOTS_CONFIG.endTime, "HH:mm")
@@ -95,7 +96,7 @@ const NewAppointmentScreen = () => {
   }, [staffsByService])
 
   useEffect(() => {
-    getCustomers(skip, "")
+    getCustomers(100, "")
     getServiceList("")
     getStaffByServicesAndPackages(appointmentDetail.packages, appointmentDetail.services)
     getListLabel()
@@ -342,7 +343,7 @@ const NewAppointmentScreen = () => {
                   return (
                     <Select.Item
                       key={element.id}
-                      label={`${element?.firstName || ""} ${element?.lastName || ""}`}
+                      label={displayFullname(element.firstName, element.lastName)}
                       value={element.id.toString()}
                     />
                   )

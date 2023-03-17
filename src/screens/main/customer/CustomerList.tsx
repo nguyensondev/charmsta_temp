@@ -20,6 +20,7 @@ import { spacing } from "@theme/spacing"
 
 import SearchBar from "@components/search-bar"
 import { RefSearch } from "@components/search-bar/SearchBar"
+import { displayFullname } from "@utils/data"
 import { styles } from "./styles"
 
 const expandOptionStyle = {
@@ -108,11 +109,7 @@ const CustomerListScreen = () => {
   const CustomerItem = useCallback(
     ({ item }: { item: CustomerDTO; index: number }) => {
       const { firstName, lastName, avatar, phoneNumber, countryCode } = item
-      const displayName = useMemo(
-        () =>
-          isEmpty(firstName) && isEmpty(lastName) ? "" : `${firstName || ""} ${lastName || ""}`,
-        [firstName, lastName],
-      )
+      const displayName = displayFullname(firstName, lastName)
       const displayPhoneNumber = useMemo(() => `${countryCode} ${phoneNumber}`, [phoneNumber])
       return (
         <ButtonCustom
@@ -121,7 +118,7 @@ const CustomerListScreen = () => {
           backgroundColor={color.palette.white}
           rounded="3xl"
           marginBottom={spacing[1]}
-          w={"90%"}
+          w={"97%"}
           shadow={"2"}
         >
           <Box flexDirection="row" alignItems="center" padding={"1.5"}>

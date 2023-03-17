@@ -14,7 +14,7 @@ import { navigate, navigationRef } from "@navigators/navigation-utilities"
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { isEmpty, isNull } from "lodash"
 import { ScrollView } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
@@ -62,7 +62,10 @@ const schema = yup.object().shape({
   state: yup.string().required("State is required"),
   zipcode: yup.string().required("Zipcode is required"),
   categories: yup.string().required("Categories is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
+  phoneNumber: yup
+    .string()
+    .matches(validateRegex.phoneNumber, "Phone number is not correct")
+    .required("Phone number is required"),
 })
 
 interface StoreFormScreenProps {}

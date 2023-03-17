@@ -7,7 +7,7 @@ import { AUTH_SCREENS, COMMON_SCREENS, MAIN_SCREENS } from "@models/enum/screens
 import {
   AuthNavigatorParamList,
   CommonNavigatorParamList,
-  MainNavigatorParamList
+  MainNavigatorParamList,
 } from "@models/navigator"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
