@@ -83,6 +83,7 @@ export function TextFieldCustom(props: TextFieldProps) {
     pointerEvents,
     ...rest
   } = props
+
   const [hidePassword, setHidePassword] = useState(true)
   const containerStyles = [styles.CONTAINER, PRESETS[preset], styleOverride]
   const inputStyles = [styles.INPUT, inputStyleOverride, errorMsg && styles.ERROR]
@@ -124,7 +125,7 @@ export function TextFieldCustom(props: TextFieldProps) {
         <Input
           ref={forwardRef}
           placeholder={actualPlaceholder}
-          placeholderTextColor={color.palette.lighterGrey}
+          // placeholderTextColor={color.palette.lighterGrey}
           underlineColorAndroid={color.transparent}
           secureTextEntry={isPassword ? hidePassword : false}
           variant="underlined"

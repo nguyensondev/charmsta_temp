@@ -1,3 +1,4 @@
+import { EmptyData } from "@components/empty"
 import { Header } from "@components/header/header"
 import Loading from "@components/loading/Loading"
 import { Screen } from "@components/screen/screen"
@@ -100,21 +101,13 @@ const LabelListScreen = () => {
     )
   }, [])
 
-  const renderEmpty = useCallback(() => {
-    return (
-      <View style={styles.empty}>
-        <Text tx="common.empty" />
-      </View>
-    )
-  }, [])
-
   const renderLabelList = useCallback(() => {
     return (
       <View style={styles.viewServiceList}>
         {loadingLabels ? (
           <Loading color={"black"} />
         ) : listLabel.length === 0 ? (
-          renderEmpty()
+          <EmptyData />
         ) : (
           <FlatList
             data={listLabel}

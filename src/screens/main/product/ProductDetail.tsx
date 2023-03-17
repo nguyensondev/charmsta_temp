@@ -65,6 +65,7 @@ const schema = yup.object().shape({
   cost: yup.string().required(),
   price: yup.string().required(),
   SKU: yup.string().nullable().required(),
+  stocks: yup.string().required(),
   // photo: yup.string().required(),
 })
 

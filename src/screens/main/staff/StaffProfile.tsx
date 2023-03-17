@@ -20,17 +20,14 @@ import { MainNavigatorParamList } from "@models/navigator"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { Alert } from "react-native"
 import { SceneMapNameEnum } from "../selection"
 
 const schema = yup.object().shape({
   name: yup.string().trim().required("Name is required"),
   avatar: yup.string().required("Avatar is required"),
-  phoneNumber: yup
-    .string()
-    .matches(/\d+/g, "Phone number format is not correct")
-    .required("Phone number is required"),
+  phoneNumber: yup.string().matches(validateRegex.phoneNumber).required("Phone number is required"),
   email: yup.string().email("Email format is not correct").nullable(),
 })
 

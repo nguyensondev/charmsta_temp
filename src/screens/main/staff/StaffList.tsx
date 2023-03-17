@@ -1,24 +1,25 @@
 import { Fab, FlatList } from "native-base"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Alert, ListRenderItemInfo } from "react-native"
 
-import { ButtonCustom, Header, Screen } from "@components/index"
-import { TextFieldCustom } from "@components/text-field"
+import { ButtonCustom, EmptyData, Header, Screen } from "@components/index"
 import Text from "@components/text/text"
 import { useStaff } from "@hooks/staff"
 import { StaffDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 
+import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import { translate } from "@i18n/translate"
 import { goBack, navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
-import { spacing } from "@theme/spacing"
-import { debounce, isEmpty } from "lodash"
+import { debounce, get, isEmpty } from "lodash"
 
 const StaffListScreen = () => {
   const [searchText, setSearchText] = useState("")
   const { getStaff, staffs, page, totalPages, error } = useStaff()
+  const searchBarRef = useRef<RefSearch>()
+  const searchPhrase = get(searchBarRef.current, "searchPhrase", "")
 
   useEffect(() => {
     if (!isEmpty(error)) {
@@ -36,6 +37,10 @@ const StaffListScreen = () => {
     if (page < totalPages) {
       getStaff(page + 1)
     }
+  }
+
+  const onSearchCancel = () => {
+    //handle search bar cancel press
   }
 
   const _renderItem = ({ item }: ListRenderItemInfo<StaffDTO>) => {
@@ -61,38 +66,47 @@ const StaffListScreen = () => {
     )
   }
 
-  const renderSearchBar = useCallback(() => {
-    const handleChangeText = (text: string) => {
-      setSearchText(text)
-    }
+  const handleChangeText = (text: string) => {
+    setSearchText(text)
+  }
 
-    const debounceChangeText = debounce(handleChangeText, 500)
+  const debounceChangeText = debounce(handleChangeText, 500)
 
-    return (
-      <TextFieldCustom
-        style={{ paddingVertical: spacing[0] }}
-        onChangeText={debounceChangeText}
-        placeholder={"Input staff's name here"}
-        hideError
-      />
-    )
-  }, [])
+  // const renderSearchBar = useCallback(() => {
+  //   const handleChangeText = (text: string) => {
+  //     setSearchText(text)
+  //   }
+
+  //   return (
+  //     <TextFieldCustom
+  //       style={{ paddingVertical: spacing[0] }}
+  //       onChangeText={debounceChangeText}
+  //       placeholder={"Input staff's name here"}
+  //       hideError
+  //     />
+  //   )
+  // }, [])
 
   const fitleredStaffs = useMemo(
-    () => staffs.filter((staff) => staff.name.toLowerCase().includes(searchText.toLowerCase())),
+    () => staffs.filter((staff) => staff.name.toLowerCase().includes(searchPhrase.toLowerCase())),
     [searchText, staffs],
   )
 
   return (
     <Screen>
       <Header headerTx={"screens.headerTitle.staffList"} leftIcon="back" onLeftPress={goBack} />
+      <SearchBar
+        onChangeText={debounceChangeText}
+        ref={searchBarRef}
+        cancelAction={onSearchCancel}
+      />
       <FlatList
-        ListHeaderComponent={renderSearchBar}
-        stickyHeaderIndices={[0]}
+        ListEmptyComponent={<EmptyData />}
         data={fitleredStaffs}
         keyExtractor={(item) => item.id.toString()}
         renderItem={_renderItem}
         onEndReached={onEndReached}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
       <Fab
         bottom={50}

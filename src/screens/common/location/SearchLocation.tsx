@@ -9,8 +9,8 @@ import {
   CommonNavigatorParamList,
   MainNavigatorParamList,
 } from "@models/navigator"
-import { navigate, navigationRef } from "@navigators/navigation-utilities"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { spacing } from "@theme/spacing"
 import { debounce } from "lodash"
 import { FlatList, View } from "native-base"
@@ -53,12 +53,12 @@ const Item = ({
 }
 
 const SearchLocationScreen = (props: SearchLocationScreenProps) => {
+  const { navigate, getState } = useNavigation<StackNavigationProp<MainNavigatorParamList>>()
   const {
     params: { fromScreen, type = "geocode" },
   } = useRoute<RouteProp<CommonNavigatorParamList, COMMON_SCREENS.searchLocation>>()
   const { searchLocation, predictions } = useUtility()
-  const { routes, index: rootIndex } = navigationRef.getRootState()
-
+  const { routes, index: rootIndex } = getState()
   const handleSearch = debounce((text) => {
     searchLocation(text, type)
   }, 500)
@@ -80,6 +80,7 @@ const SearchLocationScreen = (props: SearchLocationScreenProps) => {
       state: state?.value,
     }
     const previousParams = routes.find((route, index) => index === rootIndex - 1).params as any
+
     switch (fromScreen) {
       case AUTH_SCREENS.storeForm:
         // const previousParams = routes.find((route, index) => index === rootIndex - 1)
@@ -88,12 +89,17 @@ const SearchLocationScreen = (props: SearchLocationScreenProps) => {
           ...previousParams.data,
           store: { ...previousParams.data?.store, ...formattedAdress },
         } as AuthNavigatorParamList[AUTH_SCREENS.storeForm]
-        navigate(fromScreen, previousParams)
+        navigate(fromScreen, previousParams as never)
         break
       case MAIN_SCREENS.editAccount:
-        navigate(fromScreen, {
+        return navigate(fromScreen, {
           newAddress: formattedAdress.address,
-        } as MainNavigatorParamList[MAIN_SCREENS.editAccount])
+        } as never)
+      case MAIN_SCREENS.storeDetail:
+        navigate(fromScreen, {
+          storeDetail: { ...previousParams.storeDetail, ...formattedAdress },
+        } as never)
+        break
     }
   }
 

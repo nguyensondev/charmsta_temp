@@ -8,10 +8,13 @@ import styles from "./styles"
 
 export interface RefSearch {
   searchPhrase: string
+  cancelAction?: () => void
+  onChangeText?: (text: string) => void
+  placeholder?: string
 }
 
 const SearchBar = forwardRef(
-  (_props: { searchAction?; cancelAction?; onChangeText? }, ref: Ref<RefSearch>) => {
+  (_props: { searchAction?; cancelAction?; onChangeText?; placeholder? }, ref: Ref<RefSearch>) => {
     const [searchPhrase, setSearchPhrase] = useState("")
     const [clicked, setClicked] = useState(false)
 
@@ -37,7 +40,7 @@ const SearchBar = forwardRef(
           <Feather name="search" size={20} color="black" style={styles.feather} />
           <TextInput
             style={styles.input}
-            placeholder="Search"
+            placeholder={_props?.placeholder || "Search"}
             value={searchPhrase}
             onChangeText={setSearchPhrase}
             onFocus={() => {

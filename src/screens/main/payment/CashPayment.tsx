@@ -45,7 +45,7 @@ const CashPaymentScreen = (props: CashPaymentScreenProps) => {
 
   const onButtonPress = () => {
     const { given, return: returnAmount } = amounts
-    if (given > amount) {
+    if (given >= amount) {
       payment({ billId, payment_method, amount })
     } else {
       alert(`Please check customer give amount`)

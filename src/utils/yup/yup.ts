@@ -6,3 +6,7 @@ export const convertYupErrorInner = (errors: Array<{ message: string; path: stri
   })
   return errorObject
 }
+
+export const validateRegex = {
+  phoneNumber: /^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$/g,
+}

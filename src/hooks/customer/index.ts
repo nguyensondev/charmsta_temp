@@ -34,7 +34,7 @@ export const useCustomer = (): Output => {
   const [importStatus, setImportStatus] = useState(false)
   const [take, setTake] = useState<number>(0)
 
-  const getCustomers = async (take: number, search?: string) => {
+  const getCustomers = async (take: number, search = "") => {
     try {
       const { data } = await getCustomersApi(take, search)
       // if (skip > 0) {

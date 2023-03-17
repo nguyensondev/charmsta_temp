@@ -1,6 +1,7 @@
 import Text from "@components/text/text"
 import { TIME_24H_FORMAT } from "@config/constants"
 import { CalendarDTO } from "@models/backend/response/Appointment"
+import { displayFullname } from "@utils/data"
 import moment from "moment"
 import { View } from "native-base"
 import * as React from "react"
@@ -19,7 +20,7 @@ const RenderEvent = ({ event }: RenderEventProps) => {
   ].flat(1)
   return (
     <View borderLeftWidth={5} borderColor={label?.color || "transparent"} flex={1} pl={"1"}>
-      <Text fontWeight={"bold"} text={`${customer?.firstName || ""} ${customer?.lastName || ""}`} />
+      <Text fontWeight={"bold"} text={displayFullname(customer.firstName, customer.lastName)} />
       <Text>
         {moment(date).format(TIME_24H_FORMAT)} -{" "}
         {moment(date).add({ minutes: duration }).format(TIME_24H_FORMAT)}

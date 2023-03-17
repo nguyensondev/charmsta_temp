@@ -1,4 +1,4 @@
-import { Header, Screen } from "@components/index"
+import { EmptyData, Header, Screen } from "@components/index"
 import Text from "@components/text/text"
 import { useDiscount } from "@hooks/discount"
 import { translate } from "@i18n/translate"
@@ -65,11 +65,15 @@ const DiscountListScreen = (props: DiscountListScreenProps) => {
   return (
     <Screen>
       <Header leftIcon="back" headerTx="screens.headerTitle.discountList" />
-      <ScrollView px={spacing[1]} scrollEnabled>
-        {discounts.map((discount) => (
-          <RenderItem key={discount.id.toString()} item={discount} />
-        ))}
-      </ScrollView>
+      {discounts.length == 0 ? (
+        <EmptyData />
+      ) : (
+        <ScrollView px={spacing[1]} scrollEnabled>
+          {discounts.map((discount) => (
+            <RenderItem key={discount.id.toString()} item={discount} />
+          ))}
+        </ScrollView>
+      )}
       <Fab
         bottom={50}
         onPress={onFabPress}

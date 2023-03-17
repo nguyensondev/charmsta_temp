@@ -3,7 +3,13 @@ import { spacing } from "@theme/spacing"
 import { InterfaceHStackProps } from "native-base/lib/typescript/components/primitives/Stack/HStack"
 import { StyleSheet } from "react-native"
 
-export const styles = StyleSheet.create({})
+export const styles = StyleSheet.create({
+  empty: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+})
 
 export const nativeBaseStyles = {
   discountItemContainer: {

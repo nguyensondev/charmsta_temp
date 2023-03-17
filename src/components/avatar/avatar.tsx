@@ -2,9 +2,15 @@ import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { isFunction } from "lodash"
-import { Avatar as NativeAvatar, Box, IAvatarProps, View } from "native-base"
+import { Box, IAvatarProps, View } from "native-base"
 import * as React from "react"
-import { ActivityIndicator, ImageSourcePropType, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  ActivityIndicator,
+  Image,
+  ImageSourcePropType,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 
 import { styles } from "./styles"
 
@@ -40,7 +46,6 @@ export const Avatar = (props: AvatarProps) => {
   const isDisabled = (!isLoading && !isFunction(onPress)) || disabled
 
   const isImage = url && url.uri && url.uri !== undefined && url.uri !== null
-
   return (
     <TouchableOpacity
       disabled={isDisabled}
@@ -50,18 +55,7 @@ export const Avatar = (props: AvatarProps) => {
     >
       <View style={[avatarStyle, errorStyle, {}]}>
         {isImage ? (
-          <NativeAvatar
-            source={source}
-            alignSelf="center"
-            width={"full"}
-            height={"full"}
-            rounded={rounded}
-            _image={{
-              rounded,
-            }}
-            {...rest}
-            {...errorStyle}
-          />
+          <Image source={source} style={styles.avatarImage} />
         ) : (
           <VectorIcon iconSet="ion" name="images" />
         )}

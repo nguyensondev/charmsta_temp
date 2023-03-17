@@ -13,15 +13,22 @@ import { CommonNavigatorParamList, MainNavigatorParamList } from "@models/naviga
 import { navigate, navigationRef } from "@navigators/navigation-utilities"
 import { RouteProp, StackActions, useRoute } from "@react-navigation/native"
 import { spacing } from "@theme/spacing"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { get, omit } from "lodash"
 import { observer } from "mobx-react-lite"
 import { FormControl, ScrollView } from "native-base"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { Image } from "react-native-image-crop-picker"
+import * as yup from "yup"
 import { styles } from "./styles"
-
 interface EditAccountScreenProps {}
+
+const schema = yup.object().shape({
+  fullName: yup.string().required(),
+  email: yup.string().email().required(),
+  phoneNumber: yup.string().nullable().matches(validateRegex.phoneNumber).required(),
+})
 
 const EditAccountScreen = (props: EditAccountScreenProps) => {
   const { params } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.editAccount>>()
@@ -29,6 +36,7 @@ const EditAccountScreen = (props: EditAccountScreenProps) => {
   const { User } = useStores().userStore
   const { image, fullName, email, address, phoneNumber } = User
   const [avatar, setAvatar] = useState(image)
+  const [errors, setErrors] = useState({})
   const userProfile = useRef<Partial<User>>({}).current
   const imagePickerRef = useRef<IRefCustomModal>()
   const { uploadingImage, imageData, loading } = useUtility()
@@ -73,9 +81,14 @@ const EditAccountScreen = (props: EditAccountScreenProps) => {
     }
   }
 
-  const onSubmit = () => {
-    const updateData = omit({ ...User, ...userProfile }, "company", "isActive", "permissionsId")
-    updateUserProfile(updateData as UpdateUser)
+  const onSubmit = async () => {
+    try {
+      const updateData = omit({ ...User, ...userProfile }, "company", "isActive", "permissionsId")
+      await schema.validate(updateData, { abortEarly: false })
+      updateUserProfile(updateData as UpdateUser)
+    } catch (err) {
+      setErrors(convertYupErrorInner(err.inner))
+    }
   }
 
   return (
@@ -88,17 +101,20 @@ const EditAccountScreen = (props: EditAccountScreenProps) => {
             defaultValue={fullName}
             onChangeText={(text) => handleFieldChange("fullName", text)}
             labelTx="textInput.label.name"
+            errorMsg={get(errors, "fullName")}
           />
           <TextFieldCustom
             defaultValue={email}
             onChangeText={(text) => handleFieldChange("email", text)}
             labelTx="textInput.label.email"
+            errorMsg={get(errors, "email")}
             isDisabled
           />
           <TextFieldCustom
             defaultValue={phoneNumber}
             onChangeText={(text) => handleFieldChange("phoneNumber", text)}
             labelTx="textInput.label.phoneNumber"
+            errorMsg={get(errors, "phoneNumber")}
           />
           <TextFieldCustom
             value={newAddress || address}
@@ -109,6 +125,7 @@ const EditAccountScreen = (props: EditAccountScreenProps) => {
               } as CommonNavigatorParamList[COMMON_SCREENS.searchLocation])
             }
             labelTx="textInput.label.address"
+            errorMsg={get(errors, "address")}
           />
         </FormControl>
       </ScrollView>

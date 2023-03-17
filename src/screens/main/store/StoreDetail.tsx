@@ -9,13 +9,13 @@ import { useUtility } from "@hooks/utility"
 import { TxKeyPath } from "@i18n/i18n"
 import { UpdateStore } from "@models/backend/request/Store"
 import { StoreDTO } from "@models/backend/response/Store"
-import { MAIN_SCREENS } from "@models/enum/screensName"
+import { COMMON_SCREENS, MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
 import { goBack } from "@navigators/navigation-utilities"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertYupErrorInner } from "@utils/yup/yup"
+import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { get, isEmpty } from "lodash"
 import { FlatList } from "native-base"
 import React, { useEffect, useMemo, useRef, useState } from "react"
@@ -26,8 +26,11 @@ const schema = yup.object().shape({
   bookingPage: yup.string().nullable().required(),
   name: yup.string().required(),
   categories: yup.string().required(),
-  email: yup.string().required(),
-  phoneNumber: yup.string().required(),
+  email: yup.string().nullable().required(),
+  phoneNumber: yup
+    .string()
+    .matches(validateRegex.phoneNumber, "Phone number is not correct")
+    .required(),
   currency: yup.string().required(),
   address: yup.string().required(),
   address2: yup.string().nullable(),
@@ -44,13 +47,14 @@ const fields = [
   { id: "phoneNumber", label: "phoneNumber" },
   { id: "currency", label: "currency" },
   { id: "website", label: "website", isOptional: true },
-  { id: "address", label: "address1" },
+  { id: "address", label: "address1", isHasButton: true },
   { id: "address2", label: "address2", isOptional: true },
-  { id: "city", label: "city" },
-  { id: "state", label: "state" },
+  { id: "city", label: "city", isHasButton: true },
+  { id: "state", label: "state", isHasButton: true },
   { id: "zipcode", label: "zipcode" },
 ]
 const StoreDetailScreen = () => {
+  const navigation = useNavigation()
   const {
     params: { storeDetail },
   } = useRoute<RouteProp<MainNavigatorParamList, MAIN_SCREENS.storeDetail>>()
@@ -127,6 +131,17 @@ const StoreDetailScreen = () => {
       switch (id) {
         case "categories":
           categoryModalRef.current.openModal()
+          break
+        case "address":
+        case "city":
+        case "state":
+          navigation.navigate(
+            COMMON_SCREENS.searchLocation as never,
+            {
+              fromScreen: MAIN_SCREENS.storeDetail,
+              type: "establishment",
+            } as never,
+          )
           break
         default:
           break
@@ -210,35 +225,6 @@ const StoreDetailScreen = () => {
           />
         }
       />
-    </Screen>
-  )
-}
-
-const StoreDetailScreenA = () => {
-  return (
-    <Screen>
-      <Header headerTx="screens.headerTitle.companyDetail" leftIcon="back" onLeftPress={goBack} />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCustom />
-      <TextFieldCurrency />
-      <ButtonCustom
-        w="90%"
-        // isLoading={updating}
-        marginBottom={spacing[2]}
-        // disabled={uploading}
-        // onPress={onSavePress}
-      >
-        <Text tx="button.save" style={{ color: color.palette.white }} />
-      </ButtonCustom>
     </Screen>
   )
 }

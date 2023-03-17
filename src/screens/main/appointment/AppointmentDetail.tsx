@@ -14,7 +14,7 @@ import { RouteProp, StackActions, useNavigation, useRoute } from "@react-navigat
 import { ServicesAndPackages } from "@screens/main/appointment/components"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { convertCurrency, totalAppointmentPrice } from "@utils/data"
+import { convertCurrency, displayFullname, totalAppointmentPrice } from "@utils/data"
 import { convertMinsValue } from "@utils/time"
 import { get, isEmpty } from "lodash"
 import moment from "moment"
@@ -75,7 +75,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
           >
             <Select.Item
               key={customer?.id}
-              label={`${customer?.firstName || ""} ${customer?.lastName || ""}`}
+              label={displayFullname(customer?.firstName, customer?.lastName)}
               value={customer?.id?.toString()}
             />
           </Select>
@@ -174,7 +174,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
     )
   }
 
-  const RenderButtons = () => (
+  const RenderFooter = () => (
     <View m={spacing[1]}>
       <Text
         alignSelf={"center"}
@@ -184,7 +184,11 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
       />
       <Row
         justifyContent="space-between"
-        display={status === AppointmentStatusEnum.Completed ? "none" : "flex"}
+        display={
+          status === AppointmentStatusEnum.Completed || status === AppointmentStatusEnum.Canceled
+            ? "none"
+            : "flex"
+        }
       >
         <ButtonCustom
           onPress={() => {
@@ -247,7 +251,7 @@ const AppointmentDetailScreen = (props: AppointmentDetailScreenProps) => {
     <Screen>
       <Header leftIcon="back" onLeftPress={goBack} />
       <RenderBody />
-      <RenderButtons />
+      <RenderFooter />
       <CustomModal
         ref={modalRef}
         childView={

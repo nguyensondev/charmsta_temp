@@ -5,6 +5,7 @@ import { useCustomer } from "@hooks/customer"
 import { CustomerDTO } from "@models/backend/response/Customer"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { displayFullname } from "@utils/data"
 import { debounce } from "lodash"
 import { Box, FlatList } from "native-base"
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react"
@@ -17,7 +18,7 @@ interface AddCustomerProps {}
 const AddCustomer = (props: AddCustomerProps) => {
   const [customer, setCustomer] = useState<Partial<CustomerDTO>>({})
   const [searchText, setSearchText] = useState("")
-  const { getCustomers, customers, skip, setSkip } = useCustomer()
+  const { getCustomers, customers, take, setTake } = useCustomer()
   const additionSelectCtx = useContext(AdditionSelectContext)
 
   useEffect(() => {
@@ -27,12 +28,12 @@ const AddCustomer = (props: AddCustomerProps) => {
   }, [customer])
 
   useLayoutEffect(() => {
-    getCustomers(skip, searchText)
-  }, [searchText, skip])
+    getCustomers(take, searchText)
+  }, [searchText, take])
 
   const handleGetMore = () => {
-    if (customers.length >= skip) {
-      setSkip((prev) => prev + 10)
+    if (customers.length % 10) {
+      setTake((prev) => prev + 10)
     }
   }
 
@@ -50,7 +51,7 @@ const AddCustomer = (props: AddCustomerProps) => {
           borderBottomWidth={1}
           borderColor={color.palette.lighterGrey}
         >
-          <Text text={`${item?.firstName || ""} ${item?.lastName || ""}`} />
+          <Text text={displayFullname(item.firstName, item.lastName)} />
           {customer.id === item.id && <VectorIcon iconSet="ant" name="check" />}
         </Box>
       </TouchableOpacity>
@@ -58,7 +59,7 @@ const AddCustomer = (props: AddCustomerProps) => {
   }
 
   const debounceSearchChange = debounce((text) => {
-    setSkip(0)
+    setTake(0)
     setSearchText(text)
   }, 500)
 

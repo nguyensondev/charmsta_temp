@@ -22,10 +22,11 @@ import {
   StackActions,
   useIsFocused,
   useNavigation,
-  useRoute,
+  useRoute
 } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
+import { displayFullname } from "@utils/data"
 import { convertMinsValue } from "@utils/time"
 import { isEmpty } from "lodash"
 import moment from "moment"
@@ -36,7 +37,7 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon,
+  WarningOutlineIcon
 } from "native-base"
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Alert, ScrollView, TouchableOpacity, View } from "react-native"
@@ -77,7 +78,7 @@ const EditAppointmentScreen = () => {
   } = useAppointment()
   const isFocused = useIsFocused()
   const { getStaffByServicesAndPackages, staffsByService } = useStaff()
-  const { getCustomers, customers, skip } = useCustomer()
+  const { getCustomers, customers, take } = useCustomer()
   const { currentStoreStore } = useStores()
   const {
     appointmentSetting: { customServiceDuration },
@@ -96,7 +97,7 @@ const EditAppointmentScreen = () => {
   }, [appointmentDetail])
 
   useEffect(() => {
-    getCustomers(skip, "")
+    getCustomers(100, "")
     getStaffByServicesAndPackages(packages, services)
     getListLabel()
   }, [])
@@ -382,7 +383,7 @@ const EditAppointmentScreen = () => {
                   return (
                     <Select.Item
                       key={element.id}
-                      label={`${element?.firstName || ""} ${element?.lastName || ""}`}
+                      label={displayFullname(element.firstName, element.lastName)}
                       value={element.id.toString()}
                     />
                   )

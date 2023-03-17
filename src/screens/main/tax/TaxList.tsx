@@ -1,5 +1,5 @@
-import { Header, Screen } from "@components/index"
-import { TextFieldCustom } from "@components/text-field"
+import { EmptyData, Header, Screen } from "@components/index"
+import SearchBar, { RefSearch } from "@components/search-bar/SearchBar"
 import Text from "@components/text/text"
 import { useTax } from "@hooks/tax"
 import { translate } from "@i18n/translate"
@@ -10,16 +10,19 @@ import { navigate } from "@navigators/navigation-utilities"
 import { useFocusEffect } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
-import { debounce, isEmpty } from "lodash"
-import { Fab, FlatList, Row } from "native-base"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { Alert, TouchableOpacity } from "react-native"
+import { debounce, get, isEmpty } from "lodash"
+import { Fab, Row } from "native-base"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Alert, FlatList, TouchableOpacity } from "react-native"
+import { styles } from "./styles"
 
 interface TaxListScreenProps {}
 
 const TaxListScreen = (props: TaxListScreenProps) => {
   const [searchText, setSearchText] = useState("")
   const { getTaxList, taxList, error } = useTax()
+  const searchBarRef = useRef<RefSearch>()
+  const searchPhrase = get(searchBarRef.current, "searchPhrase", "")
 
   useEffect(() => {
     if (!isEmpty(error)) {
@@ -33,15 +36,16 @@ const TaxListScreen = (props: TaxListScreenProps) => {
     }, []),
   )
 
-  const onSearchChange = useCallback(
-    debounce((text: string) => setSearchText(text), 500),
-    [searchText],
-  )
+  const onSearchChange = debounce((text: string) => setSearchText(text), 500)
 
-  const renderHeader = useCallback(
-    () => <TextFieldCustom placeholder="Enter tax name here" onChangeText={onSearchChange} />,
-    [],
-  )
+  const onSearchCancel = () => {
+    // handle search bar cancel action
+  }
+
+  // const renderHeader = useCallback(
+  //   () => <TextFieldCustom placeholder="Enter tax name here" onChangeText={onSearchChange} />,
+  //   [],
+  // )
 
   const renderItem = ({ item }: { item: TaxDTO }) => {
     const { name, rate } = item
@@ -87,18 +91,25 @@ const TaxListScreen = (props: TaxListScreenProps) => {
   }, [])
 
   const fitleredTaxList = useMemo(
-    () => (isEmpty(searchText) ? taxList : taxList.filter(({ name }) => name.includes(searchText))),
+    () =>
+      isEmpty(searchText)
+        ? taxList
+        : taxList.filter(({ name }) =>
+            name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+          ),
     [searchText, taxList],
   )
 
   return (
     <Screen>
       <Header leftIcon="back" headerTx="screens.headerTitle.taxList" />
+      <SearchBar ref={searchBarRef} onChangeText={onSearchChange} cancelAction={onSearchCancel} />
       <FlatList
-        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={<EmptyData />}
         data={fitleredTaxList}
         renderItem={renderItem}
-        px={spacing[1]}
+        style={styles.list}
+        contentContainerStyle={styles.contentList}
       />
       {renderNewService()}
     </Screen>
