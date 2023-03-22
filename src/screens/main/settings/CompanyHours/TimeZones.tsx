@@ -21,7 +21,7 @@ import styles from "./styles"
 const TimeZonesScreen = ({ route }) => {
   const { navigate } = useNavigation()
   const { timeZone, storeDetail } = route.params
-  const timeZoneTemp = timeZone as TimeZoneDTO
+  const timeZoneTemp = timeZone as string
   const dataTimeZone = DATA_TIMEZONE as unknown as TimeZoneDTO[]
 
   const [data, setData] = useState<TimeZoneDTO[]>(dataTimeZone)
@@ -33,7 +33,7 @@ const TimeZonesScreen = ({ route }) => {
 
     navigate({
       name: MAIN_SCREENS.companyHours,
-      params: { storeDetail, timeZone: newData as TimeZoneDTO },
+      params: { storeDetail, timeZone: newData as string },
       merge: true,
     } as never)
   }
@@ -77,7 +77,7 @@ const TimeZonesScreen = ({ route }) => {
     if (timeZoneTemp) {
       for (let index = 0; index < data.length; index++) {
         for (let index1 = 0; index1 < data[index].group.length; index1++) {
-          const found = data[index].group.some((r) => timeZoneTemp.group.includes(r))
+          const found = data[index].group.some((r) => timeZoneTemp.includes(r))
           if (found) {
             setSelected(index)
           }

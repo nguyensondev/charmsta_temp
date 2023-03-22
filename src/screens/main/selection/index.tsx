@@ -190,7 +190,6 @@ const SelectionScreen = (props: SelectionScreenProps) => {
             ...curr,
             duration: prev.duration + curr.duration,
           })).duration
-
           navigate(MAIN_SCREENS.editAppointment, {
             ...editParams,
             detail: {

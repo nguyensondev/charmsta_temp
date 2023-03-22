@@ -12,7 +12,7 @@ import {
   loginApi,
   registerApi,
   signUpEmailApi,
-  updateCompanyApi,
+  updateCompanyApi
 } from "@services/api/Auth"
 import { getDeviceInfo } from "@utils/deviceInfo"
 import { AxiosResponse } from "axios"
@@ -94,8 +94,8 @@ export const useAuth = (): Output => {
   const login = async (params: LoginEmail) => {
     let loginStt = false
     try {
-      setErrors({ ...errors, signInErr: {} })
       setLoading(true)
+      setErrors({ ...errors, signInErr: {} })
       const { deviceToken } = await getDeviceInfo()
       const response = await loginApi({ ...params, deviceToken })
       const { accessToken, id } = response.data

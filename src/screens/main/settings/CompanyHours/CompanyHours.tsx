@@ -6,7 +6,7 @@ import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
 import { UpdateStore } from "@models/backend/request/Store"
 import { RegisterDTO } from "@models/backend/response/Auth"
-import { OpenHoursDTO, StoreDTO, TimeZoneDTO } from "@models/backend/response/Store"
+import { OpenHoursDTO, StoreDTO } from "@models/backend/response/Store"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 
@@ -25,6 +25,7 @@ import DatePicker from "react-native-date-picker"
 import styles from "./styles"
 const CompanyHoursScreen = ({ route }) => {
   const navigation = useNavigation()
+
   const { storeDetail, timeZone } = route.params
   const registerData = get<Partial<Omit<RegisterDTO, "accessToken">>>(
     route.params,
@@ -32,14 +33,14 @@ const CompanyHoursScreen = ({ route }) => {
     {},
   )
   const store = storeDetail as StoreDTO
-  const timeZoneTemp = timeZone as TimeZoneDTO
+  const timeZoneTemp = timeZone as string
   const currentTimeZone =
     store.timezone && isEmpty(registerData) ? store.timezone : moment.tz.guess()
-
-  const offSet = timeZone
-    ? parseInt(timeZoneTemp.rawOffsetInMinutes) / 60
-    : moment.tz(currentTimeZone).format("Z")
-  const currentTime = timeZone ? timeZoneTemp.name : currentTimeZone
+  const offSet =
+    // timeZone
+    // ? parseInt(timeZoneTemp.rawOffsetInMinutes) / 60:
+    moment.tz(currentTimeZone).format("Z")
+  const currentTime = timeZone ? timeZoneTemp : currentTimeZone
 
   const [data, setData] = useState<OpenHoursDTO[]>(store.openHours || [])
   const [modifyId, setModifyId] = useState(null)
@@ -97,7 +98,7 @@ const CompanyHoursScreen = ({ route }) => {
       const invokingData = {
         ...store,
         openHours: data,
-        timezone: timeZone ? timeZoneTemp.name : currentTimeZone,
+        timezone: timeZone ? timeZoneTemp : currentTimeZone,
       }
 
       if ((dif && dif.length > 0) || currentTimeZone !== currentTime) {

@@ -16,7 +16,7 @@ import { AppointmentStatusEnum } from "@models/enum/appointment"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import { MainNavigatorParamList } from "@models/navigator"
-import { goBack, navigationRef } from "@navigators/navigation-utilities"
+import { goBack } from "@navigators/navigation-utilities"
 import {
   RouteProp,
   StackActions,
@@ -86,9 +86,10 @@ const EditAppointmentScreen = () => {
     bookingSlotSize,
   } = currentStoreStore.CurrentStore
   const endTime = moment(TIME_SLOTS_CONFIG.endTime, "HH:mm")
+
   useLayoutEffect(() => {
     if (!isFocused) {
-      navigationRef.setParams({ start: startTime, detail: appointment } as never)
+      navigation.setParams({ start: startTime, detail: appointment } as never)
     }
   }, [isFocused])
 
@@ -277,13 +278,18 @@ const EditAppointmentScreen = () => {
   }
 
   const handleAppointmentChange = (key: keyof CalendarDTO, value: any) => {
-    switch (key) {
-      default:
-        setAppointment((prev) => ({
-          ...prev,
-          [key]: value,
-        }))
-    }
+    setAppointment((prev) => {
+      const newData = {
+        ...prev,
+        [key]: value,
+      }
+      switch (key) {
+        case "labelId":
+          newData.label = listLabel.find((label) => label.id === value)
+          break
+      }
+      return newData
+    })
   }
 
   const onStaffPress = (staff?: StaffDTO, belongToId?: number, type?: "services" | "packages") => {
@@ -445,7 +451,6 @@ const EditAppointmentScreen = () => {
             Please make a selection!
           </FormControl.ErrorMessage>
         </FormControl>
-
         {/* services and Packages */}
         <ServicesAndPackages
           isAddNew
