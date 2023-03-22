@@ -7,8 +7,7 @@ import { ServiceDTO } from "@models/backend/response/Service"
 import { StaffByServiceDTO } from "@models/backend/response/Staff"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { MainNavigatorParamList } from "@models/navigator"
-import { navigationRef } from "@navigators/navigation-utilities"
-import { StackActions } from "@react-navigation/native"
+import { StackActions, useNavigation } from "@react-navigation/native"
 import { SceneMapNameEnum } from "@screens/main/selection"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
@@ -30,10 +29,19 @@ interface ServicesAndPacakgesProps {
     type: "services" | "packages",
   ) => void
   staffList?: StaffByServiceDTO[]
+  onAddMorePress?: () => void
 }
 
 const ServicesAndPackages = (props: ServicesAndPacakgesProps) => {
-  const { services = [], packages = [], onStaffPress, staffList = [], isAddNew = false } = props
+  const {
+    services = [],
+    packages = [],
+    onStaffPress,
+    staffList = [],
+    isAddNew = false,
+    onAddMorePress,
+  } = props
+  const navigation = useNavigation()
   const [selected, setSelected] = useState<{
     staffId?: number
     belongToId?: number
@@ -66,8 +74,11 @@ const ServicesAndPackages = (props: ServicesAndPacakgesProps) => {
     setSelected({})
   }
 
-  const onAddMorePress = () => {
-    navigationRef.dispatch(
+  const _onAddMorePress = () => {
+    if (isFunction(onAddMorePress)) {
+      onAddMorePress()
+    }
+    navigation.dispatch(
       StackActions.push(MAIN_SCREENS.additionSelect, {
         actionName: SceneMapNameEnum.editAppointment,
         prevSelected: { services: { services, packages } },
@@ -130,7 +141,7 @@ const ServicesAndPackages = (props: ServicesAndPacakgesProps) => {
         </Row>
       ))}
       {isAddNew ? (
-        <TouchableOpacity onPress={onAddMorePress}>
+        <TouchableOpacity onPress={_onAddMorePress}>
           <Row my={spacing[1] / 2}>
             <VectorIcon color={color.primary} iconSet="ant" name="pluscircleo" />
             <Text style={styles.addMore}>Add new</Text>

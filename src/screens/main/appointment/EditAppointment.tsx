@@ -22,7 +22,7 @@ import {
   StackActions,
   useIsFocused,
   useNavigation,
-  useRoute,
+  useRoute
 } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
@@ -37,9 +37,9 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon,
+  WarningOutlineIcon
 } from "native-base"
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, ScrollView, TouchableOpacity, View } from "react-native"
 import { DateData } from "react-native-calendars"
 import { ServicesAndPackages } from "./components"
@@ -65,7 +65,6 @@ const EditAppointmentScreen = () => {
 
   const modalRef = useRef<IRefCustomModal>(null)
   const toast = useToast()
-
   const { customerId, labelId, start, duration, note, status, packages, services } = appointment
 
   const {
@@ -87,11 +86,11 @@ const EditAppointmentScreen = () => {
   } = currentStoreStore.CurrentStore
   const endTime = moment(TIME_SLOTS_CONFIG.endTime, "HH:mm")
 
-  useLayoutEffect(() => {
-    if (!isFocused) {
-      navigation.setParams({ start: startTime, detail: appointment } as never)
-    }
-  }, [isFocused])
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     navigation.setParams({ start: startTime, detail: appointment } as never)
+  //   }
+  // }, [isFocused])
 
   useEffect(() => {
     setAppointment(appointmentDetail)
@@ -292,6 +291,10 @@ const EditAppointmentScreen = () => {
     })
   }
 
+  const onAddMorePress = () => {
+    navigation.setParams({ start: startTime, detail: appointment } as never)
+  }
+
   const onStaffPress = (staff?: StaffDTO, belongToId?: number, type?: "services" | "packages") => {
     switch (type) {
       case "packages":
@@ -457,6 +460,7 @@ const EditAppointmentScreen = () => {
           services={services}
           packages={packages}
           onStaffPress={onStaffPress}
+          onAddMorePress={onAddMorePress}
           staffList={staffsByService}
         />
 
