@@ -3,6 +3,7 @@ import { Screen } from "@components/index"
 import SplitView from "@components/splitView"
 import Text from "@components/text"
 import VectorIcon from "@components/vectorIcon/vectorIcon"
+import { DATA_TIMEZONE } from "@config/timeZoneCountry"
 import { useIsTablet } from "@contexts/isTabletContext"
 import { useAuth } from "@hooks/auth"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
@@ -11,7 +12,7 @@ import { translate } from "@i18n/translate"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator,
+  IRefSettingDetailNavigator
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"
@@ -87,7 +88,10 @@ const SettingsScreen = () => {
           onPress={() =>
             _navigate(MAIN_SCREENS.companyHours, {
               storeDetail: storeData,
-              timeZone: storeData.timezone,
+              timeZone: DATA_TIMEZONE.find((data) =>
+                data.group.some((r) => storeData.timezone.includes(r)),
+              ),
+              // storeData.timezone,
             })
           }
         >

@@ -6,7 +6,7 @@ import VectorIcon from "@components/vectorIcon/vectorIcon"
 import { useStoresInfo } from "@hooks/settings/useStoresInfo"
 import { UpdateStore } from "@models/backend/request/Store"
 import { RegisterDTO } from "@models/backend/response/Auth"
-import { OpenHoursDTO, StoreDTO } from "@models/backend/response/Store"
+import { OpenHoursDTO, StoreDTO, TimeZoneDTO } from "@models/backend/response/Store"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 
@@ -27,22 +27,21 @@ const CompanyHoursScreen = ({ route }) => {
   const navigation = useNavigation()
 
   const { storeDetail, timeZone } = route.params
+  console.log("alo1", timeZone)
   const registerData = get<Partial<Omit<RegisterDTO, "accessToken">>>(
     route.params,
     "registerData",
     {},
   )
   const store = storeDetail as StoreDTO
-  const timeZoneTemp = timeZone as string
+  const timeZoneTemp = timeZone as TimeZoneDTO
   const currentTimeZone =
     store.timezone && isEmpty(registerData) ? store.timezone : moment.tz.guess()
-  const offSet =
-    // timeZone
-    // ? parseInt(timeZoneTemp.rawOffsetInMinutes) / 60:
-    moment.tz(currentTimeZone).format("Z")
-  const currentTime = timeZone ? timeZoneTemp : currentTimeZone
+  const offSet = timeZone
+    ? parseInt(timeZoneTemp.rawOffsetInMinutes) / 60
+    : moment.tz(currentTimeZone).format("Z")
 
-  console.log("alo2", timeZoneTemp, timeZone)
+  const currentTime = timeZone ? timeZoneTemp.name : currentTimeZone
 
   const [data, setData] = useState<OpenHoursDTO[]>(store.openHours || [])
   const [modifyId, setModifyId] = useState(null)
@@ -100,7 +99,7 @@ const CompanyHoursScreen = ({ route }) => {
       const invokingData = {
         ...store,
         openHours: data,
-        timezone: timeZone ? timeZoneTemp : currentTimeZone,
+        timezone: timeZone ? timeZoneTemp.name : currentTimeZone,
       }
 
       if ((dif && dif.length > 0) || currentTimeZone !== currentTime) {
