@@ -11,7 +11,7 @@ import { translate } from "@i18n/translate"
 import { MAIN_SCREENS } from "@models/enum/screensName"
 import { useStores } from "@models/index"
 import SettingDetailNavigator, {
-  IRefSettingDetailNavigator
+  IRefSettingDetailNavigator,
 } from "@navigators/main/splitViewNavigator/detail/Setting"
 import { navigate } from "@navigators/navigation-utilities"
 import { StackActions } from "@react-navigation/native"

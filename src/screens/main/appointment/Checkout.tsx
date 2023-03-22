@@ -13,7 +13,7 @@ import {
   convertCurrency,
   displayFullname,
   totalAppointmentPrice,
-  totalAppointmentTax
+  totalAppointmentTax,
 } from "@utils/data"
 import { isEmpty } from "lodash"
 import moment from "moment"

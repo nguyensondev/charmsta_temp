@@ -5,7 +5,7 @@ import {
   Platform,
   ScrollView,
   StatusBar,
-  View
+  View,
 } from "react-native"
 import { isLandscapeSync } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"

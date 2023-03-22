@@ -1,14 +1,17 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
+import { translate } from "@i18n/translate"
 import { Customer, ImportCustomer } from "@models/backend/request/Customer"
 import { CustomerDTO } from "@models/backend/response/Customer"
 import {
   createCustomerApi,
   getCustomersApi,
   importCustomersApi,
-  updateCustomersApi,
+  updateCustomersApi
 } from "@services/api/Customer"
 import { AxiosResponse } from "axios"
+import { isEmpty } from "lodash"
+import { Alert } from "react-native"
 
 interface Output {
   loading: boolean
@@ -33,6 +36,12 @@ export const useCustomer = (): Output => {
   const [updateStatus, setUpdateStatus] = useState(false)
   const [importStatus, setImportStatus] = useState(false)
   const [take, setTake] = useState<number>(0)
+
+  useEffect(() => {
+    if (!isEmpty(error)) {
+      Alert.alert("Error", translate("errors.unexpected"))
+    }
+  }, [error])
 
   const getCustomers = async (take: number, search = "") => {
     try {

@@ -12,7 +12,7 @@ import {
   loginApi,
   registerApi,
   signUpEmailApi,
-  updateCompanyApi
+  updateCompanyApi,
 } from "@services/api/Auth"
 import { getDeviceInfo } from "@utils/deviceInfo"
 import { AxiosResponse } from "axios"
@@ -88,6 +88,7 @@ export const useAuth = (): Output => {
       // }, 200)
     } catch (err) {
       setRegisterErrorCode(err.statusCode)
+      setLoading(false)
     }
   }
 
