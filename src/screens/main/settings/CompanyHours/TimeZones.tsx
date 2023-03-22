@@ -73,6 +73,8 @@ const TimeZonesScreen = ({ route }) => {
     )
   }
 
+  console.log("alo2", timeZoneTemp, timeZone)
+
   useEffect(() => {
     if (timeZoneTemp) {
       for (let index = 0; index < data.length; index++) {

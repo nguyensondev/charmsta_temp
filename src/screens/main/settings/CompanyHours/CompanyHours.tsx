@@ -42,6 +42,8 @@ const CompanyHoursScreen = ({ route }) => {
     moment.tz(currentTimeZone).format("Z")
   const currentTime = timeZone ? timeZoneTemp : currentTimeZone
 
+  console.log("alo2", timeZoneTemp, timeZone)
+
   const [data, setData] = useState<OpenHoursDTO[]>(store.openHours || [])
   const [modifyId, setModifyId] = useState(null)
 

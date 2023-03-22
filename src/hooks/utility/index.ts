@@ -64,6 +64,7 @@ export const useUtility = (): Output => {
       })
 
       const res = await Promise.all(queue)
+      console.log("alo2res", res)
       if (res.length > 0) {
         setImagesData(
           res.map((i) =>
@@ -80,6 +81,7 @@ export const useUtility = (): Output => {
       }
       setLoading(false)
     } catch (err) {
+      console.log("alo2", err)
       setLoading(false)
     }
   }

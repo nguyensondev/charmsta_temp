@@ -16,6 +16,7 @@ import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
 import { convertYupErrorInner, validateRegex } from "@utils/yup/yup"
 import { isEmpty, isNull } from "lodash"
+import moment from "moment"
 import { ScrollView } from "native-base"
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import * as yup from "yup"
@@ -126,6 +127,7 @@ const StoreFormScreen: React.FC<StoreFormScreenProps> = () => {
             name: AUTH_SCREENS.companyHours,
             params: {
               storeDetail: createdStoreData,
+              timeZone: moment.tz.guess(),
               registerData: isEmpty(registerData)
                 ? { userInfo: registerDataParam.userInfo }
                 : registerData,
