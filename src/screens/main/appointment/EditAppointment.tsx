@@ -22,7 +22,7 @@ import {
   StackActions,
   useIsFocused,
   useNavigation,
-  useRoute
+  useRoute,
 } from "@react-navigation/native"
 import { color } from "@theme/color"
 import { spacing } from "@theme/spacing"
@@ -37,7 +37,7 @@ import {
   Select,
   TextArea,
   useToast,
-  WarningOutlineIcon
+  WarningOutlineIcon,
 } from "native-base"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, ScrollView, TouchableOpacity, View } from "react-native"

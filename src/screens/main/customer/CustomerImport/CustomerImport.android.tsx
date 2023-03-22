@@ -57,8 +57,10 @@ const CustomerImportScreenAndroid = () => {
         }
       })
       imagesData.forEach((image) => {
-        const { belongedToIndex, url } = image
-        invokingData[belongedToIndex].avatar = url
+        if (!isEmpty(image)) {
+          const { belongedToIndex, url } = image
+          invokingData[belongedToIndex].avatar = url
+        }
       })
       importCustomers(invokingData)
     }

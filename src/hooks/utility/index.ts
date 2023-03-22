@@ -49,8 +49,7 @@ export const useUtility = (): Output => {
   const uploadImages = async (photos: Image[]) => {
     try {
       setLoading(true)
-      var queue = []
-      photos.forEach((photo) => {
+      var queue = photos.map((photo) => {
         if (!isEmpty(photo.path)) {
           const formData = new FormData()
           formData.append("file", {
@@ -58,18 +57,25 @@ export const useUtility = (): Output => {
             type: photo.mime || "image/jpeg",
             name: photo.path.substring(photo.path.lastIndexOf("/" + 1)),
           } as unknown as Blob)
-          queue.push(uploadApi(formData))
+          return uploadApi(formData)
+        } else {
+          return null
         }
       })
+
       const res = await Promise.all(queue)
       if (res.length > 0) {
         setImagesData(
-          res.map((i) => ({
-            ...i.data,
-            belongedToIndex: photos.findIndex((photo) =>
-              photo?.path?.includes(i.data.originalname),
-            ),
-          })),
+          res.map((i) =>
+            isEmpty(i)
+              ? null
+              : {
+                  ...i.data,
+                  belongedToIndex: photos.findIndex((photo) =>
+                    photo?.path?.includes(i.data.originalname),
+                  ),
+                },
+          ),
         )
       }
       setLoading(false)

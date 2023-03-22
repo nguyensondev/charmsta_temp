@@ -56,8 +56,10 @@ const CustomerImportScreenIOS = () => {
         }
       })
       imagesData.forEach((image) => {
-        const { belongedToIndex, url } = image
-        formattedData[belongedToIndex].avatar = url
+        if (!isEmpty(image)) {
+          const { belongedToIndex, url } = image
+          formattedData[belongedToIndex].avatar = url
+        }
       })
       importCustomers(formattedData)
     }

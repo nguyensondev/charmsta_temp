@@ -7,7 +7,7 @@ import {
   createCustomerApi,
   getCustomersApi,
   importCustomersApi,
-  updateCustomersApi
+  updateCustomersApi,
 } from "@services/api/Customer"
 import { AxiosResponse } from "axios"
 import { isEmpty } from "lodash"
